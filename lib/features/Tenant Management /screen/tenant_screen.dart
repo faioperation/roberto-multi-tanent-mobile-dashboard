@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:roberto/app/app_color.dart';
-import 'package:roberto/common/custom_stat_card.dart';
+import 'package:roberto/features/Tenant Management /widget/custom_stat_card.dart';
 
 class TenantScreen extends StatefulWidget {
   const TenantScreen({super.key});
@@ -11,8 +11,6 @@ class TenantScreen extends StatefulWidget {
 
 class _TenantScreenState extends State<TenantScreen> {
 
-  final TextEditingController _searchController = TextEditingController();
-  String _selectedStatus = 'All Status';
 
   final List<Map<String, String>> _tenants = [
     {
@@ -52,26 +50,6 @@ class _TenantScreenState extends State<TenantScreen> {
       'price': '\$199',
     },
   ];
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
-
-  List<Map<String, String>> get _filteredTenants {
-    return _tenants.where((t) {
-      final matchesSearch = t['business']!
-          .toLowerCase()
-          .contains(_searchController.text.toLowerCase()) ||
-          t['owner']!
-              .toLowerCase()
-              .contains(_searchController.text.toLowerCase());
-      final matchesStatus = _selectedStatus == 'All Status' ||
-          t['status'] == _selectedStatus;
-      return matchesSearch && matchesStatus;
-    }).toList();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -213,68 +191,6 @@ class _TenantScreenState extends State<TenantScreen> {
                         ],
                       ),
                     ),
-                    // Search
-                    Container(
-                      width: 200,
-                      height: 38,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: const Color(0xffD1D5DB)),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: TextField(
-                        controller: _searchController,
-                        onChanged: (_) => setState(() {}),
-                        decoration: const InputDecoration(
-                          hintText: 'Search clients...',
-                          hintStyle:
-                          TextStyle(color: Color(0xff9CA3AF), fontSize: 13),
-                          prefixIcon: Icon(Icons.search,
-                              color: Color(0xff9CA3AF), size: 18),
-                          border: InputBorder.none,
-                          contentPadding:
-                          EdgeInsets.symmetric(vertical: 10),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    // Status Filter
-                    PopupMenuButton<String>(
-                      initialValue: _selectedStatus,
-                      onSelected: (val) =>
-                          setState(() => _selectedStatus = val),
-                      itemBuilder: (_) =>
-                          [
-                            'All Status',
-                            'Active',
-                            'Suspended',
-                          ]
-                              .map((s) =>
-                              PopupMenuItem(value: s, child: Text(s)))
-                              .toList(),
-                      child: Container(
-                        height: 38,
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: const Color(0xffD1D5DB)),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Row(
-                          children: [
-                            const Icon(Icons.filter_list,
-                                size: 16, color: Color(0xff6B7280)),
-                            const SizedBox(width: 6),
-                            Text(
-                              _selectedStatus,
-                              style: const TextStyle(
-                                  fontSize: 13, color: Color(0xff374151)),
-                            ),
-                            const SizedBox(width: 4),
-                            const Icon(Icons.keyboard_arrow_down,
-                                size: 16, color: Color(0xff6B7280)),
-                          ],
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -310,29 +226,293 @@ class _TenantScreenState extends State<TenantScreen> {
               ListView.separated(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: _filteredTenants.length,
-                separatorBuilder: (_, __) =>
+                itemCount: _tenants.length,
+                separatorBuilder: (context, index) =>
                 const Divider(
                     height: 1, color: Color(0xffF3F4F6)),
                 itemBuilder: (context, index) {
-                  final t = _filteredTenants[index];
+                  final t = _tenants[index];
                   return _buildRow(t);
                 },
               ),
-
-              if (_filteredTenants.isEmpty)
-                const Padding(
-                  padding: EdgeInsets.all(32),
-                  child: Center(
-                    child: Text('No tenants found.',
-                        style: TextStyle(color: Colors.grey)),
-                  ),
-                ),
             ],
           ),
         ),
         const SizedBox(height: 24),
       ],
+    );
+  }
+
+  Widget _buildRow(Map<String, String> tenant) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 3,
+            child: Text(
+              tenant['business']!,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Color(0xff111827),
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Text(
+              tenant['owner']!,
+              style: const TextStyle(
+                fontSize: 14,
+                color: Color(0xff374151),
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 4,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  tenant['email']!,
+                  style: const TextStyle(
+                    fontSize: 13,
+                    color: Color(0xff374151),
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  tenant['phone']!,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Color(0xff6B7280),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              tenant['plan']!,
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+                color: Color(0xff374151),
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Container(
+              width: 80,
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: tenant['status'] == 'Active' 
+                    ? const Color(0xffD1FAE5) 
+                    : AppColor.secondary,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                tenant['status']!,
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                  color: tenant['status'] == 'Active' 
+                      ? const Color(0xff065F46) 
+                      : const Color(0xff991B1B),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              tenant['price']!,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Color(0xff111827),
+              ),
+            ),
+          ),
+
+
+          Expanded(
+            flex: 1,
+            child: IconButton(
+              icon: const Icon(Icons.remove_red_eye, color: Colors.grey),
+              onPressed: () => _showClientDetailsDialog(tenant),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showClientDetailsDialog(Map<String, String> tenant) {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        backgroundColor: AppColor.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Container(
+          width: 600,
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Client Details',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xff111827),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: const Icon(Icons.close, size: 20),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 4),
+
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'View and manage client account information',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Color(0xff6B7280),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 16),
+              const Divider(),
+              const SizedBox(height: 16),
+
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildItem('Business Name', tenant['business']!),
+                  ),
+                  const SizedBox(width: 20),
+                  Expanded(
+                    child: _buildItem('Owner', tenant['owner']!),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 14),
+
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildItem('Email', tenant['email']!),
+                  ),
+                  const SizedBox(width: 20),
+                  Expanded(
+                    child: _buildItem('Phone', tenant['phone']!),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 14),
+
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildPlanBadge('Plan', tenant['plan']!),
+                  ),
+                  const SizedBox(width: 20),
+                  Expanded(
+                    child: _buildStatusBadge('Status', tenant['status']!),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 14),
+
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildItem('Monthly Revenue', tenant['price']!),
+                  ),
+                  const SizedBox(width: 20),
+                  Expanded(
+                    child: _buildItem('Joined Date', 'Jan 15, 2024'),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 10),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDetailRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 12,
+              color: Color(0xff6B7280),
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 4),
+          if (label == 'Plan' || label == 'Status')
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              decoration: BoxDecoration(
+                color: label == 'Status' && value == 'Active'
+                    ? const Color(0xffD1FAE5)
+                    : label == 'Status' && value == 'Suspended'
+                        ? AppColor.secondary
+                        : const Color(0xffF3F4F6),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                value,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: label == 'Status' && value == 'Active'
+                      ? const Color(0xff065F46)
+                      : label == 'Status' && value == 'Suspended'
+                          ? const Color(0xff991B1B)
+                          : const Color(0xff374151),
+                ),
+              ),
+            )
+          else
+            Text(
+              value,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: Color(0xff111827),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
