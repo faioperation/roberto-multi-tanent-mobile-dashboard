@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:roberto/features/Auth/screen/forgot_screen.dart';
-import 'package:roberto/features/Overview/screen/overview_screen.dart';
+import 'package:roberto/common/dashboard_layout.dart';
 import '../../../app/app_color.dart';
 import '../../../common/custom_button.dart';
 import '../widget/custom_screen.dart';
@@ -139,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 if (isBusinessOwner || isSystemOwner) {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (_) => OverviewScreen(isSystemOwner: isSystemOwner)),
+                    MaterialPageRoute(builder: (_) => DashboardShell(isSystemOwner: isSystemOwner)),
                   );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
