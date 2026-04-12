@@ -41,7 +41,7 @@ class _InboxScreenState extends State<InboxScreen> {
           ),
           const SizedBox(height: 24),
           Container(
-            height: MediaQuery.of(context).size.height - 220, // Dynamic height avoiding overflow
+            height: MediaQuery.of(context).size.height - 220,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(16),

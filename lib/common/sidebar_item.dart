@@ -18,33 +18,38 @@ class SidebarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      child: ListTile(
-        onTap: onTap,
-        shape: RoundedRectangleBorder(
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: double.infinity,
+        margin: const EdgeInsets.only(bottom: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          color: isActive ? AppColor.primary : Colors.transparent,
           borderRadius: BorderRadius.circular(10),
         ),
-        tileColor: isActive ? AppColor.primary : Colors.transparent,
-
-        leading: SvgPicture.asset(
-          iconPath,
-          width: 22,
-          height: 22,
-          colorFilter: ColorFilter.mode(
-            isActive ? Colors.white : Colors.grey[600]!,
-            BlendMode.srcIn,
-          ),
-        ),
-
-        title: Text(
-          label,
-          style: TextStyle(
-            color: isActive ? Colors.white : Colors.grey[600],
-            fontSize: 14,
-            fontWeight:
-            isActive ? FontWeight.w600 : FontWeight.w500,
-          ),
+        child: Row(
+          children: [
+            SvgPicture.asset(
+              iconPath,
+              width: 20,
+              height: 20,
+              colorFilter: ColorFilter.mode(
+                isActive ? Colors.white : const Color(0xff6B7280),
+                BlendMode.srcIn,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Text(
+              label,
+              style: TextStyle(
+                color: isActive ? Colors.white : const Color(0xff374151),
+                fontSize: 14,
+                fontWeight:
+                    isActive ? FontWeight.w600 : FontWeight.w500,
+              ),
+            ),
+          ],
         ),
       ),
     );
