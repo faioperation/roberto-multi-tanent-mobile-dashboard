@@ -55,6 +55,7 @@ class _TenantScreenState extends State<TenantScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDesktop = MediaQuery.of(context).size.width > 900;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
