@@ -7,6 +7,8 @@ class AppColor {
   static const Color green = Color(0xffBEDBFF);
   static const Color deepgreen = Color(0xff1447E6);
   static const Color lessgreen = Color(0xffBEDBFF);
+  static const Color popup = Color(0xffE2E8F0);
+
 
 
   static const Color white = Colors.white;
