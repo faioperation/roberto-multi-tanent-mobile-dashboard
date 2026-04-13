@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:roberto/app/app_color.dart';
-import 'package:roberto/features/Tenant Management /widget/custom_stat_card.dart';
+import 'package:roberto/features/Tenant%20Management%20/widget/custom_stat_card.dart';
+import 'package:roberto/features/Tenant%20Management%20/widget/custom_clientdetails.dart';
 
 class TenantScreen extends StatefulWidget {
   const TenantScreen({super.key});
@@ -254,7 +255,7 @@ class _TenantScreenState extends State<TenantScreen> {
               tenant['business']!,
               style: const TextStyle(
                 fontSize: 14,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w500,
                 color: Color(0xff111827),
               ),
             ),
@@ -515,6 +516,103 @@ class _TenantScreenState extends State<TenantScreen> {
       ),
     );
   }
+
+  Widget _buildItem(String label, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 13,
+            color: Color(0xff6B7280),
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w500,
+            color: Color(0xff111827),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPlanBadge(String label, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 12,
+            color: Color(0xff6B7280),
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          decoration: BoxDecoration(
+            color: AppColor.green,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: AppColor.lessgreen,
+              width: 1,
+            ),
+          ),
+          child: Text(
+            value,
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: AppColor.deepgreen,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStatusBadge(String label, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 12,
+            color: Color(0xff6B7280),
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          decoration: BoxDecoration(
+            color: value == 'Active'
+                ? const Color(0xffD1FAE5)
+                : AppColor.secondary,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Text(
+            value,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: value == 'Active'
+                  ? const Color(0xff065F46)
+                  : const Color(0xff991B1B),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 
@@ -527,9 +625,9 @@ class _HeaderCell extends StatelessWidget {
     return Text(
       label,
       style: const TextStyle(
-        fontSize: 13,
+        fontSize: 14,
         fontWeight: FontWeight.w600,
-        color: Color(0xff6B7280),
+        color: AppColor.black,
       ),
     );
   }
