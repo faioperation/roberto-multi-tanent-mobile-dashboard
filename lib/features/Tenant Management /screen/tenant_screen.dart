@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:roberto/app/app_color.dart';
 import 'package:roberto/features/Tenant%20Management%20/widget/custom_stat_card.dart';
-import 'package:roberto/features/Tenant%20Management%20/widget/custom_clientdetails.dart';
 import 'package:roberto/features/Tenant%20Management%20/widget/Custom_Addtenant.dart';
 
 class TenantScreen extends StatefulWidget {

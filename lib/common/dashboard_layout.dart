@@ -10,8 +10,8 @@ import 'package:roberto/features/Overview/widget/activity_list.dart';
 import 'package:roberto/features/Overview/widget/quick_stats.dart';
 import 'package:roberto/features/Overview/widget/stat_card.dart';
 import 'package:roberto/features/Tenant Management /screen/tenant_screen.dart';
-import 'package:roberto/features/Overview/widget/stat_card.dart';
 import 'package:roberto/features/Subscription/screen/subscription_screen.dart';
+import 'package:roberto/features/Settings/screen/setting_screen.dart';
 
 class DashboardShell extends StatefulWidget {
   final bool isSystemOwner;
@@ -69,6 +69,9 @@ class _DashboardShellState extends State<DashboardShell> {
         return const TenantScreen();
       case 'Subscriptions':
         return const SubscriptionScreen();
+
+      case 'Settings':
+        return const SettingScreen();
 
       case 'Overview':
       default:
