@@ -12,6 +12,7 @@ import 'package:roberto/features/Overview/widget/stat_card.dart';
 import 'package:roberto/features/Tenant Management /screen/tenant_screen.dart';
 import 'package:roberto/features/Subscription/screen/subscription_screen.dart';
 import 'package:roberto/features/Settings/screen/setting_screen.dart';
+import 'package:roberto/features/Orderbooking/screen/order_booking_screen.dart';
 
 class DashboardShell extends StatefulWidget {
   final bool isSystemOwner;
@@ -72,6 +73,9 @@ class _DashboardShellState extends State<DashboardShell> {
 
       case 'Settings':
         return const SettingScreen();
+
+      case 'Order Booking':
+        return const OrderBookingScreen();
 
       case 'Overview':
       default:

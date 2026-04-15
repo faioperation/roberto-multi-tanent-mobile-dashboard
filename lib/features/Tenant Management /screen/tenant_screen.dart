@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:roberto/app/app_color.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:roberto/features/Tenant%20Management%20/widget/custom_stat_card.dart';
 import 'package:roberto/features/Tenant%20Management%20/widget/Custom_Addtenant.dart';
 
@@ -116,23 +117,17 @@ class _TenantScreenState extends State<TenantScreen> {
               CustomStatCard(
                 label: 'Total Tenant',
                 value: '47',
-                icon: Icons.grid_view_rounded,
-                iconColor: const Color(0xff6366F1),
-                iconBg: const Color(0xffEEF2FF),
+                iconPath: "assets/tenant.svg",
               ),
               CustomStatCard(
                 label: 'Active Tenant',
                 value: '38',
-                icon: Icons.group_outlined,
-                iconColor: const Color(0xff10B981),
-                iconBg: const Color(0xffD1FAE5),
+                iconPath: "assets/active.svg",
               ),
               CustomStatCard(
                 label: 'MRR',
                 value: '\$8.9K',
-                icon: Icons.attach_money,
-                iconColor: const Color(0xff8B5CF6),
-                iconBg: const Color(0xffEDE9FE),
+                iconPath: "assets/MRR.svg",
               ),
             ];
             return isWide

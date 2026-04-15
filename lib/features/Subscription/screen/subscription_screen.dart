@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:roberto/app/app_color.dart';
 import 'package:roberto/features/Tenant%20Management%20/widget/custom_stat_card.dart';
 import 'package:roberto/features/Subscription/widget/custom_planbilling.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
 class SubscriptionScreen extends StatefulWidget {
   const SubscriptionScreen({super.key});
 
@@ -52,23 +54,17 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
               CustomStatCard(
                 label: 'MRR',
                 value: '\$8.9K',
-                icon: Icons.grid_view_rounded,
-                iconColor: const Color(0xff6366F1),
-                iconBg: const Color(0xffEEF2FF),
+                iconPath: "assets/MRR.svg",
               ),
               CustomStatCard(
                 label: 'ARR',
                 value: '\$107K',
-                icon: Icons.group_outlined,
-                iconColor: const Color(0xff10B981),
-                iconBg: const Color(0xffD1FAE5),
+                iconPath: "assets/ARR.svg",
               ),
               CustomStatCard(
                 label: 'Active Subs',
                 value: '47',
-                icon: Icons.attach_money,
-                iconColor: const Color(0xff8B5CF6),
-                iconBg: const Color(0xffEDE9FE),
+                iconPath: "assets/person.svg",
               ),
             ];
             return isWide

@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomStatCard extends StatelessWidget {
   final String label;
   final String value;
-  final IconData icon;
-  final Color iconColor;
-  final Color iconBg;
+  final String iconPath; // SVG path
+
 
   const CustomStatCard({
     super.key,
     required this.label,
     required this.value,
-    required this.icon,
-    required this.iconColor,
-    required this.iconBg,
+    required this.iconPath,
   });
 
   @override
@@ -31,28 +29,40 @@ class CustomStatCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(label,
-                    style: const TextStyle(
-                        fontSize: 13,
-                        color: Color(0xff6B7280),
-                        fontWeight: FontWeight.w500)),
+                Text(
+                  label,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    color: Color(0xff6B7280),
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
                 const SizedBox(height: 8),
-                Text(value,
-                    style: const TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xff111827))),
+                Text(
+                  value,
+                  style: const TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xff111827),
+                  ),
+                ),
               ],
             ),
           ),
+
           Container(
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: iconBg,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(icon, color: iconColor, size: 24),
+            child: Center(
+              child: SvgPicture.asset(
+                iconPath,
+                width: 55,
+                height: 55,
+              ),
+            ),
           ),
         ],
       ),
