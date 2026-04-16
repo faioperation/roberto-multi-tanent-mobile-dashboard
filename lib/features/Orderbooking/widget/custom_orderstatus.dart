@@ -5,7 +5,7 @@ import 'package:roberto/features/Tenant%20Management%20/widget/custom_headder.da
 // ── Data Model ──────────────────────────────────────────────────────────────
 enum OrderStatus { pending, confirmed, delivered }
 
-class OrderModel {
+class OrderMod {
   final String orderId;
   final String customerName;
   final String phone;
@@ -17,7 +17,7 @@ class OrderModel {
   final String avatarInitials;
   final Color avatarColor;
 
-  const OrderModel({
+  const OrderMod({
     required this.orderId,
     required this.customerName,
     required this.phone,

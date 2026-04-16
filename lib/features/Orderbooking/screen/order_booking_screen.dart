@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:roberto/app/app_color.dart';
 import 'package:roberto/features/Tenant%20Management%20/widget/custom_stat_card.dart';
-import 'package:roberto/features/Orderbooking/widget/order_model.dart';
+import 'package:roberto/features/Orderbooking/widget/order_mod.dart';
+import 'package:roberto/features/Orderbooking/widget/custom_orders.dart';
+import 'package:roberto/features/Orderbooking/widget/custom_viewdetails.dart';
 import 'package:roberto/features/Tenant%20Management%20/widget/custom_headder.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -16,7 +18,7 @@ class OrderBookingScreen extends StatefulWidget {
 }
 
 class _OrderBookingScreenState extends State<OrderBookingScreen> {
-  int selectedIndex = 0; // 0 = Table View, 1 = Calendar View
+  int selectedIndex = 0;
 
   String _searchQuery = '';
   String _selectedStatus = 'All status';
@@ -32,8 +34,8 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
     _selectedDay = _focusedDay;
   }
 
-  final List<OrderModel> _orders = [
-    OrderModel(
+  final List<OrderMod> _orders = [
+    OrderMod(
       orderId: '#ORD-001',
       customerName: 'Sarah Johnson',
       phone: '+1 (555) 123-4567',
@@ -45,7 +47,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
       avatarInitials: 'SJ',
       avatarColor: const Color(0xFF3B6D11),
     ),
-    OrderModel(
+    OrderMod(
       orderId: '#ORD-002',
       customerName: 'Emma Wilson',
       phone: '+1 (555) 123-4567',
@@ -57,7 +59,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
       avatarInitials: 'EW',
       avatarColor: const Color(0xFF185FA5),
     ),
-    OrderModel(
+    OrderMod(
       orderId: '#ORD-003',
       customerName: 'David Brown',
       phone: '+1 (555) 123-4567',
@@ -69,7 +71,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
       avatarInitials: 'DB',
       avatarColor: const Color(0xFF72243E),
     ),
-    OrderModel(
+    OrderMod(
       orderId: '#ORD-004',
       customerName: 'Sarah Johnson',
       phone: '+1 (555) 123-4567',
@@ -81,7 +83,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
       avatarInitials: 'SJ',
       avatarColor: const Color(0xFF3B6D11),
     ),
-    OrderModel(
+    OrderMod(
       orderId: '#ORD-005',
       customerName: 'Emma Wilson',
       phone: '+1 (555) 123-4567',
@@ -95,7 +97,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
     ),
   ];
 
-  List<OrderModel> get _filteredOrders {
+  List<OrderMod> get _filteredOrders {
     return _orders.where((order) {
       final matchesSearch = _searchQuery.isEmpty ||
           order.orderId.toLowerCase().contains(_searchQuery.toLowerCase()) ||
@@ -113,7 +115,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
     }).toList();
   }
 
-  // ─── BUILD ──────────────────────────────────────────────────────────
+  //BUILD
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -141,7 +143,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
     );
   }
 
-  // ─── HEADER ─────────────────────────────────────────────────────────
+  // HEADER
   Widget _buildHeader(bool isMobile) {
     final titleCol = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -283,7 +285,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
     );
   }
 
-  // ─── FILTER BAR ─────────────────────────────────────────────────────
+  //FILTER BAR
   Widget _buildFilterBar(bool isMobile) {
     final searchField = Container(
       height: 40,
@@ -366,7 +368,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
     );
   }
 
-  // ─── DESKTOP TABLE ───────────────────────────────────────────────────
+  //DESKTOP TABLE
   Widget _buildDesktopTable() {
     return Container(
       decoration: BoxDecoration(
@@ -417,7 +419,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
     );
   }
 
-  Widget _buildDesktopRow(OrderModel order) {
+  Widget _buildDesktopRow(OrderMod order) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       decoration: BoxDecoration(
@@ -486,7 +488,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
           // Actions
           Expanded(
             flex: 3,
-            child: _buildActionButtons(),
+            child: _buildActionButtons(context, order),
           ),
         ],
       ),
@@ -511,7 +513,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
     );
   }
 
-  Widget _buildMobileCard(OrderModel order) {
+  Widget _buildMobileCard(OrderMod order) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
@@ -630,7 +632,8 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
             children: [
               Expanded(
                 child: OutlinedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                  },
                   style: OutlinedButton.styleFrom(
                     foregroundColor: const Color(0xff374151),
                     side: BorderSide(color: Colors.grey.shade300),
@@ -639,8 +642,8 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
                         borderRadius: BorderRadius.circular(8)),
                   ),
                   icon: const Icon(Icons.visibility_outlined, size: 15),
-                  label: const Text('View Details',
-                      style: TextStyle(fontSize: 12)),
+                  label: const Text('View Details', style: TextStyle(fontSize: 12)),
+
                 ),
               ),
               const SizedBox(width: 8),
@@ -708,7 +711,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
 
   // ─── SHARED WIDGETS ──────────────────────────────────────────────────
 
-  Widget _buildCustomerCell(OrderModel order) {
+  Widget _buildCustomerCell(OrderMod order) {
     return Row(
       children: [
         CircleAvatar(
@@ -740,11 +743,12 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
     );
   }
 
-  Widget _buildActionButtons() {
+  Widget _buildActionButtons(BuildContext context, OrderMod order) {
     return Row(
       children: [
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+          },
           child: const Text('View Details',
               style: TextStyle(
                   color: Color(0xff374151),
@@ -753,7 +757,15 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
         ),
         const SizedBox(width: 8),
         InkWell(
-          onTap: () {},
+          onTap: () {
+            const CustomOrders().showUpdateStatusDialog(
+              context: context,
+              order: order,
+              onUpdate: (status) {
+                _updateOrderStatus(order.orderId, status);
+              },
+            );
+          },
           borderRadius: BorderRadius.circular(6),
           child: Padding(
             padding: const EdgeInsets.all(4),
@@ -1199,7 +1211,19 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                final order = _orders.firstWhere(
+                    (o) => o.orderId.replaceAll('#', '') == orderId,
+                    orElse: () => _orders.first);
+
+                const CustomOrders().showUpdateStatusDialog(
+                  context: context,
+                  order: order,
+                  onUpdate: (status) {
+                    _updateOrderStatus(order.orderId, status);
+                  },
+                );
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xffEF4444),
                 foregroundColor: Colors.white,
@@ -1216,6 +1240,42 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
         ],
       ),
     );
+  }
+
+
+  Widget _buildDialogInfoRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label,
+            style: const TextStyle(fontSize: 13, color: Color(0xff374151))),
+        Text(value,
+            style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: Color(0xff111827))),
+      ],
+    );
+  }
+
+  Widget _buildDialogStatusRow(String label, OrderStatus status) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label,
+            style: const TextStyle(fontSize: 13, color: Color(0xff374151))),
+        _buildStatusBadge(status),
+      ],
+    );
+  }
+
+  void _updateOrderStatus(String orderId, OrderStatus newStatus) {
+    setState(() {
+      final index = _orders.indexWhere((o) => o.orderId == orderId);
+      if (index != -1) {
+        _orders[index] = _orders[index].copyWith(status: newStatus);
+      }
+    });
   }
 
   Widget _buildSidebarItemRow(IconData icon, String text) {
