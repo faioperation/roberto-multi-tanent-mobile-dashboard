@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ChatView extends StatelessWidget {
-  const ChatView({super.key});
+  final VoidCallback? onBack;
+
+  const ChatView({super.key, this.onBack});
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +19,11 @@ class ChatView extends StatelessWidget {
             ),
             child: Row(
               children: [
+                if (onBack != null)
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back, color: Color(0xff111827)),
+                    onPressed: onBack,
+                  ),
                 Container(
                   width: 40,
                   height: 40,

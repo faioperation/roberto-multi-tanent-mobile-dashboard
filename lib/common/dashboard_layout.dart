@@ -13,6 +13,7 @@ import 'package:roberto/features/Tenant Management /screen/tenant_screen.dart';
 import 'package:roberto/features/Subscription/screen/subscription_screen.dart';
 import 'package:roberto/features/Settings/screen/setting_screen.dart';
 import 'package:roberto/features/Orderbooking/screen/order_booking_screen.dart';
+import 'package:roberto/features/Inbox/screen/inbox_screen.dart';
 
 class DashboardShell extends StatefulWidget {
   final bool isSystemOwner;
@@ -65,7 +66,7 @@ class _DashboardShellState extends State<DashboardShell> {
 
     switch (_activeItem) {
       case 'Inbox':
-        return _buildInboxContent(context, isDesktop);
+        return InboxScreen(isSystemOwner: widget.isSystemOwner);
       case 'Tenant Management':
         return const TenantScreen();
       case 'Subscriptions':
@@ -188,55 +189,6 @@ class _DashboardShellState extends State<DashboardShell> {
                   QuickStats(),
                 ],
               ),
-      ],
-    );
-  }
-
-  // ─── Inbox Content ───────────────────────────────────────────────────────
-
-  Widget _buildInboxContent(BuildContext context, bool isDesktop) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          "Inbox",
-          style: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-            color: Color(0xff111827),
-          ),
-        ),
-        const SizedBox(height: 8),
-        const Text(
-          "Manage all your customer conversations in one place",
-          style: TextStyle(fontSize: 16, color: Colors.grey),
-        ),
-        const SizedBox(height: 24),
-        Container(
-          height: MediaQuery.of(context).size.height - 220,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: const Color(0xffE5E7EB)),
-          ),
-          child: isDesktop
-              ? const Row(
-                  children: [
-                    Expanded(flex: 3, child: ChatList()),
-                    VerticalDivider(
-                        width: 1, thickness: 1, color: Color(0xffE5E7EB)),
-                    Expanded(flex: 4, child: ChatView()),
-                    VerticalDivider(
-                        width: 1, thickness: 1, color: Color(0xffE5E7EB)),
-                    Expanded(flex: 3, child: ChatDetails()),
-                  ],
-                )
-              : const Column(
-                  children: [
-                    Expanded(child: ChatList()),
-                  ],
-                ),
-        ),
       ],
     );
   }

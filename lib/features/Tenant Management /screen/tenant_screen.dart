@@ -3,6 +3,8 @@ import 'package:roberto/app/app_color.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:roberto/features/Tenant%20Management%20/widget/custom_stat_card.dart';
 import 'package:roberto/features/Tenant%20Management%20/widget/Custom_Addtenant.dart';
+import 'package:roberto/features/Tenant%20Management%20/widget/custom_headder.dart';
+import 'package:roberto/features/Tenant%20Management%20/widget/custom_builditem.dart';
 
 class TenantScreen extends StatefulWidget {
   const TenantScreen({super.key});
@@ -201,25 +203,25 @@ class _TenantScreenState extends State<TenantScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 20, vertical: 12),
-                color: const Color(0xffF9FAFB),
+                color: AppColor.secondary,
                 child: const Row(
                   children: [
                     Expanded(
                         flex: 3,
-                        child: _HeaderCell(label: 'Business Name')),
+                        child: CustomHeadder(label: 'Business Name')),
                     Expanded(
                         flex: 3,
-                        child: _HeaderCell(label: 'Owner Name')),
+                        child: CustomHeadder(label: 'Owner Name')),
                     Expanded(
-                        flex: 4, child: _HeaderCell(label: 'Contact')),
-                    Expanded(flex: 2, child: _HeaderCell(label: 'Plan')),
-                    Expanded(flex: 2, child: _HeaderCell(label: 'Status')),
+                        flex: 4, child: CustomHeadder(label: 'Contact')),
+                    Expanded(flex: 2, child: CustomHeadder(label: 'Plan')),
+                    Expanded(flex: 2, child: CustomHeadder(label: 'Status')),
                     Expanded(
                         flex: 2,
-                        child: _HeaderCell(label: 'Plan Price')),
+                        child: CustomHeadder(label: 'Plan Price')),
                     Expanded(
                         flex: 1,
-                        child: _HeaderCell(label: 'Actions')),
+                        child: CustomHeadder(label: 'Actions')),
                   ],
                 ),
               ),
@@ -406,11 +408,11 @@ class _TenantScreenState extends State<TenantScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: _buildItem('Business Name', tenant['business']!),
+                    child: CustomBuilditem(label: 'Business Name',  value: tenant['business']!),
                   ),
                   const SizedBox(width: 20),
                   Expanded(
-                    child: _buildItem('Owner', tenant['owner']!),
+                    child: CustomBuilditem(label: 'Owner',  value: tenant['owner']!),
                   ),
                 ],
               ),
@@ -420,11 +422,11 @@ class _TenantScreenState extends State<TenantScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: _buildItem('Email', tenant['email']!),
+                    child: CustomBuilditem(label: 'Email',  value: tenant['email']!),
                   ),
                   const SizedBox(width: 20),
                   Expanded(
-                    child: _buildItem('Phone', tenant['phone']!),
+                    child: CustomBuilditem(label: 'Phone',  value: tenant['phone']!),
                   ),
                 ],
               ),
@@ -434,11 +436,11 @@ class _TenantScreenState extends State<TenantScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: _buildPlanBadge('Plan', tenant['plan']!),
+                    child: CustomBuilditem(label: 'Plan',  value: tenant['plan']!),
                   ),
                   const SizedBox(width: 20),
                   Expanded(
-                    child: _buildStatusBadge('Status', tenant['status']!),
+                    child: CustomBuilditem(label: 'Status',value: tenant['status']!),
                   ),
                 ],
               ),
@@ -448,11 +450,11 @@ class _TenantScreenState extends State<TenantScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: _buildItem('Monthly Revenue', tenant['price']!),
+                    child: CustomBuilditem(label: 'Monthly Revenue',  value: tenant['price']!),
                   ),
                   const SizedBox(width: 20),
                   Expanded(
-                    child: _buildItem('Joined Date', 'Jan 15, 2024'),
+                    child: CustomBuilditem(label: 'Joined Date',value:  'Jan 15, 2024'),
                   ),
                 ],
               ),
@@ -515,31 +517,6 @@ class _TenantScreenState extends State<TenantScreen> {
             ),
         ],
       ),
-    );
-  }
-
-  Widget _buildItem(String label, String value) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 13,
-            color: Color(0xff6B7280),
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          value,
-          style: const TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w500,
-            color: Color(0xff111827),
-          ),
-        ),
-      ],
     );
   }
 
@@ -612,24 +589,6 @@ class _TenantScreenState extends State<TenantScreen> {
           ),
         ),
       ],
-    );
-  }
-}
-
-
-class _HeaderCell extends StatelessWidget {
-  final String label;
-  const _HeaderCell({required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      label,
-      style: const TextStyle(
-        fontSize: 14,
-        fontWeight: FontWeight.w600,
-        color: AppColor.black,
-      ),
     );
   }
 }
