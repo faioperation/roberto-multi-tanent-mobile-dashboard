@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import '../../../app/app_color.dart';
@@ -8,6 +7,10 @@ class CustomTextfield extends StatefulWidget {
   final bool isPassword;
   final TextEditingController? controller;
   final Color textColor;
+  final int? maxLines;
+  final int? minLines;
+  final TextInputType? keyboardType;
+  final Widget? suffixIcon;
 
   const CustomTextfield({
     super.key,
@@ -15,6 +18,10 @@ class CustomTextfield extends StatefulWidget {
     this.isPassword = false,
     this.controller,
     this.textColor = Colors.black,
+    this.maxLines = 1,
+    this.minLines,
+    this.keyboardType,
+    this.suffixIcon,
   });
 
   @override
@@ -29,6 +36,9 @@ class _CustomTextfieldState extends State<CustomTextfield> {
     return TextField(
       controller: widget.controller,
       obscureText: widget.isPassword ? _obscureText : false,
+      maxLines: widget.isPassword ? 1 : widget.maxLines,
+      minLines: widget.minLines,
+      keyboardType: widget.keyboardType,
       style: TextStyle(
         color: widget.textColor,
         fontSize: 15,
@@ -69,7 +79,7 @@ class _CustomTextfieldState extends State<CustomTextfield> {
             });
           },
         )
-            : null,
+            : widget.suffixIcon,
       ),
     );
   }

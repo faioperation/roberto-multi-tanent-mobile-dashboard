@@ -6,6 +6,8 @@ import 'package:roberto/features/Orderbooking/widget/custom_orders.dart';
 import 'package:roberto/features/Orderbooking/widget/custom_viewdetails.dart';
 import 'package:roberto/features/Tenant%20Management%20/widget/custom_headder.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:roberto/features/Auth/widget/custom_textfield.dart';
+import 'package:roberto/features/Orderbooking/widget/create_order_dialog.dart';
 
 // Breakpoint
 const double _kDesktop = 700;
@@ -192,7 +194,12 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
         const SizedBox(width: 10),
         // New Booking button
         ElevatedButton.icon(
-          onPressed: () {},
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) => const CreateOrderDialog(),
+            );
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColor.primary,
             foregroundColor: Colors.white,
@@ -206,7 +213,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
           ),
           icon: const Icon(Icons.add, size: 16),
           label: Text(
-            isMobile ? 'New' : 'new Booking',
+            isMobile ? 'New Booking' : 'New Booking',
             style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
           ),
         ),
@@ -633,6 +640,10 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => CustomViewdetails(order: order),
+                    );
                   },
                   style: OutlinedButton.styleFrom(
                     foregroundColor: const Color(0xff374151),
@@ -748,6 +759,10 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
       children: [
         GestureDetector(
           onTap: () {
+            showDialog(
+              context: context,
+              builder: (context) => CustomViewdetails(order: order),
+            );
           },
           child: const Text('View Details',
               style: TextStyle(
@@ -757,15 +772,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
         ),
         const SizedBox(width: 8),
         InkWell(
-          onTap: () {
-            const CustomOrders().showUpdateStatusDialog(
-              context: context,
-              order: order,
-              onUpdate: (status) {
-                _updateOrderStatus(order.orderId, status);
-              },
-            );
-          },
+          onTap: () {},
           borderRadius: BorderRadius.circular(6),
           child: Padding(
             padding: const EdgeInsets.all(4),

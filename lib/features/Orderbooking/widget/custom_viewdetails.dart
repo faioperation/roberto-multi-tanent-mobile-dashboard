@@ -1,317 +1,255 @@
 import 'package:flutter/material.dart';
+import 'package:roberto/app/app_color.dart';
+import 'package:roberto/features/Orderbooking/widget/order_mod.dart';
 
 class CustomViewdetails extends StatelessWidget {
-  final String orderId;
-  final String status;
-  final String customerName;
-  final String customerPhone;
-  final String customerAddress;
-  final String courierStatus;
-  final double totalAmount;
+  final OrderMod order;
 
-  const CustomViewdetails({
-    super.key,
-    this.orderId = '#ORD-001',
-    this.status = 'Pending',
-    this.customerName = 'Sarah Johnson',
-    this.customerPhone = '+1 (555) 123-4567',
-    this.customerAddress = '123 Main St, New York, NY 10001',
-    this.courierStatus = 'Not assigned',
-    this.totalAmount = 245.00,
-  });
+  const CustomViewdetails({Key? key, required this.order}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      padding: const EdgeInsets.all(20),
-      child: SingleChildScrollView(
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      backgroundColor: Colors.white,
+      child: Container(
+        width: 450,
+        padding: const EdgeInsets.all(24),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ── Header ──
-            _buildHeader(context),
+            // Header
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Order Details',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xff111827),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Complete information about this order',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey.shade500,
+                      ),
+                    ),
+                  ],
+                ),
+                IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(Icons.close, color: Color(0xff6B7280), size: 20),
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
 
-            const SizedBox(height: 16),
-            const Divider(height: 1, color: Color(0xFFEEEEEE)),
-            const SizedBox(height: 16),
+            // Order ID
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Order ID',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff111827),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      order.orderId,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Color(0xff6B7280),
+                      ),
+                    ),
+                  ],
+                ),
+                _buildStatusBadge(order.status),
+              ],
+            ),
+            const SizedBox(height: 20),
 
-            // ── Order ID ──
-            _buildOrderIdRow(),
-
-            const SizedBox(height: 16),
-
-            // ── Customer Information ──
-            _buildSectionTitle('Customer Information'),
-            const SizedBox(height: 8),
-            _buildInfoCard(children: [
-              _buildInfoRow(Icons.person_outline, customerName),
-              const SizedBox(height: 8),
-              _buildInfoRow(Icons.phone_outlined, customerPhone),
-              const SizedBox(height: 8),
-              _buildInfoRow(Icons.location_on_outlined, customerAddress),
-            ]),
-
-            const SizedBox(height: 16),
-
-            // ── Delivery Information ──
-            _buildSectionTitle('Delivery Information'),
-            const SizedBox(height: 8),
-            _buildInfoCard(children: [
-              _buildInfoRow(
-                Icons.local_shipping_outlined,
-                'Courier: $courierStatus',
+            // Customer Information
+            const Text(
+              'Customer Information',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Color(0xff111827),
               ),
-            ]),
-
-            const SizedBox(height: 16),
-
-            // ── Payment ──
-            _buildSectionTitle('Payment'),
+            ),
             const SizedBox(height: 8),
-            _buildInfoCard(children: [
-              Row(
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: const Color(0xffFDE8E8), // Pinkish color
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Column(
+                children: [
+                  _buildIconRow(Icons.person_outline, order.customerName),
+                  const SizedBox(height: 12),
+                  _buildIconRow(Icons.phone_outlined, order.phone),
+                  const SizedBox(height: 12),
+                  _buildIconRow(Icons.location_on_outlined, order.address),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // Delivery Information
+            const Text(
+              'Delivery Information',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Color(0xff111827),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: const Color(0xffFEE2E2), // Pinkish color
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: _buildIconRow(Icons.local_shipping_outlined, 'Courier: ${order.courier}'),
+            ),
+            const SizedBox(height: 20),
+
+            // Payment Information
+            const Text(
+              'Payment',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Color(0xff111827),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: const Color(0xffFEE2E2), // Pinkish color
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildInfoRow(Icons.attach_money, 'Total Amount'),
+                  Row(
+                    children: [
+                      const Icon(Icons.attach_money, size: 18, color: Color(0xff374151)),
+                      const SizedBox(width: 8),
+                      const Text('Total Amount', style: TextStyle(color: Color(0xff374151), fontSize: 14)),
+                    ],
+                  ),
                   Text(
-                    '\$${totalAmount.toStringAsFixed(2)}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                      color: Color(0xFF1A1A1A),
-                    ),
+                    '\$${order.shippingCharge.toStringAsFixed(2)}',
+                    style: const TextStyle(color: Color(0xff111827), fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
-            ]),
-
+            ),
             const SizedBox(height: 24),
 
-            // ── Action Buttons ──
-            _buildActionButtons(context),
-
-            const SizedBox(height: 10),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // ── Header ──────────────────────────────────────────────────────────────────
-
-  Widget _buildHeader(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Order Details',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF1A1A1A),
+            // Buttons
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.pop(context),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColor.primary, // Red color
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                      elevation: 0,
+                    ),
+                    child: const Text('Update Status', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+                  ),
                 ),
-              ),
-              SizedBox(height: 2),
-              Text(
-                'Complete information about this order',
-                style: TextStyle(fontSize: 12, color: Colors.grey),
-              ),
-            ],
-          ),
-        ),
-        GestureDetector(
-          onTap: () => Navigator.of(context).pop(),
-          child: Container(
-            width: 28,
-            height: 28,
-            decoration: BoxDecoration(
-              color: Colors.grey[100],
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(Icons.close, size: 16, color: Colors.grey),
-          ),
-        ),
-      ],
-    );
-  }
-
-  // ── Order ID Row ─────────────────────────────────────────────────────────────
-
-  Widget _buildOrderIdRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Order ID',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 13,
-                color: Color(0xFF1A1A1A),
-              ),
-            ),
-            const SizedBox(height: 2),
-            Text(
-              orderId,
-              style: const TextStyle(fontSize: 13, color: Colors.grey),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () => Navigator.pop(context),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                      side: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    child: const Text('Print Invoice', style: TextStyle(color: Color(0xff374151), fontWeight: FontWeight.w600)),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
-        _buildStatusChip(status),
-      ],
-    );
-  }
-
-  // ── Status Chip ──────────────────────────────────────────────────────────────
-
-  Widget _buildStatusChip(String statusText) {
-    Color chipColor;
-    Color textColor;
-
-    switch (statusText.toLowerCase()) {
-      case 'pending':
-        chipColor = const Color(0xFFFFF3E0);
-        textColor = const Color(0xFFE65100);
-        break;
-      case 'delivered':
-        chipColor = const Color(0xFFE8F5E9);
-        textColor = const Color(0xFF2E7D32);
-        break;
-      case 'cancelled':
-        chipColor = const Color(0xFFFFEBEE);
-        textColor = const Color(0xFFC62828);
-        break;
-      default:
-        chipColor = const Color(0xFFE3F2FD);
-        textColor = const Color(0xFF1565C0);
-    }
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      decoration: BoxDecoration(
-        color: chipColor,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Text(
-        statusText,
-        style: TextStyle(
-          color: textColor,
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-        ),
       ),
     );
   }
 
-  // ── Section Title ────────────────────────────────────────────────────────────
-
-  Widget _buildSectionTitle(String title) {
-    return Text(
-      title,
-      style: const TextStyle(
-        fontSize: 13,
-        fontWeight: FontWeight.bold,
-        color: Color(0xFF1A1A1A),
-      ),
-    );
-  }
-
-  // ── Info Card ────────────────────────────────────────────────────────────────
-
-  Widget _buildInfoCard({required List<Widget> children}) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-      decoration: BoxDecoration(
-        color: const Color(0xFFFFF5F5),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: const Color(0xFFFFE0E0)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: children,
-      ),
-    );
-  }
-
-  // ── Info Row ─────────────────────────────────────────────────────────────────
-
-  Widget _buildInfoRow(IconData icon, String text) {
+  Widget _buildIconRow(IconData icon, String text) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, size: 16, color: Colors.grey),
-        const SizedBox(width: 8),
+        Icon(icon, size: 18, color: const Color(0xff374151)),
+        const SizedBox(width: 12),
         Expanded(
           child: Text(
             text,
-            style: const TextStyle(fontSize: 13, color: Color(0xFF333333)),
+            style: const TextStyle(
+              color: Color(0xff374151),
+              fontSize: 14,
+            ),
           ),
         ),
       ],
     );
   }
 
-  // ── Action Buttons ───────────────────────────────────────────────────────────
+  Widget _buildStatusBadge(OrderStatus status) {
+    late Color bg, fg;
+    late String label;
 
-  Widget _buildActionButtons(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              // TODO: Update status logic
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFE53935),
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 13),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              elevation: 0,
-            ),
-            child: const Text(
-              'Update Status',
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-            ),
-          ),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: OutlinedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              // TODO: Print invoice logic
-            },
-            style: OutlinedButton.styleFrom(
-              foregroundColor: const Color(0xFF1A1A1A),
-              padding: const EdgeInsets.symmetric(vertical: 13),
-              side: const BorderSide(color: Color(0xFFDDDDDD)),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-            child: const Text(
-              'Print Invoice',
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-            ),
-          ),
-        ),
-      ],
+    switch (status) {
+      case OrderStatus.pending:
+        bg = const Color(0xffFEF3C7);
+        fg = const Color(0xffD97706);
+        label = 'Pending';
+        break;
+      case OrderStatus.confirmed:
+        bg = const Color(0xffDBEAFE);
+        fg = const Color(0xff2563EB);
+        label = 'Confirmed';
+        break;
+      case OrderStatus.delivered:
+        bg = const Color(0xffD1FAE5);
+        fg = const Color(0xff059669);
+        label = 'Delivered';
+        break;
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(20)),
+      child: Text(
+        label,
+        style: TextStyle(color: fg, fontSize: 12, fontWeight: FontWeight.w500),
+      ),
     );
   }
 }
-
