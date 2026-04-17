@@ -14,6 +14,8 @@ import 'package:roberto/features/Subscription/screen/subscription_screen.dart';
 import 'package:roberto/features/Settings/screen/setting_screen.dart';
 import 'package:roberto/features/Orderbooking/screen/order_booking_screen.dart';
 import 'package:roberto/features/Inbox/screen/inbox_screen.dart';
+import 'package:roberto/features/AiAgent/screen/aiagent_screen.dart';
+import 'package:roberto/features/Pricing/screen/pricing_screen.dart';
 
 class DashboardShell extends StatefulWidget {
   final bool isSystemOwner;
@@ -77,6 +79,12 @@ class _DashboardShellState extends State<DashboardShell> {
 
       case 'Order Booking':
         return const OrderBookingScreen();
+
+      case 'AI Agent':
+        return const AiagentScreen();
+
+      case 'Pricing':
+        return const PricingScreen();
 
       case 'Overview':
       default:
