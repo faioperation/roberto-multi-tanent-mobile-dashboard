@@ -10,6 +10,10 @@ class CreateOrderDialog extends StatefulWidget {
 }
 
 class _CreateOrderDialogState extends State<CreateOrderDialog> {
+  int _quantity = 1;
+  String? _selectedPaymentMethod = 'Cash on delivery';
+  String? _selectedStatus = 'paid';
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -183,10 +187,20 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
 
                           if (isMobile) ... [
                             _buildLabel("Payment Method"),
-                            _buildDropdown("Cash on delivery"),
+                            _buildDropdown(
+                              hint: "Cash on delivery",
+                              value: _selectedPaymentMethod,
+                              items: ["Cash on delivery", "Card payment"],
+                              onChanged: (val) => setState(() => _selectedPaymentMethod = val),
+                            ),
                             const SizedBox(height: 16),
                             _buildLabel("Status"),
-                            _buildDropdown("paid"),
+                            _buildDropdown(
+                              hint: "paid",
+                              value: _selectedStatus,
+                              items: ["paid", "unpaid"],
+                              onChanged: (val) => setState(() => _selectedStatus = val),
+                            ),
                           ] else 
                             Row(
                               children: [
@@ -195,7 +209,12 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       _buildLabel("Payment Method"),
-                                      _buildDropdown("Cash on delivery"),
+                                      _buildDropdown(
+                                        hint: "Cash on delivery",
+                                        value: _selectedPaymentMethod,
+                                        items: ["Cash on delivery", "Card payment"],
+                                        onChanged: (val) => setState(() => _selectedPaymentMethod = val),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -205,7 +224,12 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       _buildLabel("Status"),
-                                      _buildDropdown("paid"),
+                                      _buildDropdown(
+                                        hint: "paid",
+                                        value: _selectedStatus,
+                                        items: ["paid", "Pending"],
+                                        onChanged: (val) => setState(() => _selectedStatus = val),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -286,7 +310,12 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
     );
   }
 
-  Widget _buildDropdown(String hint) {
+  Widget _buildDropdown({
+    required String hint,
+    required String? value,
+    required List<String> items,
+    required ValueChanged<String?> onChanged,
+  }) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
@@ -297,10 +326,11 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           isExpanded: true,
+          value: value,
           hint: Text(hint, style: TextStyle(color: Colors.grey.shade400, fontSize: 14)),
           icon: Icon(Icons.keyboard_arrow_down, color: Colors.grey.shade400, size: 20),
-          items: const [], // Add actual items here if needed
-          onChanged: (val) {},
+          items: items.map((e) => DropdownMenuItem(value: e, child: Text(e, style: const TextStyle(fontSize: 14, color: Colors.black87)))).toList(),
+          onChanged: onChanged,
         ),
       ),
     );
@@ -308,7 +338,7 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
 
   Widget _buildQuantityDropdown() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
         color: AppColor.white,
         borderRadius: BorderRadius.circular(8),
@@ -317,13 +347,26 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("1", style: TextStyle(color: Colors.grey.shade400, fontSize: 14)),
+          Text("$_quantity", style: const TextStyle(color: Colors.black87, fontSize: 14)),
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.keyboard_arrow_up, size: 14, color: Colors.grey.shade600),
-              const SizedBox(height: 2),
-              Icon(Icons.keyboard_arrow_down, size: 14, color: Colors.grey.shade600),
+              InkWell(
+                onTap: () => setState(() => _quantity++),
+                child: Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: Icon(Icons.keyboard_arrow_up, size: 14, color: Colors.grey.shade600),
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  if (_quantity > 1) setState(() => _quantity--);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: Icon(Icons.keyboard_arrow_down, size: 14, color: Colors.grey.shade600),
+                ),
+              ),
             ],
           )
         ],
