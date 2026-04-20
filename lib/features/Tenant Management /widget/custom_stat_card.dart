@@ -59,8 +59,8 @@ class CustomStatCard extends StatelessWidget {
             child: Center(
               child: SvgPicture.asset(
                 iconPath,
-                width: 55,
-                height: 55,
+                width: 30,
+                height: 30,
               ),
             ),
           ),

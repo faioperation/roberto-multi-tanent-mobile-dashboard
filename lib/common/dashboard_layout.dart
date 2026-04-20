@@ -16,6 +16,8 @@ import 'package:roberto/features/Orderbooking/screen/order_booking_screen.dart';
 import 'package:roberto/features/Inbox/screen/inbox_screen.dart';
 import 'package:roberto/features/AiAgent/screen/aiagent_screen.dart';
 import 'package:roberto/features/Pricing/screen/pricing_screen.dart';
+import 'package:roberto/features/CRM/screen/cmr_screen.dart';
+import 'package:roberto/features/management/screen/management_screen.dart';
 
 class DashboardShell extends StatefulWidget {
   final bool isSystemOwner;
@@ -85,6 +87,12 @@ class _DashboardShellState extends State<DashboardShell> {
 
       case 'Pricing':
         return const PricingScreen();
+
+      case 'CRM & Leads':
+        return const CmrScreen();
+
+      case 'Management':
+        return const ManagementScreen();
 
       case 'Overview':
       default:
@@ -219,6 +227,7 @@ class _DashboardShellState extends State<DashboardShell> {
       {'icon': 'assets/pricing.svg', 'label': 'Pricing'},
       {'icon': 'assets/crm.svg', 'label': 'CRM & Leads'},
       {'icon': 'assets/subscription.svg', 'label': 'Subscriptions'},
+      {'icon': 'assets/management.svg', 'label': 'Management'},
       {'icon': 'assets/setting.svg', 'label': 'Settings'},
     ];
 

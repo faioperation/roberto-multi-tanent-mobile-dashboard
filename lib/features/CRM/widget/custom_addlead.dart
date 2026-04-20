@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:roberto/app/app_color.dart';
 import 'package:roberto/features/Auth/widget/custom_textfield.dart';
 
-class CustomAddrule extends StatefulWidget {
-  const CustomAddrule({super.key});
+class CustomAddlead extends StatefulWidget {
+  const CustomAddlead({super.key});
 
   @override
-  State<CustomAddrule> createState() => _CustomAddruleState();
+  State<CustomAddlead> createState() => _CustomAddleadState();
 }
 
-class _CustomAddruleState extends State<CustomAddrule> {
-  bool isActive = true;
+class _CustomAddleadState extends State<CustomAddlead> {
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +19,7 @@ class _CustomAddruleState extends State<CustomAddrule> {
     return AlertDialog(
       backgroundColor: AppColor.white,
 
-      // 👉 Responsive width
+      //  Responsive width
       contentPadding: EdgeInsets.symmetric(
         horizontal: isDesktop ? 24 : 16,
         vertical: 20,
@@ -35,7 +34,7 @@ class _CustomAddruleState extends State<CustomAddrule> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            "Add Pricing Rule",
+            "Add New Lead",
             style: TextStyle(fontSize: isDesktop ? 20 : 16),
           ),
           InkWell(
@@ -53,48 +52,35 @@ class _CustomAddruleState extends State<CustomAddrule> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("Rule Name"),
+              const Text("Name"),
               const SizedBox(height: 6),
-              const CustomTextfield(hintText: "Enter rule name"),
+              const CustomTextfield(hintText: "Enter name"),
 
               const SizedBox(height: 15),
 
-              const Text("Rule Type"),
+              const Text("Email"),
               const SizedBox(height: 6),
-              const CustomTextfield(hintText: "Select type"),
+              const CustomTextfield(hintText: "email@example.com"),
 
               const SizedBox(height: 15),
 
-              const Text("Value"),
+              const Text("Phone"),
               const SizedBox(height: 6),
-              const CustomTextfield(hintText: "e.g., 15 or +20%"),
+              const CustomTextfield(hintText: "+1 234 567 8900"),
 
               const SizedBox(height: 15),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    "Active",
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Transform.scale(
-                    scale: isDesktop ? 0.9 : 0.8,
-                    child: Switch(
-                      value: isActive,
-                      onChanged: (value) {
-                        setState(() {
-                          isActive = value;
-                        });
-                      },
-                      activeColor: AppColor.mini,
-                    ),
-                  ),
-                ],
-              ),
+              const Text("Source"),
+              const SizedBox(height: 6),
+              const CustomTextfield(hintText: "Facebook"),
+
+              const SizedBox(height: 15),
+
+              const Text("Note"),
+              const SizedBox(height: 6),
+              const CustomTextfield(hintText: "Add notes..."),
+
+              const SizedBox(height: 15),
             ],
           ),
         ),
@@ -142,7 +128,7 @@ class _CustomAddruleState extends State<CustomAddrule> {
           Navigator.pop(context);
         },
         child: const Text(
-          "Add Rule",
+          "Create",
           style: TextStyle(color: AppColor.white),
         ),
       ),

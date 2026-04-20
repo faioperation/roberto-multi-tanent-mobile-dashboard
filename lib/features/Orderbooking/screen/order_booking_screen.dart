@@ -379,7 +379,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
   Widget _buildDesktopTable() {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: const Color(0xffE5E7EB)),
       ),
@@ -391,7 +391,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
             Container(
               padding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-              color: const Color(0xffFEE2E2),
+              color: AppColor.secondary,
               child: const Row(
                 children: [
                   Expanded(flex: 2, child: CustomHeadder(label: 'Order ID')),
