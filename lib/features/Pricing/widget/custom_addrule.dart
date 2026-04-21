@@ -31,17 +31,33 @@ class _CustomAddruleState extends State<CustomAddrule> {
         vertical: 16,
       ),
 
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            "Add Pricing Rule",
-            style: TextStyle(fontSize: isDesktop ? 20 : 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Add Pricing Rule",
+                style: TextStyle(fontSize: isDesktop ? 20 : 16),
+              ),
+              InkWell(
+                onTap: () => Navigator.pop(context),
+                borderRadius: BorderRadius.circular(20),
+                child: const Icon(Icons.close, size: 20),
+              ),
+            ],
           ),
-          InkWell(
-            onTap: () => Navigator.pop(context),
-            borderRadius: BorderRadius.circular(20),
-            child: const Icon(Icons.close, size: 20),
+
+          const SizedBox(height: 6),
+
+          Text(
+            "Create a new pricing rule",
+            style: TextStyle(
+              fontSize: isDesktop ? 14 : 12,
+              color: Colors.grey,
+            ),
           ),
         ],
       ),

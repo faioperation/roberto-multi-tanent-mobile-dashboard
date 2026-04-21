@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:roberto/app/app_color.dart';
+import 'package:roberto/features/management/widget/custom_user_row.dart';
+import 'package:roberto/features/Tenant%20Management%20/widget/custom_headder.dart';
 
 class CustomUsermanagement extends StatefulWidget {
   const CustomUsermanagement({super.key});
@@ -11,7 +13,7 @@ class CustomUsermanagement extends StatefulWidget {
 class _CustomUsermanagementState extends State<CustomUsermanagement> {
   @override
   Widget build(BuildContext context) {
-    bool isDesktop = MediaQuery.of(context).size.width > 900;
+    bool isDesktop = true;
 
     return Container(
         width: double.infinity,
@@ -40,6 +42,89 @@ class _CustomUsermanagementState extends State<CustomUsermanagement> {
                 ),
               ),
               const SizedBox(height: 26),
+
+        Container(
+            decoration: BoxDecoration(
+              color: AppColor.white,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: const Color(0xffE5E7EB)),
+            ),
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Column(
+                    children: [
+                      if (isDesktop)
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 14,
+                          ),
+                          color: AppColor.secondary,
+                          child: Row(
+                            children: const [
+                              Expanded(
+                                flex: 2,
+                                child: CustomHeadder(label: 'Sr.'),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: CustomHeadder(label: 'User Name'),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: CustomHeadder(label: 'Mail'),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: CustomHeadder(label: 'Address'),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: CustomHeadder(label: 'Status'),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: CustomHeadder(label: 'Actions'),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                      CustomUserRow(
+                        slNo: "001",
+                        username: "John smith",
+                        mail: "john@gmail.com",
+                        location: "New York, NY",
+                        status: "active",
+                      ),
+
+                      CustomUserRow(
+                        slNo: "002",
+                        username: "John smith",
+                        mail: "john@gmail.com",
+                        location: "New York, NY",
+                        status: "active",
+                      ),
+
+                      CustomUserRow(
+                        slNo: "003",
+                        username: "John smith",
+                        mail: "john@gmail.com",
+                        location: "New York, NY",
+                        status: "active",
+                      ),
+
+                      CustomUserRow(
+                        slNo: "004",
+                        username: "John smith",
+                        mail: "john@gmail.com",
+                        location: "New York, NY",
+                        status: "active",
+                      ),
+                      ]
+                )
+                )
+            )
             ]
         )
     );

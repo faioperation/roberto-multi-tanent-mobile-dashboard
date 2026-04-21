@@ -24,17 +24,33 @@ class CustomAddbranch extends StatelessWidget {
         vertical: 16,
       ),
 
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Create New Branch",
+                style: TextStyle(fontSize: isDesktop ? 20 : 16),
+              ),
+              InkWell(
+                onTap: () => Navigator.pop(context),
+                borderRadius: BorderRadius.circular(20),
+                child: const Icon(Icons.close, size: 20),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 6),
+
           Text(
             "Create New Branch",
-            style: TextStyle(fontSize: isDesktop ? 20 : 16),
-          ),
-          InkWell(
-            onTap: () => Navigator.pop(context),
-            borderRadius: BorderRadius.circular(20),
-            child: const Icon(Icons.close, size: 20),
+            style: TextStyle(
+              fontSize: isDesktop ? 14 : 12,
+              color: Colors.grey,
+            ),
           ),
         ],
       ),
@@ -46,35 +62,30 @@ class CustomAddbranch extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("Name"),
+              const Text("User Name "),
               const SizedBox(height: 6),
-              const CustomTextfield(hintText: "Enter name"),
+              const CustomTextfield(hintText: "John smith"),
 
               const SizedBox(height: 15),
 
-              const Text("Email"),
+              const Text("User Mail"),
               const SizedBox(height: 6),
-              const CustomTextfield(hintText: "email@example.com"),
+              const CustomTextfield(hintText: "john12@gmail.com"),
 
               const SizedBox(height: 15),
 
-              const Text("Phone"),
+              const Text("Address "),
               const SizedBox(height: 6),
-              const CustomTextfield(hintText: "+1 234 567 8900"),
+              const CustomTextfield(hintText: "New York,NY"),
 
               const SizedBox(height: 15),
 
-              const Text("Source"),
+              const Text("Status"),
               const SizedBox(height: 6),
-              const CustomTextfield(hintText: "Facebook"),
+              const CustomTextfield(hintText: "Active"),
 
               const SizedBox(height: 15),
 
-              const Text("Note"),
-              const SizedBox(height: 6),
-              const CustomTextfield(hintText: "Add notes..."),
-
-              const SizedBox(height: 15),
             ],
           ),
         ),
@@ -122,7 +133,7 @@ class CustomAddbranch extends StatelessWidget {
           Navigator.pop(context);
         },
         child: const Text(
-          "Create",
+          "Create User",
           style: TextStyle(color: AppColor.white),
         ),
       ),

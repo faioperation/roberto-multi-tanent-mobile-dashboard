@@ -18,6 +18,8 @@ import 'package:roberto/features/AiAgent/screen/aiagent_screen.dart';
 import 'package:roberto/features/Pricing/screen/pricing_screen.dart';
 import 'package:roberto/features/CRM/screen/cmr_screen.dart';
 import 'package:roberto/features/management/screen/management_screen.dart';
+import 'package:roberto/features/businesssetting/screen/businessowner_settings.dart';
+import 'package:roberto/features/businesssubscription/screen/business_subscription.dart';
 
 class DashboardShell extends StatefulWidget {
   final bool isSystemOwner;
@@ -73,11 +75,16 @@ class _DashboardShellState extends State<DashboardShell> {
         return InboxScreen(isSystemOwner: widget.isSystemOwner);
       case 'Tenant Management':
         return const TenantScreen();
+
       case 'Subscriptions':
-        return const SubscriptionScreen();
+        return widget.isSystemOwner
+            ? const SubscriptionScreen()
+            : const BusinessSubscription();
 
       case 'Settings':
-        return const SettingScreen();
+        return widget.isSystemOwner
+            ? const SettingScreen()
+            : const BusinessownerSettings();
 
       case 'Order Booking':
         return const OrderBookingScreen();

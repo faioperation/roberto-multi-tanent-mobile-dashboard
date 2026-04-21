@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:roberto/app/app_color.dart';
+import 'package:roberto/features/management/widget/custom_branch_row.dart';
+import 'package:roberto/features/Tenant%20Management%20/widget/custom_headder.dart';
 
 class CustomBranchmanagement extends StatefulWidget {
   const CustomBranchmanagement({super.key});
@@ -11,7 +13,7 @@ class CustomBranchmanagement extends StatefulWidget {
 class _CustomBranchmanagementState extends State<CustomBranchmanagement> {
   @override
   Widget build(BuildContext context) {
-    bool isDesktop = MediaQuery.of(context).size.width > 900;
+    bool isDesktop = true;
 
     return Container(
       width: double.infinity,
@@ -40,8 +42,91 @@ class _CustomBranchmanagementState extends State<CustomBranchmanagement> {
         ),
       ),
       const SizedBox(height: 26),
-      ]
-      )
+
+        Container(
+            decoration: BoxDecoration(
+              color: AppColor.white,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: const Color(0xffE5E7EB)),
+            ),
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Column(
+                    children: [
+                      if (isDesktop)
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 14,
+                          ),
+                          color: AppColor.secondary,
+                          child: Row(
+                            children: const [
+                              Expanded(
+                                flex: 2,
+                                child: CustomHeadder(label: 'Business Sr.'),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: CustomHeadder(label: 'Business Name'),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: CustomHeadder(label: 'Location'),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: CustomHeadder(label: 'Manager'),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: CustomHeadder(label: 'Status'),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: CustomHeadder(label: 'Actions'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      CustomBranchRow(
+                        slNo: "001",
+                        businessname: "Tugatai",
+                        location: "New York, NY",
+                        name: "John Smith",
+                        status: "active",
+                      ),
+
+                      CustomBranchRow(
+                        slNo: "002",
+                        businessname: "Tugatai",
+                        location: "New York, NY",
+                        name: "John Smith",
+                        status: "active",
+                      ),
+
+                      CustomBranchRow(
+                        slNo: "003",
+                        businessname: "Tugatai",
+                        location: "New York, NY",
+                        name: "John Smith",
+                        status: "active",
+                      ),
+
+                      CustomBranchRow(
+                        slNo: "004",
+                        businessname: "Tugatai",
+                        location: "New York, NY",
+                        name: "John Smith",
+                        status: "active",
+                      ),
+
+                      ],
+                ),
+            ),
+        ),
+      ],
+      ),
     );
   }
 }

@@ -165,7 +165,7 @@ class CustomCrm extends StatelessWidget {
                     socialIcon: Icons.facebook,
                     tagText: "Warm",
                     tagColor: AppColor.greens,
-                    time: "Warm",
+                    time: "1 day ago",
                     notes: "Follow up next week for demo.",
                   ),
                   CustomLeadRow(
