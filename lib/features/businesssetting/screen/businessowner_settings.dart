@@ -23,7 +23,7 @@ class _BusinessownerSettingsState extends State<BusinessownerSettings> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Businessowner Settings',
+                      'Settings',
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
@@ -32,7 +32,7 @@ class _BusinessownerSettingsState extends State<BusinessownerSettings> {
                     ),
                     SizedBox(height: 6),
                     Text(
-                      'Configure and train your AI assistant',
+                      'Manage your system preferences and configurations',
                       style: TextStyle(fontSize: 15, color: Colors.grey),
                     ),
                   ],
