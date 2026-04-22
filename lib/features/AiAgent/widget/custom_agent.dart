@@ -81,14 +81,18 @@ class _CustomAgentState extends State<CustomAgent> {
                 ],
               ),
 
-              Switch(
-                value: isOn,
-                onChanged: (value) {
-                  setState(() {
-                    isOn = value;
-                  });
-                },
-                activeColor: AppColor.mini,
+              Transform.scale(
+                scale: 0.70,
+                child: Switch(
+                  value: isOn,
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  onChanged: (value) {
+                    setState(() {
+                      isOn = value;
+                    });
+                  },
+                  activeColor: AppColor.mini,
+                ),
               ),
             ],
           ),

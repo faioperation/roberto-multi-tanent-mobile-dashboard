@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:roberto/app/app_color.dart';
 
 class ChatView extends StatelessWidget {
   final VoidCallback? onBack;
@@ -28,7 +29,7 @@ class ChatView extends StatelessWidget {
                   width: 40,
                   height: 40,
                   decoration: const BoxDecoration(
-                    color: Color(0xffE22A28),
+                    color: AppColor.primary,
                     shape: BoxShape.circle,
                   ),
                   child: const Center(

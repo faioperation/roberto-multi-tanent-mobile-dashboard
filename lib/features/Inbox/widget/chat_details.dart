@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:roberto/app/app_color.dart';
 
 class ChatDetails extends StatelessWidget {
   const ChatDetails({super.key});
@@ -46,7 +47,7 @@ class ChatDetails extends StatelessWidget {
                   child: const Text(
                     "cold",
                     style: TextStyle(
-                      color: Color(0xffEF4444),
+                      color: AppColor.primary,
                       fontWeight: FontWeight.w500,
                       fontSize: 12,
                     ),
@@ -72,7 +73,7 @@ class ChatDetails extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                         decoration: const BoxDecoration(
-                          color: Color(0xffE22A28),
+                          color: AppColor.primary,
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(11),
                             topRight: Radius.circular(11),
@@ -115,7 +116,7 @@ class ChatDetails extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                         decoration: const BoxDecoration(
-                          color: Color(0xffE22A28),
+                          color: AppColor.primary,
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(11),
                             topRight: Radius.circular(11),

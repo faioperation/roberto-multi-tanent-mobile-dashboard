@@ -12,7 +12,7 @@ class AppColor {
   static const Color greens = Color(0xff16A603);
   static const Color gry = Color(0xffE0E7FF);
   static const Color ma = Color(0xffA65F00);
-
+  static const Color dot = Color(0xff2B7FFF);
 
 
   static const Color white = Colors.white;

@@ -17,9 +17,12 @@ import 'package:roberto/features/Inbox/screen/inbox_screen.dart';
 import 'package:roberto/features/AiAgent/screen/aiagent_screen.dart';
 import 'package:roberto/features/Pricing/screen/pricing_screen.dart';
 import 'package:roberto/features/CRM/screen/cmr_screen.dart';
+import 'package:roberto/features/notification/screen/notification_screen.dart';
 import 'package:roberto/features/management/screen/management_screen.dart';
 import 'package:roberto/features/businesssetting/screen/businessowner_settings.dart';
 import 'package:roberto/features/businesssubscription/screen/business_subscription.dart';
+import 'package:roberto/features/Auth/screen/login_screen.dart';
+
 
 class DashboardShell extends StatefulWidget {
   final bool isSystemOwner;
@@ -100,6 +103,12 @@ class _DashboardShellState extends State<DashboardShell> {
 
       case 'Management':
         return const ManagementScreen();
+
+      case 'Notifications':
+        return const NotificationScreen();
+
+      case 'Edit Profile':
+        return const SettingScreen();
 
       case 'Overview':
       default:
@@ -325,7 +334,9 @@ class _DashboardShellState extends State<DashboardShell> {
               IconButton(
                 icon: const Icon(Icons.notifications_none_outlined,
                     color: Colors.grey),
-                onPressed: () {},
+                onPressed: () {
+                  _selectItem('Notifications');
+                },
               ),
               Positioned(
                 right: 8,
@@ -335,6 +346,14 @@ class _DashboardShellState extends State<DashboardShell> {
                   decoration: const BoxDecoration(
                     color: AppColor.primary,
                     shape: BoxShape.circle,
+                  ),
+                  child: const Text(
+                    "3",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 8,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
@@ -360,8 +379,53 @@ class _DashboardShellState extends State<DashboardShell> {
                   "John Doe",
                   style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
                 ),
-                const Icon(Icons.keyboard_arrow_down,
-                    size: 20, color: Colors.grey),
+
+                PopupMenuButton<String>(
+                  color: AppColor.white,
+                  padding: EdgeInsets.zero,
+                  icon: const Icon(
+                    Icons.keyboard_arrow_down,
+                    size: 20,
+                    color: AppColor.grey,
+                  ),
+                  onSelected: (value) {
+                    if (value == 'logout') {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginScreen()),
+                      );
+                    } else if (value == 'profile') {
+                      _selectItem('Edit Profile');
+                    }
+                  },
+                  itemBuilder: (BuildContext context) =>
+                      <PopupMenuEntry<String>>[
+                    if (!widget.isSystemOwner)
+                      const PopupMenuItem<String>(
+                        value: 'profile',
+                        child: Row(
+                          children: [
+                            Icon(Icons.person_outline, size: 18),
+                            SizedBox(width: 8),
+                            Text('Edit Profile', style: TextStyle(fontSize: 14)),
+                          ],
+                        ),
+                      ),
+                    const PopupMenuItem<String>(
+                      value: 'logout',
+                      child: Row(
+                        children: [
+                          Icon(Icons.logout, size: 18, color:  AppColor.primary),
+                          SizedBox(width: 8),
+                          Text('Logout',
+                              style:
+                                  TextStyle(color: AppColor.primary, fontSize: 14)),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ],
           ),

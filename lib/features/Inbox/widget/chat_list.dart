@@ -61,7 +61,7 @@ class _ChatListState extends State<ChatList> {
         child: Container(
           decoration: isActive
               ? BoxDecoration(
-                  color: const Color(0xffE22A28), // AppColor.primary
+                  color: AppColor.primary, // AppColor.primary
                   borderRadius: BorderRadius.circular(24),
                 )
               : null,
@@ -138,7 +138,7 @@ class _ChatListState extends State<ChatList> {
               width: 40,
               height: 40,
               decoration: const BoxDecoration(
-                color: Color(0xffE22A28),
+                color: AppColor.primary,
                 shape: BoxShape.circle,
               ),
               child: Center(
