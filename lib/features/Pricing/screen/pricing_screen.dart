@@ -35,8 +35,8 @@ class _PricingScreenState extends State<PricingScreen> {
         child: const Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.add, color: Colors.white, size: 18),
-            SizedBox(width: 6),
+            const Icon(Icons.add, color: Colors.white, size: 18),
+            const SizedBox(width: 6),
             Text(
               "Add Rule",
               style: TextStyle(
@@ -97,12 +97,12 @@ class _PricingScreenState extends State<PricingScreen> {
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'Pricing Management',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xff111827),
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -112,13 +112,13 @@ class _PricingScreenState extends State<PricingScreen> {
           : Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Expanded(
+                Expanded(
                   child: Text(
                     'Pricing Management',
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xff111827),
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                 ),
@@ -129,9 +129,9 @@ class _PricingScreenState extends State<PricingScreen> {
 
           const SizedBox(height: 6),
 
-          const Text(
+          Text(
             'Manage pricing rules and product categories',
-            style: TextStyle(fontSize: 15, color: AppColor.grey),
+            style: TextStyle(fontSize: 15, color: Theme.of(context).textTheme.bodyMedium?.color),
           ),
 
           const SizedBox(height: 20),
@@ -161,10 +161,12 @@ class _PricingScreenState extends State<PricingScreen> {
   }
 
   Widget _buildToggleTabs() {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: const Color(0xffF3F4F6),
+        color: isDark ? theme.colorScheme.surface : theme.colorScheme.secondary,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
@@ -189,12 +191,12 @@ class _PricingScreenState extends State<PricingScreen> {
         duration: const Duration(milliseconds: 100),
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 13),
         decoration: BoxDecoration(
-          color: isActive ? Colors.white : Colors.transparent,
+          color: isActive ? Theme.of(context).cardTheme.color : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
           boxShadow: isActive
               ? [
             BoxShadow(
-              color: Colors.black.withOpacity(0.08),
+              color: Theme.of(context).shadowColor.withValues(alpha: Theme.of(context).brightness == Brightness.light ? 0.08 : 0.2),
               blurRadius: 4,
               offset: const Offset(0, 2),
             ),
@@ -211,7 +213,7 @@ class _PricingScreenState extends State<PricingScreen> {
                 fontWeight:
                 isActive ? FontWeight.w500 : FontWeight.w400,
                 color:
-                isActive ? const Color(0xff111827) : Colors.grey,
+                isActive ? Theme.of(context).colorScheme.onSurface : Theme.of(context).textTheme.bodyMedium?.color,
               ),
             ),
           ],

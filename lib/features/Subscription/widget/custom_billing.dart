@@ -41,9 +41,9 @@ class CustomBilling extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xffE5E7EB)),
+        border: Border.all(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,20 +53,21 @@ class CustomBilling extends StatelessWidget {
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       "Billing History",
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                     const SizedBox(height: 8),
                     OutlinedButton.icon(
                       onPressed: () {},
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.download,
                         size: 16,
-                        color: AppColor.black,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                       label: const Text("Export History"),
                       style: OutlinedButton.styleFrom(
@@ -78,7 +79,7 @@ class CustomBilling extends StatelessWidget {
                 )
               : Row(
                   children: [
-                    const Expanded(
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -87,14 +88,15 @@ class CustomBilling extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w700,
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
                           ),
-                          SizedBox(height: 4),
+                          const SizedBox(height: 4),
                           Text(
                             "View all past transactions and invoices",
                             style: TextStyle(
                               fontSize: 13,
-                              color: Color(0xff6B7280),
+                              color: Theme.of(context).textTheme.bodySmall?.color,
                             ),
                           ),
                         ],
@@ -102,10 +104,10 @@ class CustomBilling extends StatelessWidget {
                     ),
                     OutlinedButton.icon(
                       onPressed: () {},
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.download,
                         size: 16,
-                        color: AppColor.black,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                       label: const Text("Export"),
                       style: OutlinedButton.styleFrom(
@@ -122,7 +124,7 @@ class CustomBilling extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
               decoration: BoxDecoration(
-                color: AppColor.secondary,
+                color: Theme.of(context).brightness == Brightness.light ? AppColor.secondary : Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: const Row(
@@ -143,9 +145,9 @@ class CustomBilling extends StatelessWidget {
                 return Container(
                   padding:
                       const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     border: Border(
-                      bottom: BorderSide(color: Color(0xffF3F4F6)),
+                      bottom: BorderSide(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE)),
                     ),
                   ),
                   child: Row(
@@ -171,7 +173,7 @@ class CustomBilling extends StatelessWidget {
             const SizedBox(height: 24),
             // 🔹 Mobile Cards
             Column(
-              children: data.map((item) => _buildMobileCard(item)).toList(),
+              children: data.map((item) => _buildMobileCard(context, item as Map<String, String>)).toList(),
             ),
           ],
         ],
@@ -179,14 +181,14 @@ class CustomBilling extends StatelessWidget {
     );
   }
 
-  Widget _buildMobileCard(Map<String, String> item) {
+  Widget _buildMobileCard(BuildContext context, Map<String, String> item) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xffF3F4F6)),
+        border: Border.all(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -196,7 +198,7 @@ class CustomBilling extends StatelessWidget {
             children: [
               Text(
                 item["date"]!,
-                style: const TextStyle(fontSize: 12, color: Colors.grey),
+                style: TextStyle(fontSize: 12, color: Theme.of(context).textTheme.bodySmall?.color),
               ),
               _StatusBadge(status: item["status"]!),
             ],
@@ -209,7 +211,7 @@ class CustomBilling extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             "Client: ${item["client"]}",
-            style: const TextStyle(fontSize: 14, color: Color(0xff6B7280)),
+            style: TextStyle(fontSize: 14, color: Theme.of(context).textTheme.bodySmall?.color),
           ),
           const SizedBox(height: 12),
           Row(
@@ -217,10 +219,10 @@ class CustomBilling extends StatelessWidget {
             children: [
               Text(
                 item["amount"]!,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               IconButton(
@@ -244,9 +246,10 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 13,
         fontWeight: FontWeight.w600,
+        color: Theme.of(context).colorScheme.onSurface,
       ),
     );
   }
@@ -261,10 +264,16 @@ class _StatusBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final isPaid = status == "Paid";
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final paidBg = isDark ? const Color(0xff064E3B) : const Color(0xffD1FAE5);
+    final unpaidBg = isDark ? const Color(0xff450A0A) : const Color(0xffFEE2E2);
+    final paidText = isDark ? const Color(0xffD1FAE5) : const Color(0xff065F46);
+    final unpaidText = isDark ? const Color(0xffFEE2E2) : const Color(0xff991B1B);
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: isPaid ? const Color(0xffD1FAE5) : const Color(0xffFEE2E2),
+        color: isPaid ? paidBg : unpaidBg,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
@@ -273,8 +282,7 @@ class _StatusBadge extends StatelessWidget {
         style: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w600,
-          color:
-          isPaid ? const Color(0xff065F46) : const Color(0xff991B1B),
+          color: isPaid ? paidText : unpaidText,
         ),
       ),
     );

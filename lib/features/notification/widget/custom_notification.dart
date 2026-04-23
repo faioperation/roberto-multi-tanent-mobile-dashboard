@@ -26,10 +26,10 @@ class CustomNotification extends StatelessWidget {
       padding: EdgeInsets.all(isMobile ? 10 : 12),
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: AppColor.white,
+        color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: Colors.grey.shade200,
+          color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE),
           width: 1,
         ),
       ),
@@ -56,7 +56,7 @@ class CustomNotification extends StatelessWidget {
                         style: TextStyle(
                           fontSize: isMobile ? 14 : 16,
                           fontWeight: FontWeight.w600,
-                          color: const Color(0xff111827),
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
                     ),
@@ -80,7 +80,7 @@ class CustomNotification extends StatelessWidget {
                   subtitle,
                   style: TextStyle(
                     fontSize: isMobile ? 12 : 13,
-                    color: AppColor.grey,
+                    color: Theme.of(context).textTheme.bodyMedium?.color,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -88,7 +88,7 @@ class CustomNotification extends StatelessWidget {
                   time,
                   style: TextStyle(
                     fontSize: isMobile ? 11 : 12,
-                    color: AppColor.grey,
+                    color: Theme.of(context).textTheme.bodyMedium?.color,
                   ),
                 ),
               ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:roberto/app/app_color.dart';
+import 'package:roberto/app/theme_controller.dart';
 import 'package:roberto/features/Settings/widget/custom_profile.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -13,7 +14,6 @@ class SettingScreen extends StatefulWidget {
 class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
-    bool isDesktop = MediaQuery.of(context).size.width > 900;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
@@ -21,18 +21,18 @@ class _SettingScreenState extends State<SettingScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // HEADER
-          const Text(
+          Text(
             'Settings',
             style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,
-              color: Color(0xff111827),
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
           const SizedBox(height: 6),
-          const Text(
+          Text(
             'Manage your system preferences and configurations',
-            style: TextStyle(fontSize: 15, color: Colors.grey),
+            style: TextStyle(fontSize: 15, color: Theme.of(context).textTheme.bodyMedium?.color),
           ),
 
           const SizedBox(height: 24),
@@ -42,9 +42,9 @@ class _SettingScreenState extends State<SettingScreen> {
             width: double.infinity,
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).cardTheme.color,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.grey.shade300),
+              border: Border.all(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,7 +103,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           Text(
                             "JPG, PNG or GIF. Max size 2MB.",
                             style: TextStyle(
-                              color: Colors.grey.shade600,
+                              color: Theme.of(context).textTheme.bodySmall?.color,
                               fontSize: 12,
                             ),
                           ),
@@ -114,7 +114,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 ),
 
                 const SizedBox(height: 20),
-                Divider(color: Colors.grey.shade300),
+                Divider(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE)),
                 const SizedBox(height: 20),
 
                 // Form
@@ -177,10 +177,50 @@ class _SettingScreenState extends State<SettingScreen> {
                         backgroundColor: AppColor.primary,
                       ),
                       onPressed: () {},
-                      child: const Text("Save",
-                        style: TextStyle(color: AppColor.white, fontSize: 14),),
+                      child: Text("Save",
+                        style: TextStyle(color: Colors.white, fontSize: 14),),
                     ),
                   ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 24),
+
+          // SYSTEM PREFERENCES CARD
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardTheme.color,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Theme.of(context).dividerTheme.color ?? Colors.grey.shade300),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "System Preferences",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                ListenableBuilder(
+                  listenable: themeController,
+                  builder: (context, _) {
+                    return SwitchListTile(
+                      title: const Text("Dark Mode"),
+                      subtitle: const Text("Switch between light and dark system themes"),
+                      value: themeController.isDarkMode,
+                      activeThumbColor: AppColor.primary,
+                      onChanged: (value) {
+                        themeController.toggleTheme();
+                      },
+                    );
+                  },
                 ),
               ],
             ),

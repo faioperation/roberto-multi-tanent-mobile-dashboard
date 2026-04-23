@@ -19,9 +19,9 @@ class CustomStatCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xffE5E7EB)),
+        border: Border.all(color: Theme.of(context).dividerTheme.color ?? const Color(0xffE5E7EB)),
       ),
       child: Row(
         children: [
@@ -31,19 +31,19 @@ class CustomStatCard extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 15,
-                    color: Color(0xff6B7280),
+                    color: Theme.of(context).textTheme.bodyMedium?.color,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   value,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xff111827),
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
               ],

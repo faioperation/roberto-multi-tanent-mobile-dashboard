@@ -13,10 +13,10 @@ class NotificationScreen extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.all(isMobile ? 12 : 16),
       decoration: BoxDecoration(
-        color: const Color(0xffFAFAFA),
+        color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: const Color(0xffD2D2D2),
+          color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE),
           width: 1,
         ),
       ),
@@ -28,7 +28,7 @@ class NotificationScreen extends StatelessWidget {
             style: TextStyle(
               fontSize: isMobile ? 16 : 18,
               fontWeight: FontWeight.bold,
-              color: AppColor.black,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
           const SizedBox(height: 4),
@@ -36,7 +36,7 @@ class NotificationScreen extends StatelessWidget {
             '10 notifications',
             style: TextStyle(
               fontSize: isMobile ? 13 : 15,
-              color: Colors.grey,
+              color: Theme.of(context).textTheme.bodySmall?.color,
             ),
           ),
           const SizedBox(height: 20),

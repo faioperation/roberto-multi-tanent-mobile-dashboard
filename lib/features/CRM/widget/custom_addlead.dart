@@ -17,7 +17,8 @@ class _CustomAddleadState extends State<CustomAddlead> {
     bool isDesktop = width > 900;
 
     return AlertDialog(
-      backgroundColor: AppColor.white,
+      backgroundColor: Theme.of(context).cardTheme.color,
+      surfaceTintColor: Colors.transparent,
 
       //  Responsive width
       contentPadding: EdgeInsets.symmetric(
@@ -55,7 +56,7 @@ class _CustomAddleadState extends State<CustomAddlead> {
             "Enter the lead details to add to your pipeline",
             style: TextStyle(
               fontSize: isDesktop ? 14 : 12,
-              color: Colors.grey,
+              color: Theme.of(context).textTheme.bodySmall?.color,
             ),
           ),
         ],
@@ -125,27 +126,29 @@ class _CustomAddleadState extends State<CustomAddlead> {
     return [
       ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColor.white,
+          backgroundColor: Theme.of(context).cardTheme.color,
+          side: BorderSide(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE)),
         ),
         onPressed: () {
           Navigator.pop(context);
         },
-        child: const Text(
+        child: Text(
           "Cancel",
-          style: TextStyle(color: AppColor.black),
+          style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
         ),
       ),
       const SizedBox(width: 10, height: 10),
       ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColor.primary,
+          foregroundColor: Colors.white,
         ),
         onPressed: () {
           Navigator.pop(context);
         },
         child: const Text(
           "Create",
-          style: TextStyle(color: AppColor.white),
+          style: TextStyle(fontWeight: FontWeight.w600),
         ),
       ),
       const SizedBox(height: 15),

@@ -10,14 +10,16 @@ class CustomCrm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isDesktop = MediaQuery.of(context).size.width > 900;
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColor.white,
+        color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade300),
+        border: Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,20 +32,21 @@ class CustomCrm extends StatelessWidget {
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text(
                           "Lead Pipeline",
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
+                            color: theme.colorScheme.onSurface,
                           ),
                         ),
-                        SizedBox(height: 6),
+                        const SizedBox(height: 6),
                         Text(
                           "Manage your leads efficiently",
                           style: TextStyle(
                             fontSize: 15,
-                            color: AppColor.grey,
+                            color: theme.textTheme.bodySmall?.color,
                           ),
                         ),
                       ],
@@ -61,7 +64,7 @@ class CustomCrm extends StatelessWidget {
                         const SizedBox(width: 10),
 
                         // Status Button
-                        _buildStatusButton(),
+                        _buildStatusButton(context),
                       ],
                     ),
                   ),
@@ -70,11 +73,12 @@ class CustomCrm extends StatelessWidget {
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     "Lead Pipeline",
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
+                      color: theme.colorScheme.onSurface,
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -82,7 +86,7 @@ class CustomCrm extends StatelessWidget {
                     children: [
                       Expanded(child: CustomSearch()),
                       const SizedBox(width: 10),
-                      _buildStatusButton(),
+                      _buildStatusButton(context),
                     ],
                   ),
                 ],
@@ -91,9 +95,9 @@ class CustomCrm extends StatelessWidget {
 
           Container(
             decoration: BoxDecoration(
-              color: AppColor.white,
+              color: theme.cardTheme.color,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: const Color(0xffE5E7EB)),
+              border: Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
@@ -105,7 +109,7 @@ class CustomCrm extends StatelessWidget {
                         horizontal: 20,
                         vertical: 14,
                       ),
-                      color: AppColor.secondary,
+                      color: Theme.of(context).brightness == Brightness.dark ? theme.colorScheme.surface : theme.colorScheme.secondary,
                       child: Row(
                         children: const [
                           Expanded(
@@ -188,7 +192,8 @@ class CustomCrm extends StatelessWidget {
     );
   }
 
-  Widget _buildStatusButton() {
+  Widget _buildStatusButton(BuildContext context) {
+    final theme = Theme.of(context);
     return InkWell(
       onTap: () {
         print("Status clicked");
@@ -199,24 +204,25 @@ class CustomCrm extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.grey.shade300),
+          border: Border.all(color: theme.dividerTheme.color ?? Colors.grey.shade300),
         ),
-        child: const Row(
+        child: Row(
           children: [
             Icon(
               Icons.filter_list,
               size: 18,
-              color: Colors.grey,
+              color: theme.textTheme.bodySmall?.color,
             ),
-            SizedBox(width: 6),
+            const SizedBox(width: 6),
             Text(
               "All Status",
-              style: TextStyle(fontSize: 13),
+              style: TextStyle(fontSize: 13, color: theme.colorScheme.onSurface),
             ),
-            SizedBox(width: 6),
+            const SizedBox(width: 6),
             Icon(
               Icons.keyboard_arrow_down,
               size: 18,
+              color: theme.colorScheme.onSurface,
             ),
           ],
         ),

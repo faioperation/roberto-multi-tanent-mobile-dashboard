@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:roberto/app/app_color.dart';
+import 'package:roberto/app/theme_controller.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:roberto/features/businesssetting/widget/custom_media.dart';
 
@@ -28,7 +29,7 @@ class _BusinessownerSettingsState extends State<BusinessownerSettings> {
                 style: TextStyle(
                   fontSize: isMobile ? 22 : 28,
                   fontWeight: FontWeight.bold,
-                  color: const Color(0xff111827),
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 6),
@@ -36,7 +37,7 @@ class _BusinessownerSettingsState extends State<BusinessownerSettings> {
                 'Manage your system preferences and configurations',
                 style: TextStyle(
                   fontSize: isMobile ? 13 : 15,
-                  color: Colors.grey,
+                  color: Theme.of(context).textTheme.bodyMedium?.color,
                 ),
               ),
             ],
@@ -47,9 +48,9 @@ class _BusinessownerSettingsState extends State<BusinessownerSettings> {
             width: double.infinity,
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AppColor.white,
+              color: Theme.of(context).cardTheme.color,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.grey.shade300),
+              border: Border.all(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE)),
             ),
             child: Row(
               children: [
@@ -65,12 +66,13 @@ class _BusinessownerSettingsState extends State<BusinessownerSettings> {
                             height: 44,
                             width: 44,
                           ),
-                          const Text(
+                          SizedBox(width: 15,),
+                          Text(
                             "Social Media Connections",
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
-                              color: AppColor.black,
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
                           ),
                         ],
@@ -78,12 +80,12 @@ class _BusinessownerSettingsState extends State<BusinessownerSettings> {
 
                       const SizedBox(height: 10),
 
-                      const Text(
+                      Text(
                         "Connect your social media accounts to manage all conversations in one place",
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
-                          color: AppColor.grey,
+                          color: Theme.of(context).textTheme.bodyMedium?.color,
                         ),
                       ),
 
@@ -118,6 +120,46 @@ class _BusinessownerSettingsState extends State<BusinessownerSettings> {
 
                     ],
                   ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 24),
+
+          // SYSTEM PREFERENCES CARD
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardTheme.color,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "System Preferences",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                ListenableBuilder(
+                  listenable: themeController,
+                  builder: (context, _) {
+                    return SwitchListTile(
+                      title: const Text("Dark Mode"),
+                      subtitle: const Text("Switch between light and dark system themes"),
+                      value: themeController.isDarkMode,
+                      activeThumbColor: AppColor.primary,
+                      onChanged: (value) {
+                        themeController.toggleTheme();
+                      },
+                    );
+                  },
                 ),
               ],
             ),

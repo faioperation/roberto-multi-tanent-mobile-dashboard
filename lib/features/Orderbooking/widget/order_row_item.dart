@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:roberto/features/Orderbooking/widget/custom_order.dart';
 import 'package:roberto/features/Orderbooking/widget/order_mod.dart';
 
 class OrderRowItem extends StatelessWidget {
-  final OrderModel order;
+  final OrderMod order;
   final VoidCallback onViewDetails;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
@@ -21,10 +20,10 @@ class OrderRowItem extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardTheme.color,
         border: Border(
           bottom: BorderSide(
-            color: Colors.grey.shade300,
+            color: Theme.of(context).dividerTheme.color ?? Colors.grey.shade300,
             width: 1,
           ),
         ),
@@ -36,9 +35,9 @@ class OrderRowItem extends StatelessWidget {
             flex: 2,
             child: Text(
               order.orderId,
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.w600,
-                color: Color(0xff111827),
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
           ),
@@ -67,16 +66,16 @@ class OrderRowItem extends StatelessWidget {
                     children: [
                       Text(
                         order.customerName,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontWeight: FontWeight.w500,
-                          color: Color(0xff111827),
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
                       Text(
                         order.phone,
                         style: TextStyle(
                           fontSize: 12,
-                          color: Colors.grey.shade600,
+                          color: Theme.of(context).textTheme.bodyMedium?.color,
                         ),
                       ),
                     ],
@@ -91,8 +90,8 @@ class OrderRowItem extends StatelessWidget {
             flex: 2,
             child: Text(
               order.address,
-              style: const TextStyle(
-                color: Color(0xff6B7280),
+              style: TextStyle(
+                color: Theme.of(context).textTheme.bodyMedium?.color,
               ),
             ),
           ),
@@ -108,8 +107,8 @@ class OrderRowItem extends StatelessWidget {
             flex: 2,
             child: Text(
               order.courier,
-              style: const TextStyle(
-                color: Color(0xff374151),
+              style: TextStyle(
+                color: Theme.of(context).textTheme.bodyLarge?.color,
               ),
             ),
           ),
@@ -119,9 +118,9 @@ class OrderRowItem extends StatelessWidget {
             flex: 2,
             child: Text(
               '\$${order.shippingCharge.toStringAsFixed(2)}',
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.w500,
-                color: Color(0xff111827),
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
           ),
@@ -131,8 +130,8 @@ class OrderRowItem extends StatelessWidget {
             flex: 2,
             child: Text(
               order.deliveryTime,
-              style: const TextStyle(
-                color: Color(0xff6B7280),
+              style: TextStyle(
+                color: Theme.of(context).textTheme.bodyMedium?.color,
               ),
             ),
           ),

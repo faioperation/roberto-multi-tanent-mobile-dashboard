@@ -17,19 +17,19 @@ class CustomBuilditem extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 13,
-            color: Color(0xff6B7280),
+            color: Theme.of(context).textTheme.bodyMedium?.color,
             fontWeight: FontWeight.w500,
           ),
         ),
         const SizedBox(height: 4),
         Text(
           value,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.w500,
-            color: Color(0xff111827),
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
       ],

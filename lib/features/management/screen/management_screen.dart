@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:roberto/app/app_color.dart';
 import 'package:roberto/features/management/widget/custom_addbranch.dart';
+import 'package:roberto/features/management/widget/custom_adduser.dart';
 import 'package:roberto/features/management/widget/custom_usermanagement.dart';
 import 'package:roberto/features/management/widget/custom_branchmanagement.dart';
 
@@ -26,7 +27,7 @@ class _ManagementScreenState extends State<ManagementScreen> {
         children: [
           _buildHeader(context, isMobile),
           const SizedBox(height: 25),
-          _buildToggleTabs(isMobile),
+          _buildToggleTabs(context, isMobile),
           const SizedBox(height: 25),
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 250),
@@ -45,23 +46,24 @@ class _ManagementScreenState extends State<ManagementScreen> {
   }
 
   Widget _buildHeader(BuildContext context, bool isMobile) {
+    final theme = Theme.of(context);
     final titleBlock = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Branch Management',
+          _selectedTab == 0 ? 'Branch Management' : 'User Management',
           style: TextStyle(
             fontSize: isMobile ? 22 : 28,
             fontWeight: FontWeight.bold,
-            color: const Color(0xff111827),
+            color: theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 6),
         Text(
-          'Manage your business locations and branches',
+          _selectedTab == 0 ? 'Manage your business locations and branches' : 'Manage your business users and permissions',
           style: TextStyle(
             fontSize: isMobile ? 13 : 15,
-            color: AppColor.grey,
+            color: theme.textTheme.bodySmall?.color,
           ),
         ),
       ],
@@ -71,7 +73,7 @@ class _ManagementScreenState extends State<ManagementScreen> {
       onTap: () {
         showDialog(
           context: context,
-          builder: (context) => const CustomAddbranch(),
+          builder: (context) => _selectedTab == 0 ? const CustomAddbranch() : const CustomAdduser(),
         );
       },
       borderRadius: BorderRadius.circular(12),
@@ -87,7 +89,7 @@ class _ManagementScreenState extends State<ManagementScreen> {
             Icon(Icons.add, color: Colors.white, size: isMobile ? 16 : 18),
             const SizedBox(width: 6),
             Text(
-              "Add Branch",
+              _selectedTab == 0 ? "Add Branch" : "Add User",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: isMobile ? 13 : 14,
@@ -110,31 +112,36 @@ class _ManagementScreenState extends State<ManagementScreen> {
     );
   }
 
-  Widget _buildToggleTabs(bool isMobile) {
+  Widget _buildToggleTabs(BuildContext context, bool isMobile) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Container(
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: const Color(0xffF3F4F6),
+          color: isDark ? theme.colorScheme.surface : theme.colorScheme.secondary,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _buildTab(index: 0, label: 'Branch Management'),
-            _buildTab(index: 1, label: 'User Management'),
+            _buildTab(context, index: 0, label: 'Branch Management'),
+            _buildTab(context, index: 1, label: 'User Management'),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildTab({
+  Widget _buildTab(BuildContext context, {
     required int index,
     required String label,
   }) {
+    final theme = Theme.of(context);
     final isActive = _selectedTab == index;
+    final isDark = theme.brightness == Brightness.dark;
 
     return GestureDetector(
       onTap: () => setState(() => _selectedTab = index),
@@ -142,12 +149,14 @@ class _ManagementScreenState extends State<ManagementScreen> {
         duration: const Duration(milliseconds: 100),
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         decoration: BoxDecoration(
-          color: isActive ? Colors.white : Colors.transparent,
+          color: isActive 
+            ? (isDark ? theme.colorScheme.secondary : Colors.white) 
+            : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
-          boxShadow: isActive
+          boxShadow: isActive && !isDark
               ? [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.08),
+                    color: Colors.black.withValues(alpha: 0.08),
                     blurRadius: 4,
                     offset: const Offset(0, 2),
                   ),
@@ -160,7 +169,9 @@ class _ManagementScreenState extends State<ManagementScreen> {
             style: TextStyle(
               fontSize: 14,
               fontWeight: isActive ? FontWeight.w500 : FontWeight.w400,
-              color: isActive ? const Color(0xff111827) : Colors.grey,
+              color: isActive 
+                ? (isDark ? theme.colorScheme.onSecondary : theme.colorScheme.onSurface) 
+                : theme.textTheme.bodySmall?.color,
             ),
           ),
         ),

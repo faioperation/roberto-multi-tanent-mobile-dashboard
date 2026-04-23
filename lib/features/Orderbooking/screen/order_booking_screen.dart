@@ -120,6 +120,9 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
   //BUILD
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final isMobile = constraints.maxWidth < _kDesktop;
@@ -128,16 +131,16 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildHeader(isMobile),
+              _buildHeader(isMobile, theme, isDark),
               SizedBox(height: isMobile ? 16 : 24),
               _buildStatCards(isMobile),
               SizedBox(height: isMobile ? 14 : 20),
               if (selectedIndex == 0) ...[
-                _buildFilterBar(isMobile),
+                _buildFilterBar(isMobile, theme, isDark),
                 SizedBox(height: isMobile ? 12 : 16),
-                isMobile ? _buildMobileCards() : _buildDesktopTable(),
+                isMobile ? _buildMobileCards(theme, isDark) : _buildDesktopTable(theme, isDark),
               ] else
-                _buildCalendarContent(isMobile),
+                _buildCalendarContent(isMobile, theme, isDark),
             ],
           ),
         );
@@ -146,7 +149,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
   }
 
   // HEADER
-  Widget _buildHeader(bool isMobile) {
+  Widget _buildHeader(bool isMobile, ThemeData theme, bool isDark) {
     final titleCol = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -155,7 +158,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
           style: TextStyle(
             fontSize: isMobile ? 20 : 26,
             fontWeight: FontWeight.bold,
-            color: const Color(0xff111827),
+            color: theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 4),
@@ -163,7 +166,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
           'Track and manage all customer orders',
           style: TextStyle(
             fontSize: isMobile ? 12 : 14,
-            color: const Color(0xff6B7280),
+            color: theme.textTheme.bodySmall?.color,
           ),
         ),
       ],
@@ -176,17 +179,18 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
         Container(
           padding: const EdgeInsets.all(3),
           decoration: BoxDecoration(
-            color: Colors.grey.shade200,
+            color: isDark ? theme.colorScheme.surface : Colors.grey.shade200,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               _buildToggleTab(
-                  label: isMobile ? 'Table' : 'Table View', index: 0),
+                  label: isMobile ? 'Table' : 'Table View', index: 0, theme: theme),
               _buildToggleTab(
                   label: isMobile ? 'Calendar' : 'Calendar View',
                   index: 1,
+                  theme: theme,
                   icon: Icons.calendar_today),
             ],
           ),
@@ -293,27 +297,27 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
   }
 
   //FILTER BAR
-  Widget _buildFilterBar(bool isMobile) {
+  Widget _buildFilterBar(bool isMobile, ThemeData theme, bool isDark) {
     final searchField = Container(
       height: 40,
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDark ? theme.colorScheme.surface : Colors.white,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: const Color(0xffE5E7EB)),
+        border: Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
       ),
       child: Row(
         children: [
-          Icon(Icons.search, size: 18, color: Colors.grey.shade400),
+          Icon(Icons.search, size: 18, color: theme.textTheme.bodySmall?.color),
           const SizedBox(width: 8),
           Expanded(
             child: TextField(
               onChanged: (v) => setState(() => _searchQuery = v),
-              style: const TextStyle(fontSize: 14),
+              style: TextStyle(fontSize: 14, color: theme.colorScheme.onSurface),
               decoration: InputDecoration(
                 hintText: 'Search orders...',
                 hintStyle:
-                    TextStyle(fontSize: 14, color: Colors.grey.shade400),
+                    TextStyle(fontSize: 14, color: theme.textTheme.bodySmall?.color),
                 border: InputBorder.none,
                 isDense: true,
               ),
@@ -325,12 +329,16 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
 
     final statusDrop = _buildFilterDropdown(
       value: _selectedStatus,
+      theme: theme,
+      isDark: isDark,
       items: ['All status', 'Pending', 'Confirmed', 'Delivered'],
       onChanged: (v) => setState(() => _selectedStatus = v ?? 'All status'),
     );
 
     final timeDrop = _buildFilterDropdown(
       value: _selectedTime,
+      theme: theme,
+      isDark: isDark,
       items: ['All time', 'Today', 'This week', 'This month'],
       onChanged: (v) => setState(() => _selectedTime = v ?? 'All time'),
     );
@@ -367,21 +375,21 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
     return Container(
       padding: EdgeInsets.all(isMobile ? 12 : 16),
       decoration: BoxDecoration(
-        color: const Color(0xffF9FAFB),
+        color: isDark ? theme.colorScheme.surface.withOpacity(0.5) : const Color(0xffF9FAFB),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xffE5E7EB)),
+        border: Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
       ),
       child: content,
     );
   }
 
   //DESKTOP TABLE
-  Widget _buildDesktopTable() {
+  Widget _buildDesktopTable(ThemeData theme, bool isDark) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColor.white,
+        color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xffE5E7EB)),
+        border: Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
@@ -419,20 +427,20 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
                 ),
               )
             else
-              ..._filteredOrders.map((order) => _buildDesktopRow(order)),
+              ..._filteredOrders.map((order) => _buildDesktopRow(order, theme, isDark)),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildDesktopRow(OrderMod order) {
+  Widget _buildDesktopRow(OrderMod order, ThemeData theme, bool isDark) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardTheme.color,
         border: Border(
-            bottom: BorderSide(color: Colors.grey.shade200, width: 1)),
+            bottom: BorderSide(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE), width: 1)),
       ),
       child: Row(
         children: [
@@ -448,7 +456,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
           // Customer
           Expanded(
             flex: 3,
-            child: _buildCustomerCell(order),
+            child: _buildCustomerCell(order, theme),
           ),
           // Address
           Expanded(
@@ -503,34 +511,34 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
   }
 
   // ─── MOBILE CARDS ────────────────────────────────────────────────────
-  Widget _buildMobileCards() {
+  Widget _buildMobileCards(ThemeData theme, bool isDark) {
     if (_filteredOrders.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.all(40),
+      return Padding(
+        padding: const EdgeInsets.all(40),
         child: Center(
           child: Text('No orders found',
-              style: TextStyle(color: Color(0xff6B7280), fontSize: 14)),
+              style: TextStyle(color: theme.textTheme.bodySmall?.color ?? const Color(0xff6B7280), fontSize: 14)),
         ),
       );
     }
 
     return Column(
       children:
-          _filteredOrders.map((order) => _buildMobileCard(order)).toList(),
+          _filteredOrders.map((order) => _buildMobileCard(order, theme, isDark)).toList(),
     );
   }
 
-  Widget _buildMobileCard(OrderMod order) {
+  Widget _buildMobileCard(OrderMod order, ThemeData theme, bool isDark) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xffE5E7EB)),
+        border: Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
         boxShadow: [
           BoxShadow(
-              color: Colors.black.withOpacity(0.04),
+              color: Colors.black.withOpacity(isDark ? 0.2 : 0.04),
               blurRadius: 8,
               offset: const Offset(0, 2))
         ],
@@ -544,9 +552,9 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
             children: [
               Text(
                 order.orderId,
-                style: const TextStyle(
+                style: TextStyle(
                     fontWeight: FontWeight.w700,
-                    color: Color(0xff111827),
+                    color: theme.colorScheme.onSurface,
                     fontSize: 14),
               ),
               _buildStatusBadge(order.status),
@@ -575,13 +583,13 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(order.customerName,
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontWeight: FontWeight.w600,
-                          color: Color(0xff111827),
+                          color: theme.colorScheme.onSurface,
                           fontSize: 13)),
                   Text(order.phone,
                       style: TextStyle(
-                          fontSize: 11, color: Colors.grey.shade500)),
+                          fontSize: 11, color: theme.textTheme.bodySmall?.color)),
                 ],
               ),
             ],
@@ -592,13 +600,14 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
           const SizedBox(height: 12),
 
           // ── Details grid ──
-          Row(
+           Row(
             children: [
               Expanded(
                 child: _buildCardDetail(
                   icon: Icons.location_on_outlined,
                   label: 'Address',
                   value: order.address,
+                  theme: theme,
                 ),
               ),
               Expanded(
@@ -606,6 +615,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
                   icon: Icons.local_shipping_outlined,
                   label: 'Courier',
                   value: order.courier,
+                  theme: theme,
                 ),
               ),
             ],
@@ -618,6 +628,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
                   icon: Icons.attach_money,
                   label: 'Shipping',
                   value: '\$${order.shippingCharge.toStringAsFixed(2)}',
+                  theme: theme,
                 ),
               ),
               Expanded(
@@ -625,6 +636,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
                   icon: Icons.access_time,
                   label: 'Delivery',
                   value: order.deliveryTime,
+                  theme: theme,
                 ),
               ),
             ],
@@ -646,15 +658,14 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
                     );
                   },
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: const Color(0xff374151),
-                    side: BorderSide(color: Colors.grey.shade300),
+                    foregroundColor: theme.colorScheme.onSurface,
+                    side: BorderSide(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8)),
                   ),
                   icon: const Icon(Icons.visibility_outlined, size: 15),
                   label: const Text('View Details', style: TextStyle(fontSize: 12)),
-
                 ),
               ),
               const SizedBox(width: 8),
@@ -677,23 +688,24 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
   Widget _buildCardDetail(
       {required IconData icon,
       required String label,
-      required String value}) {
+      required String value,
+      required ThemeData theme}) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, size: 14, color: Colors.grey.shade400),
+        Icon(icon, size: 14, color: theme.textTheme.bodySmall?.color),
         const SizedBox(width: 6),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(label,
-                  style: TextStyle(fontSize: 10, color: Colors.grey.shade500)),
+                  style: TextStyle(fontSize: 10, color: theme.textTheme.bodySmall?.color)),
               Text(value,
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
-                      color: Color(0xff374151)),
+                      color: theme.colorScheme.onSurface),
                   overflow: TextOverflow.ellipsis),
             ],
           ),
@@ -722,7 +734,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
 
   // ─── SHARED WIDGETS ──────────────────────────────────────────────────
 
-  Widget _buildCustomerCell(OrderMod order) {
+  Widget _buildCustomerCell(OrderMod order, ThemeData theme) {
     return Row(
       children: [
         CircleAvatar(
@@ -740,13 +752,13 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(order.customerName,
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontWeight: FontWeight.w500,
-                      color: Color(0xff111827),
+                      color: theme.colorScheme.onSurface,
                       fontSize: 13)),
               Text(order.phone,
                   style: TextStyle(
-                      fontSize: 11, color: Colors.grey.shade500)),
+                      fontSize: 11, color: theme.textTheme.bodySmall?.color)),
             ],
           ),
         ),
@@ -764,9 +776,9 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
               builder: (context) => CustomViewdetails(order: order),
             );
           },
-          child: const Text('View Details',
+          child: Text('View Details',
               style: TextStyle(
-                  color: Color(0xff374151),
+                  color: Theme.of(context).colorScheme.onSurface,
                   fontWeight: FontWeight.w500,
                   fontSize: 13)),
         ),
@@ -777,7 +789,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
           child: Padding(
             padding: const EdgeInsets.all(4),
             child: Icon(Icons.edit_outlined,
-                size: 16, color: Colors.grey.shade600),
+                size: 16, color: Theme.of(context).iconTheme.color),
           ),
         ),
         const SizedBox(width: 4),
@@ -787,7 +799,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
           child: Padding(
             padding: const EdgeInsets.all(4),
             child: Icon(Icons.delete_outline,
-                size: 16, color: Colors.grey.shade600),
+                size: 16, color: Theme.of(context).iconTheme.color),
           ),
         ),
       ],
@@ -795,7 +807,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
   }
 
   Widget _buildToggleTab(
-      {required String label, required int index, IconData? icon}) {
+      {required String label, required int index, required ThemeData theme, IconData? icon}) {
     final isSelected = selectedIndex == index;
     return GestureDetector(
       onTap: () => setState(() => selectedIndex = index),
@@ -812,12 +824,12 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
             if (icon != null) ...[
               Icon(icon,
                   size: 13,
-                  color: isSelected ? Colors.white : Colors.black87),
+                  color: isSelected ? Colors.white : theme.colorScheme.onSurface),
               const SizedBox(width: 5),
             ],
             Text(label,
                 style: TextStyle(
-                    color: isSelected ? Colors.white : Colors.black87,
+                    color: isSelected ? Colors.white : theme.colorScheme.onSurface,
                     fontWeight: FontWeight.w500,
                     fontSize: 12)),
           ],
@@ -829,28 +841,31 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
   Widget _buildFilterDropdown({
     required String value,
     required List<String> items,
+    required ThemeData theme,
+    required bool isDark,
     required ValueChanged<String?> onChanged,
   }) {
     return Container(
       height: 40,
       padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDark ? theme.colorScheme.surface : Colors.white,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: const Color(0xffE5E7EB)),
+        border: Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           value: value,
+          dropdownColor: theme.cardTheme.color,
           items: items
               .map((item) => DropdownMenuItem(
                     value: item,
-                    child: Text(item, style: const TextStyle(fontSize: 13)),
+                    child: Text(item, style: TextStyle(fontSize: 13, color: theme.colorScheme.onSurface)),
                   ))
               .toList(),
           onChanged: onChanged,
-          icon: const Icon(Icons.keyboard_arrow_down, size: 18),
-          style: const TextStyle(fontSize: 13, color: Color(0xff374151)),
+          icon: Icon(Icons.keyboard_arrow_down, size: 18, color: theme.textTheme.bodySmall?.color),
+          style: TextStyle(fontSize: 13, color: theme.colorScheme.onSurface),
         ),
       ),
     );
@@ -900,13 +915,13 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
   }
 
   // ─── CALENDAR VIEW ──────────────────────────────────────────────────
-  Widget _buildCalendarContent(bool isMobile) {
+  Widget _buildCalendarContent(bool isMobile, ThemeData theme, bool isDark) {
     if (isMobile) {
       return Column(
         children: [
-          _buildCalendarPane(),
+          _buildCalendarPane(theme, isDark),
           const SizedBox(height: 16),
-          _buildCalendarSidebar(),
+          _buildCalendarSidebar(theme, isDark),
         ],
       );
     }
@@ -914,20 +929,20 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(flex: 7, child: _buildCalendarPane()),
+        Expanded(flex: 7, child: _buildCalendarPane(theme, isDark)),
         const SizedBox(width: 24),
-        Expanded(flex: 3, child: _buildCalendarSidebar()),
+        Expanded(flex: 3, child: _buildCalendarSidebar(theme, isDark)),
       ],
     );
   }
 
-  Widget _buildCalendarPane() {
+  Widget _buildCalendarPane(ThemeData theme, bool isDark) {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xffE5E7EB)),
+        border: Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -940,16 +955,16 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildCalendarTitle(),
+                        _buildCalendarTitle(theme),
                         const SizedBox(height: 16),
-                        _buildCalendarNav(),
+                        _buildCalendarNav(theme, isDark),
                       ],
                     )
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        _buildCalendarTitle(),
-                        _buildCalendarNav(),
+                        _buildCalendarTitle(theme),
+                        _buildCalendarNav(theme, isDark),
                       ],
                     );
             },
@@ -972,39 +987,39 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
             },
             headerVisible: false,
             daysOfWeekHeight: 40,
-            daysOfWeekStyle: const DaysOfWeekStyle(
+            daysOfWeekStyle: DaysOfWeekStyle(
               weekdayStyle:
-                  TextStyle(color: Color(0xff6B7280), fontSize: 13),
+                  TextStyle(color: theme.textTheme.bodySmall?.color ?? const Color(0xff6B7280), fontSize: 13),
               weekendStyle:
-                  TextStyle(color: Color(0xff6B7280), fontSize: 13),
+                  TextStyle(color: theme.textTheme.bodySmall?.color ?? const Color(0xff6B7280), fontSize: 13),
             ),
             calendarStyle: CalendarStyle(
               outsideDaysVisible: false,
               cellMargin: const EdgeInsets.all(8),
-              defaultTextStyle: const TextStyle(
-                  fontWeight: FontWeight.w500, color: Color(0xff374151)),
-              weekendTextStyle: const TextStyle(
-                  fontWeight: FontWeight.w500, color: Color(0xff374151)),
+              defaultTextStyle: TextStyle(
+                  fontWeight: FontWeight.w500, color: theme.colorScheme.onSurface),
+              weekendTextStyle: TextStyle(
+                  fontWeight: FontWeight.w500, color: theme.colorScheme.onSurface),
               todayDecoration: const BoxDecoration(
                   color: Colors.transparent, shape: BoxShape.rectangle),
-              todayTextStyle: const TextStyle(
-                  fontWeight: FontWeight.w500, color: Color(0xff374151)),
+              todayTextStyle: TextStyle(
+                  fontWeight: FontWeight.w500, color: theme.colorScheme.primary),
               selectedDecoration: BoxDecoration(
-                color: const Color(0xffE2E8F0),
+                color: theme.colorScheme.primary.withOpacity(0.2),
                  borderRadius: BorderRadius.circular(12),
               ),
-              selectedTextStyle: const TextStyle(
-                  fontWeight: FontWeight.w600, color: Color(0xff1e293b)),
+              selectedTextStyle: TextStyle(
+                  fontWeight: FontWeight.w600, color: theme.colorScheme.primary),
             ),
             calendarBuilders: CalendarBuilders(
               defaultBuilder: (context, day, focusedDay) {
-                return _buildCalendarCell(day);
+                return _buildCalendarCell(day, theme, isDark);
               },
               selectedBuilder: (context, day, focusedDay) {
-                return _buildCalendarCell(day, isSelected: true);
+                return _buildCalendarCell(day, theme, isDark, isSelected: true);
               },
               todayBuilder: (context, day, focusedDay) {
-                return _buildCalendarCell(day, isToday: true);
+                return _buildCalendarCell(day, theme, isDark, isToday: true);
               },
             ),
           ),
@@ -1013,7 +1028,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
     );
   }
 
-  Widget _buildCalendarCell(DateTime day,
+  Widget _buildCalendarCell(DateTime day, ThemeData theme, bool isDark,
       {bool isSelected = false, bool isToday = false}) {
     // Mocking some events dynamically per day
     int eventCount = 0;
@@ -1036,11 +1051,11 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
       margin: const EdgeInsets.all(4),
       decoration: BoxDecoration(
         color: isSpecialBlue
-            ? const Color(0xff4F46E5)
+            ? AppColor.primary
             : hasEvent
-                ? const Color(0xffE0E7FF)
+                ? AppColor.primary.withOpacity(0.15)
                 : isSelected
-                    ? const Color(0xffF1F5F9)
+                    ? theme.dividerTheme.color ?? const Color(0xffEEEEEE)
                     : Colors.transparent,
         borderRadius: BorderRadius.circular(12),
       ),
@@ -1056,8 +1071,8 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
                 color: isSpecialBlue
                     ? Colors.white
                     : hasEvent
-                        ? const Color(0xff3730A3)
-                        : const Color(0xff374151),
+                        ? AppColor.primary
+                        : theme.colorScheme.onSurface,
                 fontSize: 14,
               ),
             ),
@@ -1068,8 +1083,8 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
               bottom: 6,
               child: Container(
                 padding: const EdgeInsets.all(4),
-                decoration: const BoxDecoration(
-                  color: Color(0xff4F46E5),
+                decoration: BoxDecoration(
+                  color: AppColor.primary,
                   shape: BoxShape.circle,
                 ),
                 child: Text(
@@ -1086,42 +1101,42 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
     );
   }
 
-  Widget _buildNavIcon(IconData icon, VoidCallback onTap) {
+  Widget _buildNavIcon(IconData icon, ThemeData theme, bool isDark, VoidCallback onTap) {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(8),
       child: Container(
         padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
-          color: const Color(0xffF9FAFB),
+          color: isDark ? theme.colorScheme.surface : const Color(0xffF9FAFB),
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: const Color(0xffE5E7EB)),
+          border: Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
         ),
-        child: Icon(icon, size: 16, color: const Color(0xff6B7280)),
+        child: Icon(icon, size: 16, color: theme.textTheme.bodyMedium?.color ?? const Color(0xff6B7280)),
       ),
     );
   }
 
-  Widget _buildCalendarTitle() {
-    return const Row(
+  Widget _buildCalendarTitle(ThemeData theme) {
+    return Row(
       children: [
         Icon(Icons.calendar_today_outlined,
-            size: 20, color: Color(0xff374151)),
-        SizedBox(width: 8),
+            size: 20, color: theme.colorScheme.onSurface),
+        const SizedBox(width: 8),
         Text("Order Booking",
             style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: Color(0xff111827))),
+                color: theme.colorScheme.onSurface)),
       ],
     );
   }
 
-  Widget _buildCalendarNav() {
+  Widget _buildCalendarNav(ThemeData theme, bool isDark) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        _buildNavIcon(Icons.chevron_left, () {
+        _buildNavIcon(Icons.chevron_left, theme, isDark, () {
           setState(() {
             _focusedDay = DateTime(
                 _focusedDay.year, _focusedDay.month - 1, _focusedDay.day);
@@ -1129,12 +1144,12 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
         }),
         const SizedBox(width: 16),
         Text(_getMonthYear(_focusedDay),
-            style: const TextStyle(
+            style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: Color(0xff111827))),
+                color: theme.colorScheme.onSurface)),
         const SizedBox(width: 16),
-        _buildNavIcon(Icons.chevron_right, () {
+        _buildNavIcon(Icons.chevron_right, theme, isDark, () {
           setState(() {
             _focusedDay = DateTime(
                 _focusedDay.year, _focusedDay.month + 1, _focusedDay.day);
@@ -1152,55 +1167,64 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
     return '${months[date.month - 1]} ${date.year}';
   }
 
-  Widget _buildCalendarSidebar() {
+  Widget _buildCalendarSidebar(ThemeData theme, bool isDark) {
     final dayStr = '${_getMonthYear(_selectedDay ?? DateTime.now()).split(' ')[0]} ${_selectedDay?.day ?? DateTime.now().day}';
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('Orders for $dayStr',
-            style: const TextStyle(
+            style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Color(0xff111827))),
+                color: theme.colorScheme.onSurface)),
         const SizedBox(height: 4),
-        const Text('2 deliverys scheduled',
-            style: TextStyle(fontSize: 13, color: Color(0xff6B7280))),
+        Text('2 deliverys scheduled',
+            style: TextStyle(fontSize: 13, color: theme.textTheme.bodySmall?.color ?? const Color(0xff6B7280))),
         const SizedBox(height: 16),
         // Mock Cards
         _buildSidebarOrderCard(
+            context: context,
             orderId: 'ORD-001',
             time: '10:00 AM',
             name: 'Sarah Johnson',
             status: OrderStatus.pending,
             items: 'Office Chair x2, Desk',
-            actionText: 'Mark as Confirmed'),
+            actionText: 'Mark as Confirmed',
+            theme: theme,
+            isDark: isDark),
         _buildSidebarOrderCard(
+            context: context,
             orderId: 'ORD-002',
             time: '10:00 AM',
             name: 'Sarah Johnson',
             status: OrderStatus.confirmed,
             items: 'Office Chair x2, Desk',
-            actionText: 'Mark as Delivered'),
+            actionText: 'Mark as Delivered',
+            theme: theme,
+            isDark: isDark),
       ],
     );
   }
 
   Widget _buildSidebarOrderCard({
+    required BuildContext context,
     required String orderId,
     required String time,
     required String name,
     required OrderStatus status,
     required String items,
     required String actionText,
+    required ThemeData theme,
+    required bool isDark,
   }) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xffE5E7EB)),
+        border: Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1212,13 +1236,13 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(orderId,
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xff111827),
+                          color: theme.colorScheme.onSurface,
                           fontSize: 14)),
                   Text(time,
-                      style: const TextStyle(
-                          fontSize: 12, color: Color(0xff6B7280))),
+                      style: TextStyle(
+                          fontSize: 12, color: theme.textTheme.bodySmall?.color ?? const Color(0xff6B7280))),
                 ],
               ),
               _buildStatusBadge(status),
@@ -1226,17 +1250,17 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
           ),
           const SizedBox(height: 16),
           Text(name,
-              style: const TextStyle(
+              style: TextStyle(
                   fontWeight: FontWeight.w600,
-                  color: Color(0xff111827),
+                  color: theme.colorScheme.onSurface,
                   fontSize: 13)),
           const SizedBox(height: 8),
           _buildSidebarItemRow(Icons.location_on_outlined,
-              '123 Main St, City to\n123 Main St, City'),
+              '123 Main St, City to\n123 Main St, City', theme),
           const SizedBox(height: 6),
-          _buildSidebarItemRow(Icons.phone_outlined, '+1 234 567 8901'),
+          _buildSidebarItemRow(Icons.phone_outlined, '+1 234 567 8901', theme),
           const SizedBox(height: 6),
-          _buildSidebarItemRow(Icons.inventory_2_outlined, items),
+          _buildSidebarItemRow(Icons.inventory_2_outlined, items, theme),
           const SizedBox(height: 16),
           SizedBox(
             width: double.infinity,
@@ -1308,16 +1332,16 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
     });
   }
 
-  Widget _buildSidebarItemRow(IconData icon, String text) {
+  Widget _buildSidebarItemRow(IconData icon, String text, ThemeData theme) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, size: 14, color: const Color(0xff9CA3AF)),
+        Icon(icon, size: 14, color: theme.textTheme.bodySmall?.color ?? const Color(0xff9CA3AF)),
         const SizedBox(width: 8),
         Expanded(
             child: Text(text,
-                style: const TextStyle(
-                    fontSize: 12, color: Color(0xff6B7280)))),
+                style: TextStyle(
+                    fontSize: 12, color: theme.textTheme.bodyMedium?.color ?? const Color(0xff6B7280)))),
       ],
     );
   }

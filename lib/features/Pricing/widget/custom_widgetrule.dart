@@ -27,6 +27,8 @@ class _CustomWidgetruleState extends State<CustomWidgetrule> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     final double width = MediaQuery.of(context).size.width;
     final bool isDesktop = width > 900;
 
@@ -36,11 +38,11 @@ class _CustomWidgetruleState extends State<CustomWidgetrule> {
         vertical: isDesktop ? 14 : 16,
       ),
       decoration: BoxDecoration(
-        color: AppColor.white,
+        color: theme.cardTheme.color,
         borderRadius: isDesktop ? null : BorderRadius.circular(12),
         border: isDesktop
-            ? Border(bottom: BorderSide(color: Colors.grey.shade200))
-            : Border.all(color: Colors.grey.shade200),
+            ? Border(bottom: BorderSide(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)))
+            : Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
       ),
       margin: isDesktop ? EdgeInsets.zero : const EdgeInsets.only(bottom: 12),
       child: isDesktop
@@ -51,9 +53,10 @@ class _CustomWidgetruleState extends State<CustomWidgetrule> {
             flex: 2,
             child: Text(
               widget.title,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
+                color: theme.colorScheme.onSurface,
               ),
             ),
           ),
@@ -67,15 +70,15 @@ class _CustomWidgetruleState extends State<CustomWidgetrule> {
                   padding: const EdgeInsets.symmetric(
                       vertical: 4, horizontal: 12),
                   decoration: BoxDecoration(
-                    color: const Color(0xffF3F4F6),
+                    color: isDark ? theme.colorScheme.surface : const Color(0xffF3F4F6),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
                     widget.badgeText,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 14,
-                      color: AppColor.black,
+                      color: theme.colorScheme.onSurface,
                     ),
                   ),
                 ),
@@ -88,9 +91,9 @@ class _CustomWidgetruleState extends State<CustomWidgetrule> {
             flex: 3,
             child: Text(
               widget.description,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14,
-                color: AppColor.black,
+                color: theme.colorScheme.onSurface,
               ),
             ),
           ),
@@ -109,7 +112,7 @@ class _CustomWidgetruleState extends State<CustomWidgetrule> {
                       isActive = value;
                     });
                   },
-                  activeColor: AppColor.greens,
+                  activeThumbColor: AppColor.greens,
                   materialTapTargetSize:
                   MaterialTapTargetSize.shrinkWrap,
                 ),
@@ -155,9 +158,10 @@ class _CustomWidgetruleState extends State<CustomWidgetrule> {
               Expanded(
                 child: Text(
                   widget.title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.onSurface,
                   ),
                 ),
               ),
@@ -170,7 +174,7 @@ class _CustomWidgetruleState extends State<CustomWidgetrule> {
                       isActive = value;
                     });
                   },
-                  activeColor: AppColor.greens,
+                  activeThumbColor: AppColor.greens,
                 ),
               ),
             ],
@@ -182,14 +186,14 @@ class _CustomWidgetruleState extends State<CustomWidgetrule> {
                 padding: const EdgeInsets.symmetric(
                     vertical: 4, horizontal: 10),
                 decoration: BoxDecoration(
-                  color: const Color(0xffF3F4F6),
+                  color: isDark ? theme.colorScheme.surface : const Color(0xffF3F4F6),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
                   widget.badgeText,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 11,
-                    color: AppColor.black,
+                    color: theme.colorScheme.onSurface,
                   ),
                 ),
               ),
@@ -197,9 +201,9 @@ class _CustomWidgetruleState extends State<CustomWidgetrule> {
               Expanded(
                 child: Text(
                   widget.description,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
-                    color: Colors.grey,
+                    color: theme.textTheme.bodyMedium?.color,
                   ),
                 ),
               ),

@@ -133,8 +133,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 String email = _emailController.text.trim();
                 String password = _passwordController.text.trim();
 
-                bool isBusinessOwner = email == "sadia@gmail.com" && password == "102030";
-                bool isSystemOwner = email == "salman@gmail.com" && password == "102030";
+                bool isBusinessOwner = email == "sadia@gmail.com" && password == "11";
+                bool isSystemOwner = email == "salman@gmail.com" && password == "11";
 
                 if (isBusinessOwner || isSystemOwner) {
                   Navigator.pushReplacement(

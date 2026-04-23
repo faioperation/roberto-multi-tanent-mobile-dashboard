@@ -4,6 +4,7 @@ import '../../../app/app_color.dart';
 
 class CustomTextfield extends StatefulWidget {
   final String? hintText;
+  final String? initialValue;
   final bool isPassword;
   final TextEditingController? controller;
   final Color textColor;
@@ -15,6 +16,7 @@ class CustomTextfield extends StatefulWidget {
   const CustomTextfield({
     super.key,
     this.hintText,
+    this.initialValue,
     this.isPassword = false,
     this.controller,
     this.textColor = Colors.black,
@@ -30,11 +32,26 @@ class CustomTextfield extends StatefulWidget {
 
 class _CustomTextfieldState extends State<CustomTextfield> {
   bool _obscureText = true;
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = widget.controller ?? TextEditingController(text: widget.initialValue);
+  }
+
+  @override
+  void dispose() {
+    if (widget.controller == null) {
+      _controller.dispose();
+    }
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: widget.controller,
+      controller: _controller,
       obscureText: widget.isPassword ? _obscureText : false,
       maxLines: widget.isPassword ? 1 : widget.maxLines,
       minLines: widget.minLines,
@@ -51,7 +68,7 @@ class _CustomTextfieldState extends State<CustomTextfield> {
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         filled: true,
-        fillColor: AppColor.white,
+        fillColor: Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.surface : Colors.white,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(color: Colors.grey.shade300),

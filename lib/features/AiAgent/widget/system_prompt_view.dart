@@ -7,40 +7,41 @@ class SystemPromptView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.black12, width: 1),
+        border: Border.all(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE), width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Header Texts
-          const Text(
+          Text(
             'System Prompt',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
-              color: Color(0xff111827),
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
           const SizedBox(height: 6),
-          const Text(
+          Text(
             'Define how your AI agent should behave and respond to customers',
-            style: TextStyle(fontSize: 14, color: Colors.grey),
+            style: TextStyle(fontSize: 14, color: Theme.of(context).textTheme.bodyMedium?.color),
           ),
           const SizedBox(height: 24),
 
           // Content Box Title
-          const Text(
+          Text(
             'System Instructions',
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w500,
-              color: Color(0xff111827),
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
           const SizedBox(height: 8),
@@ -52,9 +53,9 @@ class SystemPromptView extends StatelessWidget {
           const SizedBox(height: 8),
 
           // Caption below textfield
-          const Text(
+          Text(
             "This prompt defines the AI's personality, knowledge, and behavior",
-            style: TextStyle(fontSize: 12, color: Colors.grey),
+            style: TextStyle(fontSize: 12, color: Theme.of(context).textTheme.bodyMedium?.color),
           ),
           const SizedBox(height: 24),
 
@@ -67,8 +68,8 @@ class SystemPromptView extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
             ),
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColor.primary, // Match the red color
-              foregroundColor: AppColor.white,
+              backgroundColor: theme.colorScheme.primary,
+              foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),

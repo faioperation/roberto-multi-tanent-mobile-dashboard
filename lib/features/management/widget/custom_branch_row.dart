@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:roberto/app/app_color.dart';
+import 'package:roberto/features/management/widget/custom_addbranch.dart';
 
 class CustomBranchRow extends StatefulWidget {
   final String slNo;
@@ -36,15 +36,17 @@ class _CustomBranchRowState extends State<CustomBranchRow> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
     if (widget.isMobile) {
-      return _buildMobileCard();
+      return _buildMobileCard(context);
     }
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: Colors.grey.shade200),
+          bottom: BorderSide(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
         ),
       ),
       child: Row(
@@ -52,14 +54,14 @@ class _CustomBranchRowState extends State<CustomBranchRow> {
           // SL No
           Expanded(
             flex: 1,
-            child: Text(widget.slNo, style: const TextStyle(fontSize: 13)),
+            child: Text(widget.slNo, style: TextStyle(fontSize: 13, color: theme.colorScheme.onSurface)),
           ),
 
           // Name
           Expanded(
             flex: 2,
             child: Text(widget.businessname,
-                style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 13)),
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 13, color: theme.colorScheme.onSurface)),
           ),
 
           // Location
@@ -67,13 +69,13 @@ class _CustomBranchRowState extends State<CustomBranchRow> {
             flex: 2,
             child: Row(
               children: [
-                const Icon(Icons.location_on, size: 14, color: AppColor.grey),
+                Icon(Icons.location_on, size: 14, color: theme.textTheme.bodySmall?.color),
                 const SizedBox(width: 4),
                 Expanded(
                   child: Text(
                     widget.location,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(color: Colors.grey, fontSize: 13),
+                    style: TextStyle(color: theme.textTheme.bodySmall?.color, fontSize: 13),
                   ),
                 ),
               ],
@@ -83,23 +85,39 @@ class _CustomBranchRowState extends State<CustomBranchRow> {
           // Contact
           Expanded(
             flex: 2,
-            child: Text(widget.name, style: const TextStyle(fontSize: 13)),
+            child: Text(widget.name, style: TextStyle(fontSize: 13, color: theme.colorScheme.onSurface)),
           ),
 
           // Status
           Expanded(
             flex: 2,
-            child: _buildStatusDropdown(),
+            child: Center(child: _buildStatusDropdown(context)),
           ),
+          const SizedBox(width: 16),
 
           // Actions
           Expanded(
             flex: 1,
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _buildActionIcon(Icons.edit_outlined, Colors.blue, () {}),
+                _buildActionIcon(Icons.edit_outlined, Colors.blue, () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => CustomAddbranch(
+                      isEdit: true,
+                      branchName: widget.businessname,
+                      location: widget.location,
+                      address: "123 Street Name, Area", // Mock address or pass if available
+                      status: _currentStatus,
+                    ),
+                  );
+                }),
+                // const SizedBox(width: 8),
+                // _buildActionIcon(Icons.remove_red_eye_outlined,
+                //     theme.textTheme.bodySmall?.color ?? Colors.grey, () {}),
                 const SizedBox(width: 8),
-                _buildActionIcon(Icons.remove_red_eye_outlined, Colors.grey, () {}),
+                _buildActionIcon(Icons.delete_outline, Colors.red, () {}),
               ],
             ),
           ),
@@ -108,21 +126,24 @@ class _CustomBranchRowState extends State<CustomBranchRow> {
     );
   }
 
-  Widget _buildMobileCard() {
+  Widget _buildMobileCard(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade200),
-        boxShadow: [
+        border: Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
+        boxShadow: !isDark ? [
           BoxShadow(
-            color: Colors.black.withOpacity(0.02),
+            color: Colors.black.withValues(alpha: 0.02),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),
-        ],
+        ] : [],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,49 +153,63 @@ class _CustomBranchRowState extends State<CustomBranchRow> {
             children: [
               Text(
                 widget.slNo,
-                style: const TextStyle(
-                  color: Colors.grey,
+                style: TextStyle(
+                  color: theme.textTheme.bodySmall?.color,
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              _buildStatusDropdown(),
+              _buildStatusDropdown(context),
             ],
           ),
           const SizedBox(height: 12),
           Text(
             widget.businessname,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: Color(0xff111827),
+              color: theme.colorScheme.onSurface,
             ),
           ),
           const SizedBox(height: 8),
           Row(
             children: [
-              const Icon(Icons.location_on_outlined, size: 14, color: Colors.grey),
+              Icon(Icons.location_on_outlined, size: 14, color: theme.textTheme.bodySmall?.color),
               const SizedBox(width: 4),
-              Text(widget.location, style: const TextStyle(color: Colors.grey, fontSize: 13)),
+              Text(widget.location, style: TextStyle(color: theme.textTheme.bodySmall?.color, fontSize: 13)),
             ],
           ),
           const SizedBox(height: 8),
           Row(
             children: [
-              const Icon(Icons.person_outline, size: 14, color: Colors.grey),
+              Icon(Icons.person_outline, size: 14, color: theme.textTheme.bodySmall?.color),
               const SizedBox(width: 4),
-              Text(widget.name, style: const TextStyle(color: Colors.grey, fontSize: 13)),
+              Text(widget.name, style: TextStyle(color: theme.textTheme.bodySmall?.color, fontSize: 13)),
             ],
           ),
           const SizedBox(height: 16),
-          const Divider(height: 1),
+          Divider(height: 1, color: theme.dividerTheme.color),
           const SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              _buildActionIcon(Icons.edit_outlined, Colors.blue, () {}),
+              _buildActionIcon(Icons.edit_outlined, Colors.blue, () {
+                showDialog(
+                  context: context,
+                  builder: (context) => CustomAddbranch(
+                    isEdit: true,
+                    branchName: widget.businessname,
+                    location: widget.location,
+                    address: "123 Street Name, Area", // Mock address or pass if available
+                    status: _currentStatus,
+                  ),
+                );
+              }),
+              // const SizedBox(width: 12),
+              // _buildActionIcon(Icons.remove_red_eye_outlined,
+              //     theme.textTheme.bodySmall?.color ?? Colors.grey, () {}),
               const SizedBox(width: 12),
-              _buildActionIcon(Icons.remove_red_eye_outlined, Colors.grey, () {}),
+              _buildActionIcon(Icons.delete_outline, Colors.red, () {}),
             ],
           ),
         ],
@@ -182,29 +217,39 @@ class _CustomBranchRowState extends State<CustomBranchRow> {
     );
   }
 
-  Widget _buildStatusDropdown() {
+  Widget _buildStatusDropdown(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    
+    final activeBg = isDark ? const Color(0xFF1B5E20).withValues(alpha: 0.2) : const Color(0xFFE8F5E9);
+    final inactiveBg = isDark ? const Color(0xFFB71C1C).withValues(alpha: 0.2) : const Color(0xFFFFEBEE);
+    final activeColor = isDark ? const Color(0xFF81C784) : const Color(0xFF2E7D32);
+    final inactiveColor = isDark ? const Color(0xFFE57373) : const Color(0xFFC62828);
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-        color: _isActive ? const Color(0xFFE8F5E9) : const Color(0xFFFFEBEE),
-        borderRadius: BorderRadius.circular(20),
+        color: _isActive ? activeBg : inactiveBg,
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: _isActive ? const Color(0xFF4CAF50) : const Color(0xFFEF5350),
+          color: _isActive ? activeColor.withValues(alpha: 0.3) : inactiveColor.withValues(alpha: 0.3),
+          width: 1,
         ),
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
-          value: _currentStatus,
+          value: _currentStatus.toLowerCase(),
           isDense: true,
+          dropdownColor: theme.cardTheme.color,
           icon: Icon(
             Icons.keyboard_arrow_down,
             size: 14,
-            color: _isActive ? const Color(0xFF2E7D32) : const Color(0xFFC62828),
+            color: _isActive ? activeColor : inactiveColor,
           ),
           style: TextStyle(
             fontSize: 11,
             fontWeight: FontWeight.bold,
-            color: _isActive ? const Color(0xFF2E7D32) : const Color(0xFFC62828),
+            color: _isActive ? activeColor : inactiveColor,
           ),
           items: const [
             DropdownMenuItem(value: 'active', child: Text('Active')),
@@ -229,7 +274,7 @@ class _CustomBranchRowState extends State<CustomBranchRow> {
       child: Container(
         padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
+          color: color.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Icon(icon, size: 18, color: color),

@@ -31,13 +31,13 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     style: TextStyle(
                       fontSize: MediaQuery.of(context).size.width < 600 ? 24 : 28,
                       fontWeight: FontWeight.bold,
-                      color: const Color(0xff111827),
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   const SizedBox(height: 6),
-                  const Text(
+                  Text(
                     'Manage plans, billing, and subscriptions',
-                    style: TextStyle(fontSize: 15, color: Colors.grey),
+                    style: TextStyle(fontSize: 15, color: Theme.of(context).textTheme.bodyMedium?.color),
                   ),
                 ],
               ),

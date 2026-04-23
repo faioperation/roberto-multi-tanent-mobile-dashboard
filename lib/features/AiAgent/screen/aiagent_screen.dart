@@ -32,13 +32,13 @@ class _AiagentScreenState extends State<AiagentScreen> {
                     style: TextStyle(
                       fontSize: MediaQuery.of(context).size.width < 600 ? 24 : 28,
                       fontWeight: FontWeight.bold,
-                      color: const Color(0xff111827),
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   const SizedBox(height: 6),
-                  const Text(
+                  Text(
                     'Configure and train your AI assistant',
-                    style: TextStyle(fontSize: 15, color: Colors.grey),
+                    style: TextStyle(fontSize: 15, color: Theme.of(context).textTheme.bodyMedium?.color),
                   ),
                 ],
               ),
@@ -71,10 +71,12 @@ class _AiagentScreenState extends State<AiagentScreen> {
   }
 
   Widget _buildToggleTabs() {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: const Color(0xffF3F4F6),
+        color: isDark ? theme.colorScheme.surface : theme.colorScheme.secondary,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
@@ -100,6 +102,8 @@ class _AiagentScreenState extends State<AiagentScreen> {
     required String iconPath,
     required String label,
   }) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     final isActive = _selectedTab == index;
     return GestureDetector(
       onTap: () => setState(() => _selectedTab = index),
@@ -107,12 +111,12 @@ class _AiagentScreenState extends State<AiagentScreen> {
         duration: const Duration(milliseconds: 100),
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 13),
         decoration: BoxDecoration(
-          color: isActive ? Colors.white : Colors.transparent,
+          color: isActive ? theme.cardTheme.color : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
           boxShadow: isActive
               ? [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.08),
+                    color: theme.shadowColor.withOpacity(isDark ? 0.2 : 0.08),
                     blurRadius: 4,
                     offset: const Offset(0, 2),
                   ),
@@ -126,7 +130,7 @@ class _AiagentScreenState extends State<AiagentScreen> {
               iconPath,
               width: 16,
               height: 16,
-              color: isActive ? AppColor.black : Colors.grey,
+              color: isActive ? theme.colorScheme.primary : theme.textTheme.bodyMedium?.color,
             ),
             const SizedBox(width: 8),
             Text(
@@ -134,7 +138,7 @@ class _AiagentScreenState extends State<AiagentScreen> {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: isActive ? FontWeight.w500 : FontWeight.w400,
-                color: isActive ? const Color(0xff111827) : Colors.grey,
+                color: isActive ? theme.colorScheme.onSurface : theme.textTheme.bodyMedium?.color,
               ),
             ),
           ],

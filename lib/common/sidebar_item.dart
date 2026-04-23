@@ -35,7 +35,7 @@ class SidebarItem extends StatelessWidget {
               width: 20,
               height: 20,
               colorFilter: ColorFilter.mode(
-                isActive ? Colors.white : const Color(0xff6B7280),
+                isActive ? Colors.white : Theme.of(context).textTheme.bodyMedium?.color ?? const Color(0xff6B7280),
                 BlendMode.srcIn,
               ),
             ),
@@ -43,7 +43,7 @@ class SidebarItem extends StatelessWidget {
             Text(
               label,
               style: TextStyle(
-                color: isActive ? Colors.white : const Color(0xff374151),
+                color: isActive ? Colors.white : Theme.of(context).colorScheme.onSurface,
                 fontSize: 14,
                 fontWeight:
                     isActive ? FontWeight.w600 : FontWeight.w500,

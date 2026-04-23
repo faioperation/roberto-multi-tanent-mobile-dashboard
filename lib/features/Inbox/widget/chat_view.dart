@@ -78,14 +78,14 @@ class _ChatViewState extends State<ChatView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: Column(
         children: [
           //  Header
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-            decoration: const BoxDecoration(
-              border: Border(bottom: BorderSide(color: Color(0xffEEEEEE))),
+            decoration: BoxDecoration(
+              border: Border(bottom: BorderSide(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE))),
             ),
             child: Row(
               children: [
@@ -113,8 +113,8 @@ class _ChatViewState extends State<ChatView> {
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
+                    children: [
+                      const Text(
                         "Robarto",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -122,7 +122,7 @@ class _ChatViewState extends State<ChatView> {
                       ),
                       Text(
                         "Active now",
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                        style: TextStyle(fontSize: 12, color: Theme.of(context).textTheme.bodySmall?.color),
                       ),
                     ],
                   ),
@@ -169,14 +169,14 @@ class _ChatViewState extends State<ChatView> {
           // ✅ Input
           Container(
             padding: const EdgeInsets.all(12),
-            decoration: const BoxDecoration(
-              color: Color(0xffF3F4F6),
-              border: Border(top: BorderSide(color: Color(0xffE5E7EB))),
+            decoration: BoxDecoration(
+              color: Theme.of(context).brightness == Brightness.light ? const Color(0xffF3F4F6) : Theme.of(context).colorScheme.surface,
+              border: Border(top: BorderSide(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE))),
             ),
             child: Row(
               children: [
                 IconButton(
-                  icon: Icon(Icons.photo_library),
+                  icon: const Icon(Icons.photo_library),
                   onPressed: () async {
                     final ImagePicker picker = ImagePicker();
 
@@ -192,14 +192,11 @@ class _ChatViewState extends State<ChatView> {
                 ),
                 const SizedBox(width: 10),
 
-                const Icon(Icons.mic_none),
-                const SizedBox(width: 10),
-
                 Expanded(
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 14),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).cardTheme.color,
                       borderRadius: BorderRadius.circular(24),
                     ),
                     child: TextField(
@@ -243,14 +240,14 @@ class _ChatViewState extends State<ChatView> {
             const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             decoration: BoxDecoration(
               color: isMe
-                  ? const Color(0xffE22A28)
-                  : const Color(0xffF3F4F6),
+                  ? AppColor.primary
+                  : (Theme.of(context).brightness == Brightness.light ? const Color(0xffF3F4F6) : Theme.of(context).colorScheme.surface),
               borderRadius: BorderRadius.circular(14),
             ),
             child: Text(
               text,
               style: TextStyle(
-                color: isMe ? Colors.white : Colors.black,
+                color: isMe ? Colors.white : (Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white),
               ),
             ),
           ),

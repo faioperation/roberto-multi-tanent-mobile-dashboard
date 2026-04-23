@@ -18,7 +18,7 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).cardTheme.color,
       surfaceTintColor: Colors.transparent,
       insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
       child: ConstrainedBox(
@@ -38,12 +38,12 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           "Create New Order",
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black87,
+                            color: Theme.of(context).colorScheme.onSurface,
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -51,7 +51,7 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
                           "Create a new order for a customer",
                           style: TextStyle(
                             fontSize: 14,
-                            color: Colors.grey.shade500,
+                            color: Theme.of(context).textTheme.bodySmall?.color,
                           ),
                         ),
                       ],
@@ -59,7 +59,7 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
                   ),
                   IconButton(
                     onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.close, color: Colors.black54, size: 20),
+                    icon: Icon(Icons.close, color: Theme.of(context).iconTheme.color, size: 20),
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(),
                   ),
@@ -277,12 +277,12 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
                         Navigator.pop(context);
                       },
                       style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.black87,
+                        foregroundColor: Theme.of(context).colorScheme.onSurface,
                         padding: const EdgeInsets.symmetric(vertical: 18),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
-                        side: BorderSide(color: Colors.grey.shade300),
+                        side: BorderSide(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE)),
                       ),
                       child: const Text("Cancel", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
                     ),
@@ -301,10 +301,10 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Text(
         text,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 13,
           fontWeight: FontWeight.w600,
-          color: Colors.black87,
+          color: Theme.of(context).colorScheme.onSurface,
         ),
       ),
     );
@@ -319,17 +319,17 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: AppColor.white,
+        color: Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.surface : Colors.white,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey.shade300),
+        border: Border.all(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE)),
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           isExpanded: true,
           value: value,
-          hint: Text(hint, style: TextStyle(color: Colors.grey.shade400, fontSize: 14)),
-          icon: Icon(Icons.keyboard_arrow_down, color: Colors.grey.shade400, size: 20),
-          items: items.map((e) => DropdownMenuItem(value: e, child: Text(e, style: const TextStyle(fontSize: 14, color: Colors.black87)))).toList(),
+          hint: Text(hint, style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color, fontSize: 14)),
+          icon: Icon(Icons.keyboard_arrow_down, color: Theme.of(context).textTheme.bodySmall?.color, size: 20),
+          items: items.map((e) => DropdownMenuItem(value: e, child: Text(e, style: TextStyle(fontSize: 14, color: Theme.of(context).colorScheme.onSurface)))).toList(),
           onChanged: onChanged,
         ),
       ),
@@ -340,14 +340,14 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: AppColor.white,
+        color: Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.surface : Colors.white,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey.shade300),
+        border: Border.all(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("$_quantity", style: const TextStyle(color: Colors.black87, fontSize: 14)),
+          Text("$_quantity", style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 14)),
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -355,7 +355,7 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
                 onTap: () => setState(() => _quantity++),
                 child: Padding(
                   padding: const EdgeInsets.all(2.0),
-                  child: Icon(Icons.keyboard_arrow_up, size: 14, color: Colors.grey.shade600),
+                  child: Icon(Icons.keyboard_arrow_up, size: 14, color: Theme.of(context).textTheme.bodySmall?.color),
                 ),
               ),
               InkWell(
@@ -364,7 +364,7 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(2.0),
-                  child: Icon(Icons.keyboard_arrow_down, size: 14, color: Colors.grey.shade600),
+                  child: Icon(Icons.keyboard_arrow_down, size: 14, color: Theme.of(context).textTheme.bodySmall?.color),
                 ),
               ),
             ],

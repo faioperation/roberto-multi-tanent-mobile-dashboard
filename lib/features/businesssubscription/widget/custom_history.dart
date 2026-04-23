@@ -14,6 +14,7 @@ class CustomHistory extends StatefulWidget {
 class _CustomHistoryState extends State<CustomHistory> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final width = MediaQuery.of(context).size.width;
     final bool isDesktop = width > 900;
     final bool isMobile = width <= 600;
@@ -22,9 +23,9 @@ class _CustomHistoryState extends State<CustomHistory> {
       width: double.infinity,
       padding: EdgeInsets.all(isMobile ? 16 : 24),
       decoration: BoxDecoration(
-        color: AppColor.white,
+        color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade300),
+        border: Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,21 +38,21 @@ class _CustomHistoryState extends State<CustomHistory> {
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
                       "Billing History",
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        color: AppColor.black,
+                        color: theme.colorScheme.onSurface,
                       ),
                     ),
-                    SizedBox(height: 6),
+                    const SizedBox(height: 6),
                     Text(
                       "View all past transactions and invoices",
                       style: TextStyle(
                         fontSize: 13,
-                        color: AppColor.grey,
+                        color: theme.textTheme.bodySmall?.color,
                       ),
                     ),
                   ],
@@ -67,24 +68,24 @@ class _CustomHistoryState extends State<CustomHistory> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: theme.cardTheme.color,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: AppColor.grey,
+                      color: theme.dividerTheme.color ?? const Color(0xffEEEEEE),
                     ),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.download, size: 18, color: AppColor.black),
+                      Icon(Icons.download, size: 18, color: theme.colorScheme.onSurface),
                       if (!isMobile) ...[
                         const SizedBox(width: 6),
-                        const Text(
+                        Text(
                           "Export",
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color: AppColor.black,
+                            color: theme.colorScheme.onSurface,
                           ),
                         ),
                       ],
@@ -103,11 +104,14 @@ class _CustomHistoryState extends State<CustomHistory> {
   }
 
   Widget _buildDesktopTable() {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    
     return Container(
       decoration: BoxDecoration(
-        color: AppColor.white,
+        color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xffE5E7EB)),
+        border: Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
@@ -118,7 +122,7 @@ class _CustomHistoryState extends State<CustomHistory> {
                 horizontal: 20,
                 vertical: 14,
               ),
-              color: AppColor.secondary,
+              color: isDark ? theme.colorScheme.surface : AppColor.secondary,
               child: const Row(
                 children: [
                   Expanded(flex: 2, child: CustomHeadder(label: 'Billing Date')),

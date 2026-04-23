@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:roberto/app/app_color.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:roberto/features/Tenant%20Management%20/widget/custom_stat_card.dart';
 import 'package:roberto/features/Tenant%20Management%20/widget/Custom_Addtenant.dart';
 import 'package:roberto/features/Tenant%20Management%20/widget/custom_headder.dart';
-import 'package:roberto/features/Tenant%20Management%20/widget/custom_builditem.dart';
+
+import '../widget/custom_builditem.dart';
 
 class TenantScreen extends StatefulWidget {
   const TenantScreen({super.key});
@@ -14,8 +14,6 @@ class TenantScreen extends StatefulWidget {
 }
 
 class _TenantScreenState extends State<TenantScreen> {
-
-
   final List<Map<String, String>> _tenants = [
     {
       'business': 'Fashion Boutique',
@@ -57,8 +55,8 @@ class _TenantScreenState extends State<TenantScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     double width = MediaQuery.of(context).size.width;
-    bool isMobile = width < 600;
     bool isDesktop = width > 900;
 
     return Column(
@@ -68,12 +66,12 @@ class _TenantScreenState extends State<TenantScreen> {
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Tenant Management',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xff111827),
+                      color: theme.colorScheme.onSurface,
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -82,7 +80,7 @@ class _TenantScreenState extends State<TenantScreen> {
               )
             : Row(
                 children: [
-                  const Expanded(
+                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -91,13 +89,13 @@ class _TenantScreenState extends State<TenantScreen> {
                           style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xff111827),
+                            color: theme.colorScheme.onSurface,
                           ),
                         ),
-                        SizedBox(height: 6),
+                        const SizedBox(height: 6),
                         Text(
                           'Manage businesses and their subscriptions',
-                          style: TextStyle(fontSize: 15, color: Colors.grey),
+                          style: TextStyle(fontSize: 15, color: theme.textTheme.bodySmall?.color),
                         ),
                       ],
                     ),
@@ -159,9 +157,9 @@ class _TenantScreenState extends State<TenantScreen> {
         // ── Tenant List Table ────────────────────────────────────────────────
         Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: theme.cardTheme.color,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: const Color(0xffE5E7EB)),
+            border: Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -171,7 +169,7 @@ class _TenantScreenState extends State<TenantScreen> {
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 14),
                 child: Row(
                   children: [
-                    const Expanded(
+                    Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -180,14 +178,14 @@ class _TenantScreenState extends State<TenantScreen> {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w700,
-                              color: Color(0xff111827),
+                              color: theme.colorScheme.onSurface,
                             ),
                           ),
-                          SizedBox(height: 4),
+                          const SizedBox(height: 4),
                           Text(
                             'View and manage all business tenant',
                             style: TextStyle(
-                                fontSize: 13, color: Color(0xff6B7280)),
+                                fontSize: 13, color: theme.textTheme.bodySmall?.color),
                           ),
                         ],
                       ),
@@ -201,7 +199,7 @@ class _TenantScreenState extends State<TenantScreen> {
                 Container(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 20, vertical: 12),
-                  color: AppColor.secondary,
+                  color: theme.brightness == Brightness.dark ? theme.colorScheme.surface : AppColor.secondary,
                   child: const Row(
                     children: [
                       Expanded(
@@ -230,8 +228,8 @@ class _TenantScreenState extends State<TenantScreen> {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: _tenants.length,
                 separatorBuilder: (context, index) =>
-                const Divider(
-                    height: 1, color: Color(0xffF3F4F6)),
+                Divider(
+                    height: 1, color: theme.dividerTheme.color),
                 itemBuilder: (context, index) {
                   final t = _tenants[index];
                   return isDesktop ? _buildRow(t) : _buildMobileCard(t);
@@ -246,6 +244,7 @@ class _TenantScreenState extends State<TenantScreen> {
   }
 
   Widget _buildRow(Map<String, String> tenant) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Row(
@@ -254,10 +253,10 @@ class _TenantScreenState extends State<TenantScreen> {
             flex: 3,
             child: Text(
               tenant['business']!,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
-                color: Color(0xff111827),
+                color: theme.colorScheme.onSurface,
               ),
             ),
           ),
@@ -265,9 +264,9 @@ class _TenantScreenState extends State<TenantScreen> {
             flex: 3,
             child: Text(
               tenant['owner']!,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14,
-                color: Color(0xff374151),
+                color: theme.colorScheme.onSurface,
               ),
             ),
           ),
@@ -278,17 +277,17 @@ class _TenantScreenState extends State<TenantScreen> {
               children: [
                 Text(
                   tenant['email']!,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 13,
-                    color: Color(0xff374151),
+                    color: theme.textTheme.bodySmall?.color,
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   tenant['phone']!,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 12,
-                    color: Color(0xff6B7280),
+                    color: theme.textTheme.bodySmall?.color,
                   ),
                 ),
               ],
@@ -298,53 +297,33 @@ class _TenantScreenState extends State<TenantScreen> {
             flex: 2,
             child: Text(
               tenant['plan']!,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w500,
-                color: Color(0xff374151),
+                color: theme.colorScheme.onSurface,
               ),
             ),
           ),
           Expanded(
             flex: 2,
-            child: Container(
-              width: 80,
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: tenant['status'] == 'Active'
-                    ? const Color(0xffD1FAE5)
-                    : AppColor.secondary,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                tenant['status']!,
-                style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                  color: tenant['status'] == 'Active'
-                      ? const Color(0xff065F46)
-                      : const Color(0xff991B1B),
-                ),
-              ),
-            ),
+            child: _buildStatusIndicator(tenant['status']!),
           ),
           Expanded(
             flex: 2,
             child: Text(
               tenant['price']!,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: Color(0xff111827),
+                color: theme.colorScheme.onSurface,
               ),
             ),
           ),
 
-
           Expanded(
             flex: 1,
             child: IconButton(
-              icon: const Icon(Icons.remove_red_eye, color: Colors.grey),
+              icon: Icon(Icons.remove_red_eye, color: theme.textTheme.bodySmall?.color),
               onPressed: () => _showClientDetailsDialog(tenant),
             ),
           ),
@@ -378,10 +357,11 @@ class _TenantScreenState extends State<TenantScreen> {
   }
 
   Widget _buildMobileCard(Map<String, String> tenant) {
+    final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: const BoxDecoration(
-        border: Border(bottom: BorderSide(color: Color(0xffF3F4F6))),
+      decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE))),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -391,10 +371,10 @@ class _TenantScreenState extends State<TenantScreen> {
             children: [
               Text(
                 tenant['business']!,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xff111827),
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
               _buildStatusIndicator(tenant['status']!),
@@ -403,12 +383,12 @@ class _TenantScreenState extends State<TenantScreen> {
           const SizedBox(height: 8),
           Text(
             "Owner: ${tenant['owner']}",
-            style: const TextStyle(fontSize: 14, color: Color(0xff374151)),
+            style: TextStyle(fontSize: 14, color: theme.colorScheme.onSurface),
           ),
           const SizedBox(height: 4),
           Text(
             tenant['email']!,
-            style: const TextStyle(fontSize: 13, color: Color(0xff6B7280)),
+            style: TextStyle(fontSize: 13, color: theme.textTheme.bodySmall?.color),
           ),
           const SizedBox(height: 12),
           Row(
@@ -417,33 +397,33 @@ class _TenantScreenState extends State<TenantScreen> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     "Plan",
-                    style: TextStyle(fontSize: 11, color: Colors.grey),
+                    style: TextStyle(fontSize: 11, color: theme.textTheme.bodySmall?.color),
                   ),
                   Text(
                     tenant['plan']!,
-                    style: const TextStyle(
-                        fontSize: 13, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                        fontSize: 13, fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface),
                   ),
                 ],
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     "Price",
-                    style: TextStyle(fontSize: 11, color: Colors.grey),
+                    style: TextStyle(fontSize: 11, color: theme.textTheme.bodySmall?.color),
                   ),
                   Text(
                     tenant['price']!,
-                    style: const TextStyle(
-                        fontSize: 13, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                        fontSize: 13, fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface),
                   ),
                 ],
               ),
               IconButton(
-                icon: const Icon(Icons.visibility, color: Colors.grey, size: 20),
+                icon: Icon(Icons.visibility, color: theme.textTheme.bodySmall?.color, size: 20),
                 onPressed: () => _showClientDetailsDialog(tenant),
               ),
             ],
@@ -454,22 +434,28 @@ class _TenantScreenState extends State<TenantScreen> {
   }
 
   Widget _buildStatusIndicator(String status) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    
+    final isActive = status == 'Active';
+    final activeBg = isDark ? const Color(0xFF1B5E20).withOpacity(0.2) : const Color(0xffD1FAE5);
+    final suspendedBg = isDark ? const Color(0xFFB71C1C).withOpacity(0.2) : const Color(0xFFFFEBEE);
+    final activeColor = isDark ? const Color(0xFF81C784) : const Color(0xff065F46);
+    final suspendedColor = isDark ? const Color(0xFFE57373) : const Color(0xff991B1B);
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: status == 'Active'
-            ? const Color(0xffD1FAE5)
-            : AppColor.secondary,
+        color: isActive ? activeBg : suspendedBg,
         borderRadius: BorderRadius.circular(12),
+        border: isDark ? Border.all(color: (isActive ? activeColor : suspendedColor).withOpacity(0.3)) : null,
       ),
       child: Text(
         status,
         style: TextStyle(
           fontSize: 11,
           fontWeight: FontWeight.w600,
-          color: status == 'Active'
-              ? const Color(0xff065F46)
-              : const Color(0xff991B1B),
+          color: isActive ? activeColor : suspendedColor,
         ),
       ),
     );
@@ -479,9 +465,11 @@ class _TenantScreenState extends State<TenantScreen> {
     showDialog(
       context: context,
       builder: (context) {
+        final theme = Theme.of(context);
         final width = MediaQuery.of(context).size.width;
         return Dialog(
-          backgroundColor: AppColor.white,
+          backgroundColor: theme.cardTheme.color,
+          surfaceTintColor: Colors.transparent,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -494,33 +482,33 @@ class _TenantScreenState extends State<TenantScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       'Client Details',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xff111827),
+                        color: theme.colorScheme.onSurface,
                       ),
                     ),
                     GestureDetector(
                       onTap: () => Navigator.pop(context),
-                      child: const Icon(Icons.close, size: 20),
+                      child: Icon(Icons.close, size: 20, color: theme.textTheme.bodySmall?.color),
                     ),
                   ],
                 ),
                 const SizedBox(height: 4),
-                const Align(
+                Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
                     'View and manage client account information',
                     style: TextStyle(
                       fontSize: 13,
-                      color: Color(0xff6B7280),
+                      color: theme.textTheme.bodySmall?.color,
                     ),
                   ),
                 ),
                 const SizedBox(height: 16),
-                const Divider(),
+                Divider(color: theme.dividerTheme.color),
                 const SizedBox(height: 16),
                 width < 500
                     ? Column(

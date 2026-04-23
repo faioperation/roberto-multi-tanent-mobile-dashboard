@@ -21,7 +21,7 @@ class _CustomAddtenantState extends State<CustomAddtenant> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: AppColor.popup,
+      backgroundColor: Theme.of(context).cardTheme.color,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
@@ -51,11 +51,11 @@ class _CustomAddtenantState extends State<CustomAddtenant> {
               ],
             ),
 
-            const Align(
+            Align(
               alignment: Alignment.centerLeft,
               child: Text(
                 "Set up a new business account with all required information",
-                style: TextStyle(color: Colors.black87, fontSize: 13),
+                style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color, fontSize: 13),
               ),
             ),
 
@@ -64,7 +64,7 @@ class _CustomAddtenantState extends State<CustomAddtenant> {
             // Tabs (ONLY CHANGE HERE)
             Container(
               decoration: BoxDecoration(
-                color: Colors.grey.shade200,
+                color: Theme.of(context).scaffoldBackgroundColor,
                 borderRadius: BorderRadius.circular(30),
               ),
               child: Row(
@@ -125,7 +125,7 @@ class _CustomAddtenantState extends State<CustomAddtenant> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
-            color: active ? Colors.white : Colors.transparent,
+            color: active ? Theme.of(context).primaryColor.withOpacity(0.1) : Colors.transparent,
             borderRadius: BorderRadius.circular(30),
           ),
           child: Center(
@@ -133,6 +133,7 @@ class _CustomAddtenantState extends State<CustomAddtenant> {
               text,
               style: TextStyle(
                 fontSize: 12,
+                color: active ? Theme.of(context).primaryColor : Theme.of(context).textTheme.bodyMedium?.color,
                 fontWeight: active ? FontWeight.w600 : FontWeight.normal,
               ),
             ),

@@ -18,7 +18,7 @@ class CustomMinitextfield extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hint,
         filled: true,
-        fillColor: Colors.grey.shade100,
+        fillColor: Theme.of(context).scaffoldBackgroundColor,
         contentPadding:
         const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         border: OutlineInputBorder(

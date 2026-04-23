@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../features/Auth/screen/login_screen.dart';
+import 'app_theme.dart';
+import 'theme_controller.dart';
 
 
 class Roberto extends StatelessWidget {
@@ -7,10 +9,18 @@ class Roberto extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: "Roberto",
-      debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+    return ListenableBuilder(
+      listenable: themeController,
+      builder: (context, _) {
+        return MaterialApp(
+          title: "Roberto",
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: themeController.themeMode,
+          home: const LoginScreen(),
+        );
+      },
     );
   }
 }

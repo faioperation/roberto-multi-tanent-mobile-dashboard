@@ -35,7 +35,7 @@ class _InboxScreenState extends State<InboxScreen> {
               style: TextStyle(
                 fontSize: isMobile ? 22 : 28,
                 fontWeight: FontWeight.bold,
-                color: const Color(0xff111827),
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
             const SizedBox(height: 8),
@@ -43,7 +43,7 @@ class _InboxScreenState extends State<InboxScreen> {
               "Manage all your customer conversations in one place",
               style: TextStyle(
                 fontSize: isMobile ? 14 : 16,
-                color: Colors.grey,
+                color: Theme.of(context).textTheme.bodyMedium?.color,
               ),
             ),
             const SizedBox(height: 24),
@@ -53,9 +53,9 @@ class _InboxScreenState extends State<InboxScreen> {
               // Using a relative height for desktop/tablet, fixed comfortable height for mobile
               height: isMobile ? 650 : MediaQuery.of(context).size.height > 600 ? MediaQuery.of(context).size.height - 220 : 600,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).cardTheme.color,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: const Color(0xffE5E7EB)),
+                border: Border.all(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE)),
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
@@ -66,9 +66,9 @@ class _InboxScreenState extends State<InboxScreen> {
                           Expanded(flex: 3, child: ChatList(
                             onChatSelected: (_) {},
                           )),
-                          const VerticalDivider(width: 1, thickness: 1, color: Color(0xffE5E7EB)),
+                          const VerticalDivider(width: 1, thickness: 1),
                           Expanded(flex: 5, child: ChatView(onBack: null)),
-                          const VerticalDivider(width: 1, thickness: 1, color: Color(0xffE5E7EB)),
+                          const VerticalDivider(width: 1, thickness: 1),
                           const Expanded(flex: 3, child: ChatDetails()),
                         ],
                       )
@@ -79,7 +79,7 @@ class _InboxScreenState extends State<InboxScreen> {
                               Expanded(flex: 3, child: ChatList(
                                 onChatSelected: (_) {},
                               )),
-                              const VerticalDivider(width: 1, thickness: 1, color: Color(0xffE5E7EB)),
+                              const VerticalDivider(width: 1, thickness: 1),
                               Expanded(flex: 5, child: ChatView(onBack: null)),
                             ],
                           )

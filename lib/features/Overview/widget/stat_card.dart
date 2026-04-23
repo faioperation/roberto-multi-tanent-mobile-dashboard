@@ -19,12 +19,13 @@ class StatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xffEEEEEE)),
+        border: Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,8 +35,8 @@ class StatCard extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: const TextStyle(
-                  color: Colors.grey,
+                style: TextStyle(
+                  color: theme.textTheme.bodyMedium?.color,
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                 ),
@@ -53,30 +54,30 @@ class StatCard extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,
-              color: AppColor.black,
+              color: theme.colorScheme.onSurface,
             ),
           ),
           const SizedBox(height: 8),
           if (trend.isNotEmpty)
             Row(
               children: [
-                const Icon(Icons.arrow_upward, color: Color(0xff10B981), size: 16),
+                Icon(Icons.arrow_upward, color: theme.colorScheme.primary, size: 16),
                 const SizedBox(width: 4),
                 Text(
                   trend,
-                  style: const TextStyle(
-                    color: Color(0xff10B981),
+                  style: TextStyle(
+                    color: theme.colorScheme.primary,
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
                   ),
                 ),
                 const SizedBox(width: 4),
-                const Text(
+                Text(
                   "vs last month",
-                  style: TextStyle(color: Colors.grey, fontSize: 13),
+                  style: TextStyle(color: theme.textTheme.bodyMedium?.color, fontSize: 13),
                 ),
               ],
             ),

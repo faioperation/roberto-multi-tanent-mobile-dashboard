@@ -37,9 +37,9 @@ class _CustomMediaState extends State<CustomMedia> {
       width: double.infinity,
       padding: EdgeInsets.all(isMobile ? 12 : 16),
       decoration: BoxDecoration(
-        color: AppColor.white,
+        color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade300),
+        border: Border.all(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE)),
       ),
       child: isMobile
           ? Column(
@@ -59,18 +59,18 @@ class _CustomMediaState extends State<CustomMedia> {
                         children: [
                           Text(
                             widget.title,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w600,
-                              color: AppColor.black,
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
                           ),
                           const SizedBox(height: 4),
                           Text(
                             widget.subtitle,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 12,
-                              color: AppColor.grey,
+                              color: Theme.of(context).textTheme.bodyMedium?.color,
                             ),
                           ),
                         ],
@@ -110,18 +110,18 @@ class _CustomMediaState extends State<CustomMedia> {
                     children: [
                       Text(
                         widget.title,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
-                          color: AppColor.black,
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
                       const SizedBox(height: 6),
                       Text(
                         widget.subtitle,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 13,
-                          color: AppColor.grey,
+                          color: Theme.of(context).textTheme.bodyMedium?.color,
                         ),
                       ),
                     ],
@@ -147,7 +147,7 @@ class _CustomMediaState extends State<CustomMedia> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: AppColor.white,
+        color: Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.surface : Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: AppColor.greens),
       ),
@@ -178,10 +178,10 @@ class _CustomMediaState extends State<CustomMedia> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
-          color: AppColor.white,
+          color: Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.surface : Theme.of(context).cardTheme.color,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: _isConnected ? AppColor.primary : AppColor.grey,
+            color: _isConnected ? AppColor.primary : Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE),
           ),
         ),
         child: Text(
@@ -189,7 +189,7 @@ class _CustomMediaState extends State<CustomMedia> {
           style: TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.w500,
-            color: _isConnected ? AppColor.primary : AppColor.black,
+            color: _isConnected ? AppColor.primary : Theme.of(context).colorScheme.onSurface,
           ),
         ),
       ),

@@ -5,44 +5,45 @@ class QuickStats extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xffEEEEEE)),
+        border: Border.all(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "Quick Stats",
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Color(0xff111827),
-            ),
-          ),
+              Text(
+                "Quick Stats",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
           const SizedBox(height: 24),
-          _buildStatProgress("Response Rate", 0.94, const Color(0xff4F46E5), "94%"),
+          _buildStatProgress(context, "Response Rate", 0.94, theme.colorScheme.primary, "94%"),
           const SizedBox(height: 20),
-          _buildStatProgress("Order Fulfillment", 0.87, const Color(0xff10B981), "87%"),
+          _buildStatProgress(context, "Order Fulfillment", 0.87, theme.colorScheme.secondary, "87%"),
           const SizedBox(height: 20),
-          _buildStatProgress("Customer Satisfaction", 0.92, const Color(0xff10B981), "92%"),
+          _buildStatProgress(context, "Customer Satisfaction", 0.92, theme.colorScheme.secondary, "92%"),
           const SizedBox(height: 40),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 "Active Users",
-                style: TextStyle(color: Colors.grey, fontSize: 14),
+                style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color, fontSize: 14),
               ),
-              const Text(
+              Text(
                 "248",
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xff111827),
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
             ],
@@ -52,7 +53,7 @@ class QuickStats extends StatelessWidget {
     );
   }
 
-  Widget _buildStatProgress(String label, double value, Color color, String percentage) {
+  Widget _buildStatProgress(BuildContext context, String label, double value, Color color, String percentage) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -61,17 +62,17 @@ class QuickStats extends StatelessWidget {
           children: [
             Text(
               label,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14,
-                color: Color(0xff374151),
+                color: Theme.of(context).colorScheme.onSurface,
                 fontWeight: FontWeight.w500,
               ),
             ),
             Text(
               percentage,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 12,
-                color: Colors.grey,
+                color: Theme.of(context).textTheme.bodyMedium?.color,
               ),
             ),
           ],
@@ -81,7 +82,7 @@ class QuickStats extends StatelessWidget {
           borderRadius: BorderRadius.circular(4),
           child: LinearProgressIndicator(
             value: value,
-            backgroundColor: const Color(0xffF3F4F6),
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             valueColor: AlwaysStoppedAnimation<Color>(color),
             minHeight: 6,
           ),

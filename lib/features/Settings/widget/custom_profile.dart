@@ -14,46 +14,44 @@ class CustomProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
-          style: const TextStyle(fontWeight: FontWeight.w500),
+          style: TextStyle(fontWeight: FontWeight.w500, color: theme.colorScheme.onSurface),
         ),
         const SizedBox(height: 6),
 
         TextField(
-          cursorColor: Colors.red, // focus cursor color
-
+          cursorColor: theme.colorScheme.primary,
+          style: TextStyle(color: theme.colorScheme.onSurface),
           decoration: InputDecoration(
-            prefixIcon: icon != null ? Icon(icon, size: 18) : null,
+            prefixIcon: icon != null ? Icon(icon, size: 18, color: theme.iconTheme.color) : null,
             hintText: hint,
-
+            hintStyle: TextStyle(color: theme.textTheme.bodyMedium?.color),
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 12,
               vertical: 14,
             ),
 
             filled: true,
-            fillColor: Colors.white,
+            fillColor: theme.brightness == Brightness.dark ? theme.colorScheme.surface : Colors.white,
 
-            // normal border
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: Colors.grey.shade500),
+              borderSide: BorderSide(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
             ),
 
-            // enabled border (grey)
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: Colors.grey.shade500),
+              borderSide: BorderSide(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
             ),
 
-            // focused border (red)
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: const BorderSide(color: Colors.red),
+              borderSide: BorderSide(color: theme.colorScheme.primary),
             ),
           ),
         ),

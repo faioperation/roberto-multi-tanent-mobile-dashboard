@@ -15,10 +15,11 @@ class _BusinessSubscriptionState extends State<BusinessSubscription> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Row(
+        Row(
           children: [
             Expanded(
               child: Column(
@@ -29,13 +30,13 @@ class _BusinessSubscriptionState extends State<BusinessSubscription> {
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xff111827),
+                      color: theme.colorScheme.onSurface,
                     ),
                   ),
-                  SizedBox(height: 6),
+                  const SizedBox(height: 6),
                   Text(
                     'Configure and train your AI assistant',
-                    style: TextStyle(fontSize: 15, color: Colors.grey),
+                    style: TextStyle(fontSize: 15, color: theme.textTheme.bodySmall?.color),
                   ),
                 ],
               ),
@@ -66,10 +67,13 @@ class _BusinessSubscriptionState extends State<BusinessSubscription> {
   }
 
   Widget _buildToggleTabs() {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: const Color(0xffF3F4F6),
+        color: isDark ? theme.colorScheme.surface : theme.colorScheme.secondary,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
@@ -86,6 +90,8 @@ class _BusinessSubscriptionState extends State<BusinessSubscription> {
     required int index,
     required String label,
   }) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     final isActive = _selectedTab == index;
 
     return GestureDetector(
@@ -94,14 +100,14 @@ class _BusinessSubscriptionState extends State<BusinessSubscription> {
         duration: const Duration(milliseconds: 100),
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 13),
         decoration: BoxDecoration(
-          color: isActive ? Colors.white : Colors.transparent,
+          color: isActive ? (isDark ? theme.colorScheme.secondary : Colors.white) : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
           boxShadow: isActive
               ? [
             BoxShadow(
-              color: Colors.black12,
+              color: Colors.black.withOpacity(0.05),
               blurRadius: 4,
-              offset: Offset(0, 2),
+              offset: const Offset(0, 2),
             ),
           ]
               : [],
@@ -111,7 +117,7 @@ class _BusinessSubscriptionState extends State<BusinessSubscription> {
           style: TextStyle(
             fontSize: 14,
             fontWeight: isActive ? FontWeight.w500 : FontWeight.w400,
-            color: isActive ? const Color(0xff111827) : Colors.grey,
+            color: isActive ? theme.colorScheme.onSurface : theme.textTheme.bodySmall?.color,
           ),
         ),
       ),

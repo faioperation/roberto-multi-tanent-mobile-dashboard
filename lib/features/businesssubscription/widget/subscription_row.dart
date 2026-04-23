@@ -24,39 +24,52 @@ class SubscriptionRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     if (isMobile) {
-      return _buildMobileCard();
+      return _buildMobileCard(context);
     }
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.grey.shade300)),
+        border: Border(bottom: BorderSide(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE))),
       ),
       child: Row(
         children: [
           // Date
           Expanded(
             flex: 2,
-            child: Text(date),
+            child: Text(
+              date,
+              style: TextStyle(color: theme.colorScheme.onSurface),
+            ),
           ),
 
           // Plan
           Expanded(
             flex: 2,
-            child: Text(plan),
+            child: Text(
+              plan,
+              style: TextStyle(color: theme.colorScheme.onSurface),
+            ),
           ),
 
           // Pricing
           Expanded(
             flex: 2,
-            child: Text(price),
+            child: Text(
+              price,
+              style: TextStyle(color: theme.colorScheme.onSurface),
+            ),
           ),
 
           // Expire Date
           Expanded(
             flex: 2,
-            child: Text(expireDate),
+            child: Text(
+              expireDate,
+              style: TextStyle(color: theme.colorScheme.onSurface),
+            ),
           ),
 
           // Status
@@ -64,7 +77,7 @@ class SubscriptionRow extends StatelessWidget {
             flex: 2,
             child: Align(
               alignment: Alignment.centerLeft,
-              child: _buildStatusPill(),
+              child: _buildStatusPill(context),
             ),
           ),
 
@@ -74,7 +87,7 @@ class SubscriptionRow extends StatelessWidget {
             child: isUnpaid
                 ? Align(
                     alignment: Alignment.centerLeft,
-                    child: _buildRenewButton(),
+                    child: _buildRenewButton(context),
                   )
                 : const SizedBox.shrink(),
           ),
@@ -83,17 +96,18 @@ class SubscriptionRow extends StatelessWidget {
     );
   }
 
-  Widget _buildMobileCard() {
+  Widget _buildMobileCard(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade200),
+        border: Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.02),
+            color: theme.shadowColor.withOpacity(0.05),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),
@@ -107,21 +121,21 @@ class SubscriptionRow extends StatelessWidget {
             children: [
               Text(
                 plan,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: AppColor.black,
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
-              _buildStatusPill(),
+              _buildStatusPill(context),
             ],
           ),
           const SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildInfoColumn("Date", date),
-              _buildInfoColumn("Expire Date", expireDate),
+              _buildInfoColumn(context, "Date", date),
+              _buildInfoColumn(context, "Expire Date", expireDate),
             ],
           ),
           const SizedBox(height: 12),
@@ -129,8 +143,8 @@ class SubscriptionRow extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              _buildInfoColumn("Pricing", price),
-              if (isUnpaid) _buildRenewButton(),
+              _buildInfoColumn(context, "Pricing", price),
+              if (isUnpaid) _buildRenewButton(context),
             ],
           ),
         ],
@@ -138,32 +152,41 @@ class SubscriptionRow extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoColumn(String label, String value) {
+  Widget _buildInfoColumn(BuildContext context, String label, String value) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
-          style: const TextStyle(fontSize: 12, color: AppColor.grey),
+          style: TextStyle(fontSize: 12, color: theme.textTheme.bodySmall?.color),
         ),
         const SizedBox(height: 4),
         Text(
           value,
-          style: const TextStyle(
-              fontSize: 14, fontWeight: FontWeight.w500, color: AppColor.black),
+          style: TextStyle(
+              fontSize: 14, fontWeight: FontWeight.w500, color: theme.colorScheme.onSurface),
         ),
       ],
     );
   }
 
-  Widget _buildStatusPill() {
+  Widget _buildStatusPill(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    
+    final activeBg = isDark ? const Color(0xFF1B5E20).withOpacity(0.2) : const Color(0xFFE8F5E9);
+    final errorBg = isDark ? const Color(0xFFB71C1C).withOpacity(0.2) : const Color(0xFFFFEBEE);
+    final activeColor = isDark ? const Color(0xFF81C784) : const Color(0xFF2E7D32);
+    final errorColor = isDark ? const Color(0xFFE57373) : const Color(0xFFC62828);
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: isPaid ? const Color(0xFFE8F5E9) : const Color(0xFFFFEBEE),
+        color: isPaid ? activeBg : errorBg,
         borderRadius: BorderRadius.circular(6),
         border: Border.all(
-          color: isPaid ? const Color(0xFF2E7D32) : const Color(0xFFC62828),
+          color: (isPaid ? activeColor : errorColor).withOpacity(0.5),
         ),
       ),
       child: Text(
@@ -171,13 +194,14 @@ class SubscriptionRow extends StatelessWidget {
         style: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w500,
-          color: isPaid ? const Color(0xFF2E7D32) : const Color(0xFFC62828),
+          color: isPaid ? activeColor : errorColor,
         ),
       ),
     );
   }
 
-  Widget _buildRenewButton() {
+  Widget _buildRenewButton(BuildContext context) {
+    final theme = Theme.of(context);
     return InkWell(
       onTap: () {
         print("Renew Now clicked");
@@ -186,17 +210,17 @@ class SubscriptionRow extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
-          color: AppColor.white,
+          color: theme.cardTheme.color,
           borderRadius: BorderRadius.circular(6),
           border: Border.all(
-            color: AppColor.grey,
+            color: theme.dividerTheme.color ?? const Color(0xffEEEEEE),
             width: 1,
           ),
         ),
-        child: const Text(
+        child: Text(
           "Renew Now",
           style: TextStyle(
-            color: AppColor.black,
+            color: theme.colorScheme.onSurface,
             fontSize: 13,
             fontWeight: FontWeight.w500,
           ),

@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:roberto/app/app_color.dart';
-import 'package:roberto/common/custom_search.dart';
 import 'package:roberto/common/sidebar_item.dart';
-import 'package:roberto/features/Inbox/widget/chat_details.dart';
-import 'package:roberto/features/Inbox/widget/chat_list.dart';
-import 'package:roberto/features/Inbox/widget/chat_view.dart';
-import 'package:roberto/features/Overview/widget/activity_list.dart';
-import 'package:roberto/features/Overview/widget/quick_stats.dart';
-import 'package:roberto/features/Overview/widget/stat_card.dart';
 import 'package:roberto/features/Tenant Management /screen/tenant_screen.dart';
 import 'package:roberto/features/Subscription/screen/subscription_screen.dart';
 import 'package:roberto/features/Settings/screen/setting_screen.dart';
@@ -22,6 +15,7 @@ import 'package:roberto/features/management/screen/management_screen.dart';
 import 'package:roberto/features/businesssetting/screen/businessowner_settings.dart';
 import 'package:roberto/features/businesssubscription/screen/business_subscription.dart';
 import 'package:roberto/features/Auth/screen/login_screen.dart';
+import 'package:roberto/features/Overview/screen/overview_screen.dart';
 
 
 class DashboardShell extends StatefulWidget {
@@ -35,6 +29,13 @@ class DashboardShell extends StatefulWidget {
 
 class _DashboardShellState extends State<DashboardShell> {
   String _activeItem = 'Overview';
+  
+  final List<Map<String, String>> _branches = [
+    {"name": "Queens Center", "address": "719/B, Queens, NY"},
+    {"name": "Brooklyn Hub", "address": "123, Brooklyn, NY"},
+    {"name": "Manhattan Store", "address": "456, Manhattan, NY"},
+  ];
+  late Map<String, String> _selectedBranch = _branches[0];
 
   void _selectItem(String item) {
     setState(() {
@@ -47,7 +48,7 @@ class _DashboardShellState extends State<DashboardShell> {
     bool isDesktop = MediaQuery.of(context).size.width > 900;
 
     return Scaffold(
-      backgroundColor: const Color(0xffF8F9FA),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       drawer: isDesktop ? null : Drawer(child: _buildSidebar(context)),
       body: Row(
         children: [
@@ -71,7 +72,6 @@ class _DashboardShellState extends State<DashboardShell> {
   }
 
   Widget _buildContent(BuildContext context) {
-    bool isDesktop = MediaQuery.of(context).size.width > 900;
 
     switch (_activeItem) {
       case 'Inbox':
@@ -112,118 +112,10 @@ class _DashboardShellState extends State<DashboardShell> {
 
       case 'Overview':
       default:
-        return _buildOverviewContent(context, isDesktop);
+        return OverviewScreen(isSystemOwner: widget.isSystemOwner);
     }
   }
 
-  // ─── Overview Content ───────────────────────────────────────────────────────
-
-  Widget _buildOverviewContent(BuildContext context, bool isDesktop) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          "Dashboard Overview",
-          style: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-            color: Color(0xff111827),
-          ),
-        ),
-        const SizedBox(height: 8),
-        const Text(
-          "Welcome back! Here's what's happening today.",
-          style: TextStyle(fontSize: 16, color: Colors.grey),
-        ),
-        const SizedBox(height: 32),
-
-        isDesktop
-            ? Row(
-                children: [
-                  Expanded(
-                    child: StatCard(
-                      title: widget.isSystemOwner
-                          ? "Total Business"
-                          : "Total Order Booking",
-                      value: "856",
-                      trend: "+8.2%",
-                      icon: Icons.shopping_cart_outlined,
-                    ),
-                  ),
-                  const SizedBox(width: 24),
-                  Expanded(
-                    child: StatCard(
-                      title: widget.isSystemOwner
-                          ? "Active Business"
-                          : "Total Messages",
-                      value: widget.isSystemOwner ? "750" : "1,234",
-                      trend: widget.isSystemOwner ? "" : "+12.5%",
-                      icon: Icons.chat_bubble_outline,
-                      iconColor: const Color(0xff3B82F6),
-                    ),
-                  ),
-                  const SizedBox(width: 24),
-                  const Expanded(
-                    child: StatCard(
-                      title: "Revenue",
-                      value: "\$45,678",
-                      trend: "+18.7%",
-                      icon: Icons.attach_money,
-                    ),
-                  ),
-                ],
-              )
-            : Column(
-                children: [
-                  StatCard(
-                    title: widget.isSystemOwner
-                        ? "Total Business"
-                        : "Total Order Booking",
-                    value: "856",
-                    trend: "+8.2%",
-                    icon: Icons.shopping_cart_outlined,
-                  ),
-                  const SizedBox(height: 16),
-                  StatCard(
-                    title: widget.isSystemOwner
-                        ? "Active Business"
-                        : "Total Messages",
-                    value: widget.isSystemOwner ? "750" : "1,234",
-                    trend: widget.isSystemOwner ? "" : "+12.5%",
-                    icon: Icons.chat_bubble_outline,
-                    iconColor: const Color(0xff3B82F6),
-                  ),
-                  const SizedBox(height: 16),
-                  const StatCard(
-                    title: "Revenue",
-                    value: "\$45,678",
-                    trend: "+18.7%",
-                    icon: Icons.attach_money,
-                  ),
-                ],
-              ),
-
-        const SizedBox(height: 32),
-
-        isDesktop
-            ? const Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(flex: 2, child: ActivityList()),
-                  SizedBox(width: 24),
-                  Expanded(flex: 1, child: QuickStats()),
-                ],
-              )
-            : const Column(
-                children: [
-                  ActivityList(),
-                  SizedBox(height: 24),
-                  QuickStats(),
-                ],
-              ),
-      ],
-    );
-  }
 
   // ─── Sidebar ─────────────────────────────────────────────────────────────
 
@@ -252,7 +144,7 @@ class _DashboardShellState extends State<DashboardShell> {
 
     return Container(
       width: 260,
-      color: AppColor.white,
+      color: Theme.of(context).cardTheme.color,
       child: Column(
         children: [
           const SizedBox(height: 24),
@@ -263,11 +155,10 @@ class _DashboardShellState extends State<DashboardShell> {
                 SvgPicture.asset('assets/logo.svg', height: 60),
                 const SizedBox(height: 10),
                 const Text(
-                  "Tugatai Cargo's",
+                  "Roberto Cargo's",
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xff4A4A4A),
                   ),
                 ),
               ],
@@ -275,37 +166,96 @@ class _DashboardShellState extends State<DashboardShell> {
           ),
           if (!widget.isSystemOwner) ...[
             const SizedBox(height: 16),
-            const Divider(color: Color(0xffEEEEEE), height: 1, thickness: 1),
+            Divider(color: Theme.of(context).dividerTheme.color, height: 1, thickness: 1),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Row(
-                    children: [
-                      Icon(Icons.location_on_outlined, color: Color(0xff111827), size: 22),
-                      SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          "Queens Center",
-                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Color(0xff111827)),
-                        ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Theme(
+                data: Theme.of(context).copyWith(
+                  hoverColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                ),
+                child: PopupMenuButton<Map<String, String>>(
+                  offset: const Offset(0, 50),
+                  position: PopupMenuPosition.under,
+                  color: Theme.of(context).cardTheme.color,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  onSelected: (Map<String, String> branch) {
+                    setState(() {
+                      _selectedBranch = branch;
+                    });
+                  },
+                  itemBuilder: (context) => _branches.map((branch) {
+                    return PopupMenuItem<Map<String, String>>(
+                      value: branch,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            branch['name']!,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: branch == _selectedBranch ? FontWeight.bold : FontWeight.normal,
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                          ),
+                          Text(
+                            branch['address']!,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Theme.of(context).textTheme.bodySmall?.color,
+                            ),
+                          ),
+                          if (branch != _branches.last)
+                            const Divider(height: 16),
+                        ],
                       ),
-                      Icon(Icons.keyboard_arrow_down, color: Color(0xff111827)),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 30),
-                    child: Text(
-                      "719/B, Queens, NY",
-                      style: TextStyle(fontSize: 13, color: Color(0xff4A4A4A)),
+                    );
+                  }).toList(),
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.5),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.location_on_outlined, color: AppColor.primary, size: 22),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                _selectedBranch['name']!,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: Theme.of(context).colorScheme.onSurface,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                _selectedBranch['address']!,
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: Theme.of(context).textTheme.bodySmall?.color,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Icon(
+                          Icons.keyboard_arrow_down,
+                          size: 18,
+                          color: Theme.of(context).textTheme.bodySmall?.color,
+                        ),
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
             ),
-            const Divider(color: Color(0xffEEEEEE), height: 1, thickness: 1),
             const SizedBox(height: 8),
           ] else ...[
             const SizedBox(height: 32),
@@ -345,9 +295,9 @@ class _DashboardShellState extends State<DashboardShell> {
     return Container(
       height: 70,
       padding: EdgeInsets.symmetric(horizontal: isSmallMobile ? 12 : 24),
-      decoration: const BoxDecoration(
-        color: AppColor.white,
-        border: Border(bottom: BorderSide(color: Color(0xffEEEEEE))),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardTheme.color,
+        border: Border(bottom: BorderSide(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE))),
       ),
       child: Row(
         children: [
@@ -417,7 +367,7 @@ class _DashboardShellState extends State<DashboardShell> {
 
   Widget _buildUserProfile(BuildContext context, bool isMobile) {
     return PopupMenuButton<String>(
-      color: AppColor.white,
+      color: Theme.of(context).cardTheme.color,
       padding: EdgeInsets.zero,
       offset: const Offset(0, 45),
       onSelected: (value) {

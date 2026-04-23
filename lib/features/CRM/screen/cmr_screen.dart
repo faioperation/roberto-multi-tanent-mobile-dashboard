@@ -93,14 +93,14 @@ class _CmrScreenState extends State<CmrScreen> {
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'CRM & Leads',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xff111827),
+                Text(
+                  'CRM & Leads',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
-              ),
               const SizedBox(height: 12),
               _buildAddLeadButton(context),
             ],
@@ -108,16 +108,14 @@ class _CmrScreenState extends State<CmrScreen> {
         : Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Expanded(
-                child: Text(
-                  'CRM & Leads',
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xff111827),
+                  Text(
+                    'CRM & Leads',
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                   ),
-                ),
-              ),
               const SizedBox(width: 16),
               _buildAddLeadButton(context),
             ],
@@ -125,9 +123,9 @@ class _CmrScreenState extends State<CmrScreen> {
 
     const SizedBox(height: 6),
 
-    const Text(
+    Text(
       'Manage leads and customer relationships',
-      style: TextStyle(fontSize: 15, color: AppColor.grey),),
+      style: TextStyle(fontSize: 15, color: Theme.of(context).textTheme.bodyMedium?.color),),
 
         const SizedBox(height: 20),
 

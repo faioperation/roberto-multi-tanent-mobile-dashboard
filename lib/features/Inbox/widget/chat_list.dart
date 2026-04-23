@@ -17,7 +17,7 @@ class _ChatListState extends State<ChatList> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Theme.of(context).cardTheme.color,
       child: Column(
         children: [
           const SizedBox(height: 16),
@@ -73,7 +73,7 @@ class _ChatListState extends State<ChatList> {
                 Icon(
                   icon,
                   size: 20,
-                  color: isActive ? Colors.white : const Color(0xff6B7280),
+                  color: isActive ? Colors.white : Theme.of(context).textTheme.bodyMedium?.color,
                 ),
                 const SizedBox(width: 12),
               ],
@@ -81,7 +81,7 @@ class _ChatListState extends State<ChatList> {
                 title,
                 style: TextStyle(
                   fontSize: 14,
-                  color: isActive ? Colors.white : const Color(0xff374151),
+                  color: isActive ? Colors.white : Theme.of(context).colorScheme.onSurface,
                   fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
                 ),
               ),
@@ -98,14 +98,14 @@ class _ChatListState extends State<ChatList> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   decoration: BoxDecoration(
-                    color: const Color(0xffF3F4F6),
+                    color: Theme.of(context).brightness == Brightness.light ? const Color(0xffF3F4F6) : Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
                     count,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
-                      color: Color(0xff4B5563),
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -130,7 +130,7 @@ class _ChatListState extends State<ChatList> {
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        color: isActive ? const Color(0xffFEE2E2) : Colors.transparent,
+        color: isActive ? (Theme.of(context).brightness == Brightness.light ? const Color(0xffFEE2E2) : Theme.of(context).colorScheme.primary.withOpacity(0.2)) : Colors.transparent,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -161,17 +161,17 @@ class _ChatListState extends State<ChatList> {
                     children: [
                       Text(
                         name,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 14,
-                          color: Color(0xff111827),
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
                       Text(
                         time,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 12,
-                          color: Color(0xff6B7280),
+                          color: Theme.of(context).textTheme.bodySmall?.color,
                         ),
                       ),
                     ],
@@ -179,9 +179,9 @@ class _ChatListState extends State<ChatList> {
                   const SizedBox(height: 4),
                   Text(
                     preview,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 13,
-                      color: Color(0xff6B7280),
+                      color: Theme.of(context).textTheme.bodySmall?.color,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

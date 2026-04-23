@@ -8,49 +8,54 @@ class ActivityList extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xffEEEEEE)),
+        border: Border.all(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(Icons.trending_up, color: Colors.grey, size: 20),
-              SizedBox(width: 8),
+              Icon(Icons.trending_up, color: Theme.of(context).iconTheme.color, size: 20),
+              const SizedBox(width: 8),
               Text(
                 "Recent Activity",
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xff111827),
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
             ],
           ),
           const SizedBox(height: 24),
           _buildActivityItem(
+            context,
             "New order #1234 from Sarah Johnson",
             "5 minutes ago",
             true,
           ),
           _buildActivityItem(
+            context,
             "Booking confirmed for Michael Chen",
             "12 minutes ago",
             false,
           ),
           _buildActivityItem(
+            context,
             "New message from Instagram - Emma Wilson",
             "23 minutes ago",
             false,
           ),
           _buildActivityItem(
+            context,
             "Payment received - \$450.00",
             "1 hour ago",
             false,
           ),
           _buildActivityItem(
+            context,
             "Support ticket #567 opened",
             "2 hours ago",
             false,
@@ -60,13 +65,13 @@ class ActivityList extends StatelessWidget {
     );
   }
 
-  Widget _buildActivityItem(String activity, String time, bool isNew) {
+  Widget _buildActivityItem(BuildContext context, String activity, String time, bool isNew) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: const Color(0xffF9FAFB),
+          color: Theme.of(context).scaffoldBackgroundColor,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
@@ -74,8 +79,8 @@ class ActivityList extends StatelessWidget {
             Container(
               width: 8,
               height: 8,
-              decoration: const BoxDecoration(
-                color: Color(0xff4F46E5),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
                 shape: BoxShape.circle,
               ),
             ),
@@ -86,18 +91,18 @@ class ActivityList extends StatelessWidget {
                 children: [
                   Text(
                     activity,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
-                      color: Color(0xff374151),
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     time,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
-                      color: Colors.grey,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
                     ),
                   ),
                 ],

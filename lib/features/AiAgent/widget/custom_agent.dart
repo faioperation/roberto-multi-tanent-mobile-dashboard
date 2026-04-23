@@ -22,10 +22,10 @@ class _CustomAgentState extends State<CustomAgent> {
           width: double.infinity,
           padding: EdgeInsets.all(isSmall ? 16 : 20),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).cardTheme.color,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: Colors.black12,
+              color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE),
               width: 1,
             ),
           ),
@@ -36,7 +36,7 @@ class _CustomAgentState extends State<CustomAgent> {
               const SizedBox(height: 7),
               Text(
                 "Your AI agent is ready to configure and train.",
-                style: TextStyle(fontSize: isSmall ? 12 : 14, color: Colors.grey),
+                style: TextStyle(fontSize: isSmall ? 12 : 14, color: Theme.of(context).textTheme.bodyMedium?.color),
               ),
               const SizedBox(height: 27),
               _buildStatusSection(isSmall),
@@ -50,12 +50,12 @@ class _CustomAgentState extends State<CustomAgent> {
   Widget _buildTopHeader(bool isSmall) {
     return Row(
       children: [
-        SvgPicture.asset(
-          'assets/agent.svg',
-          width: isSmall ? 20 : 23,
-          height: isSmall ? 20 : 23,
-          color: AppColor.black,
-        ),
+          SvgPicture.asset(
+            'assets/agent.svg',
+            width: isSmall ? 20 : 23,
+            height: isSmall ? 20 : 23,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
         const SizedBox(width: 8),
         Text(
           "AI Agent Status",
@@ -84,7 +84,7 @@ class _CustomAgentState extends State<CustomAgent> {
           "AI is handling conversations automatically",
           style: TextStyle(
             fontSize: isSmall ? 12 : 14,
-            color: Colors.grey,
+            color: Theme.of(context).textTheme.bodyMedium?.color,
           ),
         ),
       ],
@@ -100,7 +100,7 @@ class _CustomAgentState extends State<CustomAgent> {
             isOn = value;
           });
         },
-        activeColor: AppColor.mini,
+        activeColor: Theme.of(context).colorScheme.primary,
       ),
     );
 
@@ -122,11 +122,11 @@ class _CustomAgentState extends State<CustomAgent> {
             ],
           ),
           const SizedBox(height: 4),
-          const Text(
+          Text(
             "AI is handling conversations automatically",
             style: TextStyle(
               fontSize: 12,
-              color: Colors.grey,
+              color: Theme.of(context).textTheme.bodyMedium?.color,
             ),
           ),
         ],

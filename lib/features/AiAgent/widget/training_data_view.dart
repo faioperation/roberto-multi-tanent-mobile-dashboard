@@ -29,40 +29,41 @@ class _TrainingDataViewState extends State<TrainingDataView> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.black12, width: 1),
+        border: Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE), width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Header Texts
-          const Text(
+          Text(
             'Business Training Data',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
-              color: Color(0xff111827),
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
           const SizedBox(height: 6),
-          const Text(
+          Text(
             'Provide business-specific information to train your AI agent',
-            style: TextStyle(fontSize: 14, color: Colors.grey),
+            style: TextStyle(fontSize: 14, color: Theme.of(context).textTheme.bodyMedium?.color),
           ),
           const SizedBox(height: 24),
 
           // Business Information Textfield
-          const Text(
+          Text(
             'Business Information',
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w500,
-              color: Color(0xff111827),
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
           const SizedBox(height: 8),
@@ -102,7 +103,7 @@ class _TrainingDataViewState extends State<TrainingDataView> {
               style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
             ),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xffE11D48), // Match the red color
+              backgroundColor: theme.colorScheme.primary,
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
               shape: RoundedRectangleBorder(
@@ -121,15 +122,16 @@ class _TrainingDataViewState extends State<TrainingDataView> {
     required String iconText,
     required IconData iconData,
   }) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: Color(0xff111827),
+            color: theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 8),
@@ -140,7 +142,7 @@ class _TrainingDataViewState extends State<TrainingDataView> {
           borderRadius: BorderRadius.circular(8),
           child: CustomPaint(
             painter: DashedRectPainter(
-              color: AppColor.mini,
+              color: theme.colorScheme.primary,
               strokeWidth: 1.5,
               dashWidth: 6.0,
               dashSpace: 4.0,
@@ -151,13 +153,13 @@ class _TrainingDataViewState extends State<TrainingDataView> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(iconData, color: AppColor.mini, size: 28),
+                  Icon(iconData, color: theme.colorScheme.primary, size: 28),
                   const SizedBox(height: 8),
                   Text(
                     iconText,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 13,
-                      color: Colors.grey,
+                      color: theme.textTheme.bodyMedium?.color,
                       fontWeight: FontWeight.w500,
                     ),
                   ),

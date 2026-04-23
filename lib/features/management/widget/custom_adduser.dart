@@ -2,27 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:roberto/app/app_color.dart';
 import 'package:roberto/features/Auth/widget/custom_textfield.dart';
 
-class CustomAddbranch extends StatefulWidget {
+class CustomAdduser extends StatefulWidget {
   final bool isEdit;
-  final String? branchName;
+  final String? username;
+  final String? mail;
   final String? location;
-  final String? address;
   final String? status;
 
-  const CustomAddbranch({
+  const CustomAdduser({
     super.key,
     this.isEdit = false,
-    this.branchName,
+    this.username,
+    this.mail,
     this.location,
-    this.address,
     this.status,
   });
 
   @override
-  State<CustomAddbranch> createState() => _CustomAddbranchState();
+  State<CustomAdduser> createState() => _CustomAdduserState();
 }
 
-class _CustomAddbranchState extends State<CustomAddbranch> {
+class _CustomAdduserState extends State<CustomAdduser> {
+  bool _obscurePassword = true;
   String _selectedStatus = "Active";
 
   @override
@@ -38,6 +39,7 @@ class _CustomAddbranchState extends State<CustomAddbranch> {
       }
     }
   }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -66,24 +68,53 @@ class _CustomAddbranchState extends State<CustomAddbranch> {
               const SizedBox(height: 24),
 
               // Form Fields
-              _buildFieldLabel(context, "Branch Name"),
+              _buildFieldLabel(context, "User Name"),
               CustomTextfield(
-                hintText: "Main Branch",
-                initialValue: widget.branchName,
+                hintText: "John Smith",
+                initialValue: widget.username,
               ),
               const SizedBox(height: 16),
 
-              _buildFieldLabel(context, "Location"),
+              _buildFieldLabel(context, "User Mail"),
               CustomTextfield(
-                hintText: "Dhaka, Bangladesh",
-                initialValue: widget.location,
+                hintText: "john12@gmail.com",
+                initialValue: widget.mail,
               ),
               const SizedBox(height: 16),
 
-              _buildFieldLabel(context, "Address"),
-              CustomTextfield(
-                hintText: "123 Street Name, Area",
-                initialValue: widget.address,
+              // _buildFieldLabel(context, "Address"),
+              // CustomTextfield(
+              //   hintText: "New York, NY",
+              //   initialValue: widget.location,
+              // ),
+              // const SizedBox(height: 16),
+
+              _buildFieldLabel(context, "Password"),
+              TextField(
+                obscureText: _obscurePassword,
+                style: TextStyle(fontSize: 14, color: theme.colorScheme.onSurface),
+                decoration: InputDecoration(
+                  hintText: "••••••••",
+                  hintStyle: TextStyle(fontSize: 14, color: theme.textTheme.bodySmall?.color),
+                  filled: true,
+                  fillColor: theme.brightness == Brightness.dark ? theme.colorScheme.surface : const Color(0xffF9FAFB),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: theme.dividerTheme.color ?? Colors.transparent),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: theme.dividerTheme.color ?? Colors.transparent),
+                  ),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                      size: 20,
+                      color: theme.textTheme.bodySmall?.color,
+                    ),
+                    onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                  ),
+                ),
               ),
               const SizedBox(height: 16),
 
@@ -110,7 +141,7 @@ class _CustomAddbranchState extends State<CustomAddbranch> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget.isEdit ? "Update Branch" : "Create New Branch",
+                widget.isEdit ? "Update User" : "Create New User",
                 style: TextStyle(
                   fontSize: isMobile ? 18 : 22,
                   fontWeight: FontWeight.bold,
@@ -119,7 +150,7 @@ class _CustomAddbranchState extends State<CustomAddbranch> {
               ),
               const SizedBox(height: 4),
               Text(
-                widget.isEdit ? "Update branch location details" : "Add a new business location",
+                widget.isEdit ? "Update user account details" : "Add a new User to your business",
                 style: TextStyle(
                   fontSize: isMobile ? 12 : 14,
                   color: theme.textTheme.bodySmall?.color,
@@ -138,41 +169,6 @@ class _CustomAddbranchState extends State<CustomAddbranch> {
     );
   }
 
-  Widget _buildStatusDropdown(ThemeData theme) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      decoration: BoxDecoration(
-        color: theme.brightness == Brightness.dark
-            ? theme.colorScheme.surface
-            : const Color(0xffF9FAFB),
-        borderRadius: BorderRadius.circular(12),
-        border:
-            Border.all(color: theme.dividerTheme.color ?? Colors.transparent),
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          value: _selectedStatus,
-          isExpanded: true,
-          dropdownColor: theme.cardTheme.color,
-          items: ["Active", "Inactive"]
-              .map((s) => DropdownMenuItem(
-                    value: s,
-                    child: Text(s,
-                        style: TextStyle(
-                            fontSize: 14, color: theme.colorScheme.onSurface)),
-                  ))
-              .toList(),
-          onChanged: (v) {
-            if (v != null) {
-              setState(() => _selectedStatus = v);
-            }
-          },
-        ),
-      ),
-    );
-  }
-
   Widget _buildFieldLabel(BuildContext context, String label) {
     final theme = Theme.of(context);
     return Padding(
@@ -183,6 +179,34 @@ class _CustomAddbranchState extends State<CustomAddbranch> {
           fontSize: 14,
           fontWeight: FontWeight.w500,
           color: theme.colorScheme.onSurface,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatusDropdown(ThemeData theme) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      decoration: BoxDecoration(
+        color: theme.brightness == Brightness.dark ? theme.colorScheme.surface : const Color(0xffF9FAFB),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: theme.dividerTheme.color ?? Colors.transparent),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          value: _selectedStatus,
+          isExpanded: true,
+          dropdownColor: theme.cardTheme.color,
+          items: ["Active", "Inactive"].map((s) => DropdownMenuItem(
+            value: s,
+            child: Text(s, style: TextStyle(fontSize: 14, color: theme.colorScheme.onSurface)),
+          )).toList(),
+          onChanged: (v) {
+            if (v != null) {
+              setState(() => _selectedStatus = v);
+            }
+          },
         ),
       ),
     );
@@ -219,7 +243,7 @@ class _CustomAddbranchState extends State<CustomAddbranch> {
       onPressed: () => Navigator.pop(context),
       child: Center(
         child: Text(
-          widget.isEdit ? "Update branch" : "Create branch",
+          widget.isEdit ? "Update User" : "Create User",
           style: const TextStyle(fontWeight: FontWeight.w600),
         ),
       ),

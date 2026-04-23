@@ -27,12 +27,12 @@ class CustomPlan extends StatelessWidget {
           margin: const EdgeInsets.all(8),
           padding: const EdgeInsets.fromLTRB(20, 50, 20, 20),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).cardTheme.color,
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.grey.shade200),
+            border: Border.all(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE)),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Theme.of(context).shadowColor.withOpacity(Theme.of(context).brightness == Brightness.light ? 0.05 : 0.15),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -43,9 +43,10 @@ class CustomPlan extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w700,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 4),
@@ -54,7 +55,7 @@ class CustomPlan extends StatelessWidget {
                 subtitle,
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.grey.shade500,
+                  color: Theme.of(context).textTheme.bodyMedium?.color,
                 ),
               ),
 
@@ -65,17 +66,17 @@ class CustomPlan extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: price,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 36,
                         fontWeight: FontWeight.w800,
-                        color: Colors.black,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
-                    const TextSpan(
+                    TextSpan(
                       text: '/month',
                       style: TextStyle(
                         fontSize: 14,
-                        color: Colors.black54,
+                        color: Theme.of(context).textTheme.bodySmall?.color,
                       ),
                     ),
                   ],
@@ -101,15 +102,15 @@ class CustomPlan extends StatelessWidget {
               width: 70,
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).cardTheme.color,
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: Colors.grey.shade300,
+                  color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE),
                   width: 2,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Theme.of(context).shadowColor.withOpacity(Theme.of(context).brightness == Brightness.light ? 0.1 : 0.25),
                     blurRadius: 10,
                   ),
                 ],
@@ -137,16 +138,16 @@ class _FeatureItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         children: [
-          const Icon(
+          Icon(
             Icons.check,
             size: 16,
-            color: Color(0xFF7C6FF7),
+            color: Theme.of(context).colorScheme.primary,
           ),
           const SizedBox(width: 10),
           Expanded(
             child: Text(
               text,
-              style: const TextStyle(fontSize: 14),
+              style: TextStyle(fontSize: 14, color: Theme.of(context).colorScheme.onSurface),
             ),
           ),
         ],

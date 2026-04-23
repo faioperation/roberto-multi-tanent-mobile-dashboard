@@ -28,6 +28,7 @@ class CustomLeadRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     bool isDesktop = MediaQuery.of(context).size.width > 900;
 
     if (!isDesktop) {
@@ -37,7 +38,7 @@ class CustomLeadRow extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.grey.shade200)),
+        border: Border(bottom: BorderSide(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE))),
       ),
       child: Row(
         children: [
@@ -46,9 +47,10 @@ class CustomLeadRow extends StatelessWidget {
             flex: 2,
             child: Text(
               name,
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 14,
+                color: theme.colorScheme.onSurface,
               ),
             ),
           ),
@@ -60,10 +62,10 @@ class CustomLeadRow extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(email,
-                    style: const TextStyle(fontSize: 14, color: AppColor.black)),
+                    style: TextStyle(fontSize: 14, color: theme.colorScheme.onSurface)),
                 const SizedBox(height: 4),
                 Text(phone,
-                    style: const TextStyle(fontSize: 13, color: Colors.grey)),
+                    style: TextStyle(fontSize: 13, color: theme.textTheme.bodySmall?.color)),
               ],
             ),
           ),
@@ -76,14 +78,14 @@ class CustomLeadRow extends StatelessWidget {
                 Icon(
                   socialIcon,
                   size: 18,
-                  color: AppColor.black,
+                  color: theme.colorScheme.onSurface,
                 ),
                 const SizedBox(width: 6),
                 Text(
                   socialText,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 12,
-                    color: AppColor.black,
+                    color: theme.colorScheme.onSurface,
                   ),
                 ),
               ],
@@ -118,9 +120,9 @@ class CustomLeadRow extends StatelessWidget {
             flex: 2,
             child: Text(
               time,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 12,
-                color: AppColor.black,
+                color: theme.colorScheme.onSurface,
               ),
             ),
           ),
@@ -134,7 +136,7 @@ class CustomLeadRow extends StatelessWidget {
                 onPressed: () => _showLeadDetails(context),
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),
-                icon: const Icon(Icons.visibility, size: 20),
+                icon: Icon(Icons.visibility, size: 20, color: theme.textTheme.bodySmall?.color),
               ),
             ),
           ),
@@ -144,10 +146,11 @@ class CustomLeadRow extends StatelessWidget {
   }
 
   Widget _buildMobileCard(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.grey.shade200)),
+        border: Border(bottom: BorderSide(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE))),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -157,9 +160,10 @@ class CustomLeadRow extends StatelessWidget {
             children: [
               Text(
                 name,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 16,
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
               Container(
@@ -181,27 +185,27 @@ class CustomLeadRow extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(email,
-              style: const TextStyle(fontSize: 14, color: AppColor.black)),
+              style: TextStyle(fontSize: 14, color: theme.colorScheme.onSurface)),
           const SizedBox(height: 4),
-          Text(phone, style: const TextStyle(fontSize: 13, color: Colors.grey)),
+          Text(phone, style: TextStyle(fontSize: 13, color: theme.textTheme.bodySmall?.color)),
           const SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 children: [
-                   Icon(socialIcon, size: 16, color: Colors.grey),
+                   Icon(socialIcon, size: 16, color: theme.textTheme.bodySmall?.color),
                   const SizedBox(width: 4),
                   Text(
                     socialText,
-                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                    style: TextStyle(fontSize: 12, color: theme.textTheme.bodySmall?.color),
                   ),
                   const SizedBox(width: 16),
-                  const Icon(Icons.access_time, size: 14, color: Colors.grey),
+                  Icon(Icons.access_time, size: 14, color: theme.textTheme.bodySmall?.color),
                   const SizedBox(width: 4),
                   Text(
                     time,
-                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                    style: TextStyle(fontSize: 12, color: theme.textTheme.bodySmall?.color),
                   ),
                 ],
               ),
@@ -209,7 +213,7 @@ class CustomLeadRow extends StatelessWidget {
                 onPressed: () => _showLeadDetails(context),
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),
-                icon: const Icon(Icons.visibility, size: 20, color: Colors.grey),
+                icon: Icon(Icons.visibility, size: 20, color: theme.textTheme.bodySmall?.color),
               ),
             ],
           ),
@@ -222,15 +226,17 @@ class CustomLeadRow extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) {
+        final theme = Theme.of(context);
         final width = MediaQuery.of(context).size.width;
         return Dialog(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          backgroundColor: theme.cardTheme.color,
           child: Container(
             width: width < 600 ? width * 0.9 : 500,
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: AppColor.white,
+              color: theme.cardTheme.color,
               borderRadius: BorderRadius.circular(12),
             ),
             child: Column(
@@ -245,21 +251,21 @@ class CustomLeadRow extends StatelessWidget {
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
+                        children: [
                           Text(
                             "Lead Details",
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: AppColor.black,
+                              color: theme.colorScheme.onSurface,
                             ),
                           ),
-                          SizedBox(height: 4),
+                          const SizedBox(height: 4),
                           Text(
                             "View and manage lead information",
                             style: TextStyle(
                               fontSize: 14,
-                              color: AppColor.grey,
+                              color: theme.textTheme.bodySmall?.color,
                             ),
                           ),
                         ],
@@ -267,7 +273,7 @@ class CustomLeadRow extends StatelessWidget {
                     ),
                     IconButton(
                       onPressed: () => Navigator.pop(context),
-                      icon: const Icon(Icons.close, color: AppColor.grey),
+                      icon: Icon(Icons.close, color: theme.textTheme.bodySmall?.color),
                       padding: EdgeInsets.zero,
                       constraints: const BoxConstraints(),
                     ),
@@ -280,19 +286,19 @@ class CustomLeadRow extends StatelessWidget {
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildDetailField("Name", name, isBold: true),
+                          _buildDetailField(context, "Name", name, isBold: true),
                           const SizedBox(height: 20),
-                          _buildStatusField(),
+                          _buildStatusField(context),
                         ],
                       )
                     : Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
-                            child: _buildDetailField("Name", name, isBold: true),
+                            child: _buildDetailField(context, "Name", name, isBold: true),
                           ),
                           Expanded(
-                            child: _buildStatusField(),
+                            child: _buildStatusField(context),
                           ),
                         ],
                       ),
@@ -301,19 +307,19 @@ class CustomLeadRow extends StatelessWidget {
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildDetailField("Email", email),
+                          _buildDetailField(context, "Email", email),
                           const SizedBox(height: 20),
-                          _buildDetailField("Phone", phone),
+                          _buildDetailField(context, "Phone", phone),
                         ],
                       )
                     : Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
-                            child: _buildDetailField("Email", email),
+                            child: _buildDetailField(context, "Email", email),
                           ),
                           Expanded(
-                            child: _buildDetailField("Phone", phone),
+                            child: _buildDetailField(context, "Phone", phone),
                           ),
                         ],
                       ),
@@ -322,39 +328,39 @@ class CustomLeadRow extends StatelessWidget {
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildSourceField(),
+                          _buildSourceField(context),
                           const SizedBox(height: 20),
-                          _buildDetailField("Last Contact", time),
+                          _buildDetailField(context, "Last Contact", time),
                         ],
                       )
                     : Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
-                            child: _buildSourceField(),
+                            child: _buildSourceField(context),
                           ),
                           Expanded(
-                            child: _buildDetailField("Last Contact", time),
+                            child: _buildDetailField(context, "Last Contact", time),
                           ),
                         ],
                       ),
                 const SizedBox(height: 20),
 
                 // Notes
-                const Text(
+                Text(
                   "Notes",
                   style: TextStyle(
                     fontSize: 13,
-                    color: AppColor.grey,
+                    color: theme.textTheme.bodySmall?.color,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 const SizedBox(height: 6),
                 Text(
                   notes ?? "No notes available for this lead.",
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
-                    color: AppColor.black,
+                    color: theme.colorScheme.onSurface,
                   ),
                 ),
               ],
@@ -365,15 +371,16 @@ class CustomLeadRow extends StatelessWidget {
     );
   }
 
-  Widget _buildStatusField() {
+  Widget _buildStatusField(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           "Status",
           style: TextStyle(
             fontSize: 13,
-            color: AppColor.grey,
+            color: theme.textTheme.bodySmall?.color,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -397,28 +404,29 @@ class CustomLeadRow extends StatelessWidget {
     );
   }
 
-  Widget _buildSourceField() {
+  Widget _buildSourceField(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           "Source",
           style: TextStyle(
             fontSize: 13,
-            color: AppColor.grey,
+            color: theme.textTheme.bodySmall?.color,
             fontWeight: FontWeight.w500,
           ),
         ),
         const SizedBox(height: 6),
         Row(
           children: [
-            Icon(socialIcon, size: 16, color: AppColor.black),
+            Icon(socialIcon, size: 16, color: theme.colorScheme.onSurface),
             const SizedBox(width: 8),
             Text(
               socialText,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14,
-                color: AppColor.black,
+                color: theme.colorScheme.onSurface,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -428,15 +436,16 @@ class CustomLeadRow extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailField(String label, String value, {bool isBold = false}) {
+  Widget _buildDetailField(BuildContext context, String label, String value, {bool isBold = false}) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 13,
-            color: AppColor.grey,
+            color: theme.textTheme.bodySmall?.color,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -445,7 +454,7 @@ class CustomLeadRow extends StatelessWidget {
           value,
           style: TextStyle(
             fontSize: 14,
-            color: AppColor.black,
+            color: theme.colorScheme.onSurface,
             fontWeight: isBold ? FontWeight.bold : FontWeight.w500,
           ),
         ),

@@ -14,9 +14,9 @@ class CustomPricingrule extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColor.white,
+        color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade300),
+        border: Border.all(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,11 +29,11 @@ class CustomPricingrule extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 6),
-          const Text(
+          Text(
             "Configure automatic pricing based on weight, product type, or custom conditions",
             style: TextStyle(
               fontSize: 15,
-              color: Colors.grey,
+              color: Theme.of(context).textTheme.bodyMedium?.color,
             ),
           ),
           const SizedBox(height: 26),
@@ -41,9 +41,9 @@ class CustomPricingrule extends StatelessWidget {
           if (isDesktop)
             Container(
               decoration: BoxDecoration(
-                color: AppColor.white,
+                color: Theme.of(context).cardTheme.color,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: const Color(0xffE5E7EB)),
+                border: Border.all(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE)),
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -54,7 +54,7 @@ class CustomPricingrule extends StatelessWidget {
                         horizontal: 20,
                         vertical: 14,
                       ),
-                      color: AppColor.secondary,
+                      color: Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.surface : AppColor.secondary,
                       child: Row(
                         children: const [
                           Expanded(

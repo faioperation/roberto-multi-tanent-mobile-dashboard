@@ -6,8 +6,11 @@ class ChatDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    
     return Container(
-      color: Colors.white,
+      color: theme.cardTheme.color,
       child: Column(
         children: [
           // Header info
@@ -17,7 +20,7 @@ class ChatDetails extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Column(
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -25,15 +28,15 @@ class ChatDetails extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 16,
-                        color: Color(0xff111827),
+                        color: theme.colorScheme.onSurface,
                       ),
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Text(
                       "+992371836",
                       style: TextStyle(
                         fontSize: 14,
-                        color: Color(0xff4B5563),
+                        color: theme.textTheme.bodySmall?.color,
                       ),
                     ),
                   ],
@@ -41,13 +44,13 @@ class ChatDetails extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                   decoration: BoxDecoration(
-                    color: const Color(0xffFEE2E2),
+                    color: theme.colorScheme.secondary,
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: const Text(
+                  child: Text(
                     "cold",
                     style: TextStyle(
-                      color: AppColor.primary,
+                      color: isDark ? theme.colorScheme.onSecondary : AppColor.primary,
                       fontWeight: FontWeight.w500,
                       fontSize: 12,
                     ),
@@ -64,7 +67,7 @@ class ChatDetails extends StatelessWidget {
                 // Chat summary card
                 Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: const Color(0xffE5E7EB)),
+                    border: Border.all(color: theme.dividerTheme.color ?? (isDark ? AppColor.borderDark : AppColor.borderLight)),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Column(
@@ -87,12 +90,12 @@ class ChatDetails extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.all(16),
+                      Padding(
+                        padding: const EdgeInsets.all(16),
                         child: Text(
                           "Customer booked a uganda pickup in Kampala for 30 kg of clothes to be collected Sunday 2026-04-08 around 9:20; location pin and item list were provided, rate explained (16 QAR/kg with a 30 kg minimum) driver will call before arrival.",
                           style: TextStyle(
-                            color: Color(0xff374151),
+                            color: theme.colorScheme.onSurface.withOpacity(0.8),
                             fontSize: 14,
                             height: 1.5,
                           ),
@@ -107,7 +110,7 @@ class ChatDetails extends StatelessWidget {
                 // Recent Chat Details form
                 Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: const Color(0xffE5E7EB)),
+                    border: Border.all(color: theme.dividerTheme.color ?? (isDark ? AppColor.borderDark : AppColor.borderLight)),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Column(
@@ -134,21 +137,21 @@ class ChatDetails extends StatelessWidget {
                         padding: const EdgeInsets.all(16),
                         child: Column(
                           children: [
-                            _buildFormField("Items", "Clothes"),
+                            _buildFormField(context, "Items", "Clothes"),
                             const SizedBox(height: 16),
-                            _buildFormField("Pickup Area", "Banasreee, Dhaka, Bangladesh"),
+                            _buildFormField(context, "Pickup Area", "Banasreee, Dhaka, Bangladesh"),
                             const SizedBox(height: 16),
-                            _buildFormField("Destination", "Uganda, Kampala"),
+                            _buildFormField(context, "Destination", "Uganda, Kampala"),
                             const SizedBox(height: 16),
-                            _buildFormField("Weight", "16 kg"),
+                            _buildFormField(context, "Weight", "16 kg"),
                             const SizedBox(height: 16),
-                            _buildFormField("Pickup Date & Time", "Sunday, April 5, 2026 at 9:00 AM"),
+                            _buildFormField(context, "Pickup Date & Time", "Sunday, April 5, 2026 at 9:00 AM"),
                             const SizedBox(height: 16),
-                            _buildFormField("Current status", "pending"),
+                            _buildFormField(context, "Current status", "pending"),
                             const SizedBox(height: 16),
-                            _buildFormField("Recent summary", "summary...."),
+                            _buildFormField(context, "Recent summary", "summary...."),
                             const SizedBox(height: 16),
-                            _buildFormField("Booking info", "informa......"),
+                            _buildFormField(context, "Booking info", "informa......"),
                           ],
                         ),
                       ),
@@ -164,16 +167,17 @@ class ChatDetails extends StatelessWidget {
     );
   }
 
-  Widget _buildFormField(String label, String value) {
+  Widget _buildFormField(BuildContext context, String label, String value) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.w500,
-            color: Color(0xff374151),
+            color: theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 8),
@@ -181,14 +185,15 @@ class ChatDetails extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           decoration: BoxDecoration(
-            border: Border.all(color: const Color(0xffD1D5DB)),
+            border: Border.all(color: theme.dividerTheme.color ?? Colors.grey.shade300),
             borderRadius: BorderRadius.circular(8),
+            color: theme.cardTheme.color,
           ),
           child: Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 14,
-              color: Color(0xff6B7280),
+              color: theme.textTheme.bodySmall?.color,
             ),
           ),
         ),

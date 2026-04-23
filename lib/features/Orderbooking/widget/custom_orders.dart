@@ -25,7 +25,7 @@ class CustomOrders extends StatelessWidget {
         return StatefulBuilder(
           builder: (context, setDialogState) {
             return Dialog(
-              backgroundColor: AppColor.white,
+              backgroundColor: Theme.of(context).cardTheme.color,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
@@ -40,30 +40,30 @@ class CustomOrders extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Row(
+                        Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.info_outline,
                               color: AppColor.primary,
                               size: 20,
                             ),
-                            SizedBox(width: 8),
+                            const SizedBox(width: 8),
                             Text(
                               'Update Order Status',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                color: Color(0xff111827),
+                                color: Theme.of(context).colorScheme.onSurface,
                               ),
                             ),
                           ],
                         ),
                         IconButton(
                           onPressed: () => Navigator.pop(dialogContext),
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.close,
                             size: 20,
-                            color: Color(0xff9CA3AF),
+                            color: Theme.of(context).textTheme.bodySmall?.color,
                           ),
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
@@ -75,9 +75,9 @@ class CustomOrders extends StatelessWidget {
 
                     Text(
                       'Update the delivery status for order ${order.orderId}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13,
-                        color: Color(0xff6B7280),
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
                       ),
                     ),
 
@@ -87,7 +87,7 @@ class CustomOrders extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: const Color(0xffF0F7FF),
+                        color: Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.surface : const Color(0xffF0F7FF),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Column(
@@ -105,12 +105,12 @@ class CustomOrders extends StatelessWidget {
 
                     const SizedBox(height: 20),
 
-                    const Text(
+                    Text(
                       'New Status',
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xff374151),
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
 
@@ -119,7 +119,7 @@ class CustomOrders extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       decoration: BoxDecoration(
-                        border: Border.all(color: AppColor.white),
+                        border: Border.all(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE)),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: DropdownButtonHideUnderline(
@@ -141,7 +141,7 @@ class CustomOrders extends StatelessWidget {
                                         ? Icons.check_circle
                                         : Icons.access_time,
                                     size: 16,
-                                    color: AppColor.black,
+                                    color: Theme.of(context).iconTheme.color,
                                   ),
                                   const SizedBox(width: 8),
                                   Text(
@@ -165,12 +165,12 @@ class CustomOrders extends StatelessWidget {
 
                     const SizedBox(height: 20),
 
-                    const Text(
+                    Text(
                       'Notes (Optional)',
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xff374151),
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
 
@@ -181,19 +181,19 @@ class CustomOrders extends StatelessWidget {
                       maxLines: 3,
                       decoration: InputDecoration(
                         hintText: 'Add any notes about this update...',
-                        hintStyle: const TextStyle(
+                        hintStyle: TextStyle(
                           fontSize: 13,
-                          color: Color(0xff9CA3AF),
+                          color: Theme.of(context).textTheme.bodySmall?.color,
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                           borderSide:
-                          const BorderSide(color: Color(0xffD1D5DB)),
+                          BorderSide(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE)),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                           borderSide:
-                          const BorderSide(color: Color(0xffD1D5DB)),
+                          BorderSide(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE)),
                         ),
                       ),
                     ),
@@ -203,7 +203,7 @@ class CustomOrders extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: const Color(0xffFFF1F2),
+                        color: Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.surface : const Color(0xffFFF1F2),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: const Text(
