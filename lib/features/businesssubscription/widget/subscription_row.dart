@@ -7,6 +7,7 @@ class SubscriptionRow extends StatelessWidget {
   final String price;
   final String expireDate;
   final String status;
+  final bool isMobile;
 
   const SubscriptionRow({
     super.key,
@@ -15,6 +16,7 @@ class SubscriptionRow extends StatelessWidget {
     required this.price,
     required this.expireDate,
     required this.status,
+    this.isMobile = false,
   });
 
   bool get isPaid => status.toLowerCase() == 'paid';
@@ -22,6 +24,10 @@ class SubscriptionRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (isMobile) {
+      return _buildMobileCard();
+    }
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
@@ -58,31 +64,7 @@ class SubscriptionRow extends StatelessWidget {
             flex: 2,
             child: Align(
               alignment: Alignment.centerLeft,
-              child: Container(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                decoration: BoxDecoration(
-                  color: isPaid
-                      ? const Color(0xFFE8F5E9)
-                      : const Color(0xFFFFEBEE),
-                  borderRadius: BorderRadius.circular(6),
-                  border: Border.all(
-                    color: isPaid
-                        ? const Color(0xFF2E7D32)
-                        : const Color(0xFFC62828),
-                  ),
-                ),
-                child: Text(
-                  status,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: isPaid
-                        ? const Color(0xFF2E7D32)
-                        : const Color(0xFFC62828),
-                  ),
-                ),
-              ),
+              child: _buildStatusPill(),
             ),
           ),
 
@@ -91,37 +73,134 @@ class SubscriptionRow extends StatelessWidget {
             flex: 2,
             child: isUnpaid
                 ? Align(
-              alignment: Alignment.centerLeft,
-              child: InkWell(
-                onTap: () {
-                  print("Renew Now clicked");
-                },
-                borderRadius: BorderRadius.circular(6),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: AppColor.white,
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(
-                      color: AppColor.grey,
-                      width: 1,
-                    ),
-                  ),
-                  child: const Text(
-                    "Renew Now",
-                    style: TextStyle(
-                      color: AppColor.black,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ),
-            )
+                    alignment: Alignment.centerLeft,
+                    child: _buildRenewButton(),
+                  )
                 : const SizedBox.shrink(),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildMobileCard() {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade200),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.02),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                plan,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: AppColor.black,
+                ),
+              ),
+              _buildStatusPill(),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildInfoColumn("Date", date),
+              _buildInfoColumn("Expire Date", expireDate),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              _buildInfoColumn("Pricing", price),
+              if (isUnpaid) _buildRenewButton(),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoColumn(String label, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(fontSize: 12, color: AppColor.grey),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          value,
+          style: const TextStyle(
+              fontSize: 14, fontWeight: FontWeight.w500, color: AppColor.black),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStatusPill() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: isPaid ? const Color(0xFFE8F5E9) : const Color(0xFFFFEBEE),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(
+          color: isPaid ? const Color(0xFF2E7D32) : const Color(0xFFC62828),
+        ),
+      ),
+      child: Text(
+        status,
+        style: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+          color: isPaid ? const Color(0xFF2E7D32) : const Color(0xFFC62828),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRenewButton() {
+    return InkWell(
+      onTap: () {
+        print("Renew Now clicked");
+      },
+      borderRadius: BorderRadius.circular(6),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          color: AppColor.white,
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(
+            color: AppColor.grey,
+            width: 1,
+          ),
+        ),
+        child: const Text(
+          "Renew Now",
+          style: TextStyle(
+            color: AppColor.black,
+            fontSize: 13,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
       ),
     );
   }

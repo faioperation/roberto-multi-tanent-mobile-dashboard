@@ -31,65 +31,115 @@ class _CustomMediaState extends State<CustomMedia> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 600;
+
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(isMobile ? 12 : 16),
       decoration: BoxDecoration(
         color: AppColor.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.grey.shade300),
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // ICON
-          SvgPicture.asset(
-            widget.iconPath,
-            height: 45,
-            width: 45,
-          ),
-
-          const SizedBox(width: 22),
-
-          // TITLE + SUBTITLE
-          Expanded(
-            child: Column(
+      child: isMobile
+          ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  widget.title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: AppColor.black,
+                Row(
+                  children: [
+                    SvgPicture.asset(
+                      widget.iconPath,
+                      height: 40,
+                      width: 40,
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.title,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: AppColor.black,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            widget.subtitle,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: AppColor.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    if (_isConnected) ...[
+                      _buildConnectedButton(),
+                      const SizedBox(width: 8),
+                    ],
+                    _buildActionButton(),
+                  ],
+                ),
+              ],
+            )
+          : Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // ICON
+                SvgPicture.asset(
+                  widget.iconPath,
+                  height: 45,
+                  width: 45,
+                ),
+
+                const SizedBox(width: 22),
+
+                // TITLE + SUBTITLE
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.title,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: AppColor.black,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        widget.subtitle,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: AppColor.grey,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
 
-                const SizedBox(height: 6),
-
-                Text(
-                  widget.subtitle,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    color: AppColor.grey,
-                  ),
+                // BUTTONS (same line)
+                Row(
+                  children: [
+                    if (_isConnected) ...[
+                      _buildConnectedButton(),
+                      const SizedBox(width: 10),
+                    ],
+                    _buildActionButton(),
+                  ],
                 ),
               ],
             ),
-          ),
-
-          // BUTTONS (same line)
-          Row(
-            children: [
-              if (_isConnected) ...[
-                _buildConnectedButton(),
-                const SizedBox(width: 10),
-              ],
-              _buildActionButton(),
-            ],
-          ),
-        ],
-      ),
     );
   }
 

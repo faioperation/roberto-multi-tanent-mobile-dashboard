@@ -22,20 +22,20 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
         // HEADER
         Row(
           children: [
-            const Expanded(
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Subscription Management',
                     style: TextStyle(
-                      fontSize: 28,
+                      fontSize: MediaQuery.of(context).size.width < 600 ? 24 : 28,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xff111827),
+                      color: const Color(0xff111827),
                     ),
                   ),
-                  SizedBox(height: 6),
-                  Text(
+                  const SizedBox(height: 6),
+                  const Text(
                     'Manage plans, billing, and subscriptions',
                     style: TextStyle(fontSize: 15, color: Colors.grey),
                   ),

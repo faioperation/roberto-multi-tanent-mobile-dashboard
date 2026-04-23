@@ -21,7 +21,7 @@ class _AiagentScreenState extends State<AiagentScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // HEADER
-        const Row(
+        Row(
           children: [
             Expanded(
               child: Column(
@@ -30,13 +30,13 @@ class _AiagentScreenState extends State<AiagentScreen> {
                   Text(
                     'AI Agent Management',
                     style: TextStyle(
-                      fontSize: 28,
+                      fontSize: MediaQuery.of(context).size.width < 600 ? 24 : 28,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xff111827),
+                      color: const Color(0xff111827),
                     ),
                   ),
-                  SizedBox(height: 6),
-                  Text(
+                  const SizedBox(height: 6),
+                  const Text(
                     'Configure and train your AI assistant',
                     style: TextStyle(fontSize: 15, color: Colors.grey),
                   ),

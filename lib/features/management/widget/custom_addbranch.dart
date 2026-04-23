@@ -7,137 +7,151 @@ class CustomAddbranch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    bool isDesktop = width > 900;
+    final width = MediaQuery.of(context).size.width;
+    final bool isDesktop = width > 900;
+    final bool isMobile = width < 600;
 
-    return AlertDialog(
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       backgroundColor: AppColor.white,
-
-      //  Responsive width
-      contentPadding: EdgeInsets.symmetric(
-        horizontal: isDesktop ? 24 : 16,
-        vertical: 20,
-      ),
-
-      titlePadding: EdgeInsets.symmetric(
-        horizontal: isDesktop ? 24 : 16,
-        vertical: 16,
-      ),
-
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Create New Branch",
-                style: TextStyle(fontSize: isDesktop ? 20 : 16),
-              ),
-              InkWell(
-                onTap: () => Navigator.pop(context),
-                borderRadius: BorderRadius.circular(20),
-                child: const Icon(Icons.close, size: 20),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 6),
-
-          Text(
-            "Create New Branch",
-            style: TextStyle(
-              fontSize: isDesktop ? 14 : 12,
-              color: Colors.grey,
-            ),
-          ),
-        ],
-      ),
-
-      content: SizedBox(
-        width: isDesktop ? 450 : double.infinity,
+      child: Container(
+        width: isDesktop ? 500 : width * 0.9,
+        padding: const EdgeInsets.all(24),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("User Name "),
-              const SizedBox(height: 6),
+              // Header
+              _buildHeader(context, isMobile),
+              const SizedBox(height: 24),
+
+              // Form Fields
+              _buildFieldLabel("User Name"),
               const CustomTextfield(hintText: "John smith"),
+              const SizedBox(height: 16),
 
-              const SizedBox(height: 15),
-
-              const Text("User Mail"),
-              const SizedBox(height: 6),
+              _buildFieldLabel("User Mail"),
               const CustomTextfield(hintText: "john12@gmail.com"),
+              const SizedBox(height: 16),
 
-              const SizedBox(height: 15),
+              _buildFieldLabel("Address"),
+              const CustomTextfield(hintText: "New York, NY"),
+              const SizedBox(height: 16),
 
-              const Text("Address "),
-              const SizedBox(height: 6),
-              const CustomTextfield(hintText: "New York,NY"),
-
-              const SizedBox(height: 15),
-
-              const Text("Status"),
-              const SizedBox(height: 6),
+              _buildFieldLabel("Status"),
               const CustomTextfield(hintText: "Active"),
+              const SizedBox(height: 24),
 
-              const SizedBox(height: 15),
-
+              // Actions
+              _buildActions(context, isMobile),
             ],
           ),
         ),
       ),
+    );
+  }
 
-      actionsPadding: EdgeInsets.symmetric(
-        horizontal: isDesktop ? 24 : 12,
-        vertical: 10,
-      ),
-
-      actions: [
-        isDesktop
-            ? Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: _buttons(context),
-        )
-            : Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: _buttons(context),
+  Widget _buildHeader(BuildContext context, bool isMobile) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Create New Branch",
+                style: TextStyle(
+                  fontSize: isMobile ? 18 : 22,
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xff111827),
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                "Add a new business location",
+                style: TextStyle(
+                  fontSize: isMobile ? 12 : 14,
+                  color: Colors.grey.shade500,
+                ),
+              ),
+            ],
+          ),
+        ),
+        IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.close, color: Color(0xff6B7280), size: 20),
+          padding: EdgeInsets.zero,
+          constraints: const BoxConstraints(),
         ),
       ],
     );
   }
 
-  List<Widget> _buttons (BuildContext context) {
-    return [
-      ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColor.white,
+  Widget _buildFieldLabel(String label) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6),
+      child: Text(
+        label,
+        style: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+          color: Color(0xff374151),
         ),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        child: const Text(
+      ),
+    );
+  }
+
+  Widget _buildActions(BuildContext context, bool isMobile) {
+    final cancelBtn = OutlinedButton(
+      style: OutlinedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(vertical: 14),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        side: BorderSide(color: Colors.grey.shade300),
+      ),
+      onPressed: () => Navigator.pop(context),
+      child: const Center(
+        child: Text(
           "Cancel",
-          style: TextStyle(color: AppColor.black),
+          style: TextStyle(color: AppColor.black, fontWeight: FontWeight.w600),
         ),
       ),
-      const SizedBox(width: 10, height: 10),
-      ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColor.primary,
-        ),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        child: const Text(
-          "Create User",
-          style: TextStyle(color: AppColor.white),
+    );
+
+    final createBtn = ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColor.primary,
+        padding: const EdgeInsets.symmetric(vertical: 14),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        elevation: 0,
+      ),
+      onPressed: () => Navigator.pop(context),
+      child: const Center(
+        child: Text(
+          "Create Branch",
+          style: TextStyle(color: AppColor.white, fontWeight: FontWeight.w600),
         ),
       ),
-      const SizedBox(height: 15),
-    ];
+    );
+
+    if (isMobile) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          createBtn,
+          const SizedBox(height: 12),
+          cancelBtn,
+        ],
+      );
+    }
+
+    return Row(
+      children: [
+        Expanded(child: cancelBtn),
+        const SizedBox(width: 12),
+        Expanded(child: createBtn),
+      ],
+    );
   }
 }

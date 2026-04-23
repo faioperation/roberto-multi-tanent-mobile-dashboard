@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:roberto/app/app_color.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:roberto/features/Auth/widget/custom_textfield.dart';
 
 class TrainingDataView extends StatefulWidget {
@@ -11,6 +12,20 @@ class TrainingDataView extends StatefulWidget {
 }
 
 class _TrainingDataViewState extends State<TrainingDataView> {
+
+  List<String> selectedFiles = [];
+
+  Future<void> pickFile(String type) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.any,
+    );
+
+    if (result != null) {
+      setState(() {
+        selectedFiles.add(result.files.single.name);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +134,9 @@ class _TrainingDataViewState extends State<TrainingDataView> {
         ),
         const SizedBox(height: 8),
         InkWell(
-          onTap: () {},
+          onTap: () {
+            pickFile(label);
+            },
           borderRadius: BorderRadius.circular(8),
           child: CustomPaint(
             painter: DashedRectPainter(

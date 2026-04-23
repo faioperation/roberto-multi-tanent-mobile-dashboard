@@ -57,57 +57,54 @@ class _TenantScreenState extends State<TenantScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool isDesktop = MediaQuery.of(context).size.width > 900;
+    double width = MediaQuery.of(context).size.width;
+    bool isMobile = width < 600;
+    bool isDesktop = width > 900;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            const Expanded(
-              child: Column(
+        width < 600
+            ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Tenant Management',
                     style: TextStyle(
-                      fontSize: 28,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Color(0xff111827),
                     ),
                   ),
-                  SizedBox(height: 6),
-                  Text(
-                    'Manage businesses and their subscriptions',
-                    style: TextStyle(fontSize: 15, color: Colors.grey),
+                  const SizedBox(height: 12),
+                  _buildAddTenantButton(context),
+                ],
+              )
+            : Row(
+                children: [
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Tenant Management',
+                          style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xff111827),
+                          ),
+                        ),
+                        SizedBox(height: 6),
+                        Text(
+                          'Manage businesses and their subscriptions',
+                          style: TextStyle(fontSize: 15, color: Colors.grey),
+                        ),
+                      ],
+                    ),
                   ),
+                  _buildAddTenantButton(context),
                 ],
               ),
-            ),
-            ElevatedButton.icon(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => const CustomAddtenant(),
-                );
-              },
-              icon: const Icon(Icons.add, color: Colors.white, size: 18),
-              label: const Text(
-                'Add Tenant',
-                style: TextStyle(
-                    color: Colors.white, fontWeight: FontWeight.w600),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColor.primary,
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20, vertical: 14),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                elevation: 0,
-              ),
-            ),
-          ],
-        ),
 
         const SizedBox(height: 28),
 
@@ -200,31 +197,32 @@ class _TenantScreenState extends State<TenantScreen> {
               ),
 
               // Column headers
-              Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20, vertical: 12),
-                color: AppColor.secondary,
-                child: const Row(
-                  children: [
-                    Expanded(
-                        flex: 3,
-                        child: CustomHeadder(label: 'Business Name')),
-                    Expanded(
-                        flex: 3,
-                        child: CustomHeadder(label: 'Owner Name')),
-                    Expanded(
-                        flex: 4, child: CustomHeadder(label: 'Contact')),
-                    Expanded(flex: 2, child: CustomHeadder(label: 'Plan')),
-                    Expanded(flex: 2, child: CustomHeadder(label: 'Status')),
-                    Expanded(
-                        flex: 2,
-                        child: CustomHeadder(label: 'Plan Price')),
-                    Expanded(
-                        flex: 1,
-                        child: CustomHeadder(label: 'Actions')),
-                  ],
+              if (isDesktop)
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20, vertical: 12),
+                  color: AppColor.secondary,
+                  child: const Row(
+                    children: [
+                      Expanded(
+                          flex: 3,
+                          child: CustomHeadder(label: 'Business Name')),
+                      Expanded(
+                          flex: 3,
+                          child: CustomHeadder(label: 'Owner Name')),
+                      Expanded(
+                          flex: 4, child: CustomHeadder(label: 'Contact')),
+                      Expanded(flex: 2, child: CustomHeadder(label: 'Plan')),
+                      Expanded(flex: 2, child: CustomHeadder(label: 'Status')),
+                      Expanded(
+                          flex: 2,
+                          child: CustomHeadder(label: 'Plan Price')),
+                      Expanded(
+                          flex: 1,
+                          child: CustomHeadder(label: 'Actions')),
+                    ],
+                  ),
                 ),
-              ),
 
               // Rows
               ListView.separated(
@@ -236,7 +234,7 @@ class _TenantScreenState extends State<TenantScreen> {
                     height: 1, color: Color(0xffF3F4F6)),
                 itemBuilder: (context, index) {
                   final t = _tenants[index];
-                  return _buildRow(t);
+                  return isDesktop ? _buildRow(t) : _buildMobileCard(t);
                 },
               ),
             ],
@@ -313,8 +311,8 @@ class _TenantScreenState extends State<TenantScreen> {
               width: 80,
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: tenant['status'] == 'Active' 
-                    ? const Color(0xffD1FAE5) 
+                color: tenant['status'] == 'Active'
+                    ? const Color(0xffD1FAE5)
                     : AppColor.secondary,
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -323,8 +321,8 @@ class _TenantScreenState extends State<TenantScreen> {
                 style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w600,
-                  color: tenant['status'] == 'Active' 
-                      ? const Color(0xff065F46) 
+                  color: tenant['status'] == 'Active'
+                      ? const Color(0xff065F46)
                       : const Color(0xff991B1B),
                 ),
               ),
@@ -355,240 +353,272 @@ class _TenantScreenState extends State<TenantScreen> {
     );
   }
 
-  void _showClientDetailsDialog(Map<String, String> tenant) {
-    showDialog(
-      context: context,
-      builder: (context) => Dialog(
-        backgroundColor: AppColor.white,
+  Widget _buildAddTenantButton(BuildContext context) {
+    return ElevatedButton.icon(
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (context) => const CustomAddtenant(),
+        );
+      },
+      icon: const Icon(Icons.add, color: Colors.white, size: 18),
+      label: const Text(
+        'Add Tenant',
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+      ),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColor.primary,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(8),
         ),
-        child: Container(
-          width: 600,
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Client Details',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xff111827),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: const Icon(Icons.close, size: 20),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 4),
-
-              const Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'View and manage client account information',
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Color(0xff6B7280),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 16),
-              const Divider(),
-              const SizedBox(height: 16),
-
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomBuilditem(label: 'Business Name',  value: tenant['business']!),
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: CustomBuilditem(label: 'Owner',  value: tenant['owner']!),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 14),
-
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomBuilditem(label: 'Email',  value: tenant['email']!),
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: CustomBuilditem(label: 'Phone',  value: tenant['phone']!),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 14),
-
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomBuilditem(label: 'Plan',  value: tenant['plan']!),
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: CustomBuilditem(label: 'Status',value: tenant['status']!),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 14),
-
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomBuilditem(label: 'Monthly Revenue',  value: tenant['price']!),
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: CustomBuilditem(label: 'Joined Date',value:  'Jan 15, 2024'),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 10),
-            ],
-          ),
-        ),
+        elevation: 0,
       ),
     );
   }
 
-  Widget _buildDetailRow(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+  Widget _buildMobileCard(Map<String, String> tenant) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: const BoxDecoration(
+        border: Border(bottom: BorderSide(color: Color(0xffF3F4F6))),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 12,
-              color: Color(0xff6B7280),
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(height: 4),
-          if (label == 'Plan' || label == 'Status')
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              decoration: BoxDecoration(
-                color: label == 'Status' && value == 'Active'
-                    ? const Color(0xffD1FAE5)
-                    : label == 'Status' && value == 'Suspended'
-                        ? AppColor.secondary
-                        : const Color(0xffF3F4F6),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                value,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: label == 'Status' && value == 'Active'
-                      ? const Color(0xff065F46)
-                      : label == 'Status' && value == 'Suspended'
-                          ? const Color(0xff991B1B)
-                          : const Color(0xff374151),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                tenant['business']!,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xff111827),
                 ),
               ),
-            )
-          else
-            Text(
-              value,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: Color(0xff111827),
+              _buildStatusIndicator(tenant['status']!),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            "Owner: ${tenant['owner']}",
+            style: const TextStyle(fontSize: 14, color: Color(0xff374151)),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            tenant['email']!,
+            style: const TextStyle(fontSize: 13, color: Color(0xff6B7280)),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Plan",
+                    style: TextStyle(fontSize: 11, color: Colors.grey),
+                  ),
+                  Text(
+                    tenant['plan']!,
+                    style: const TextStyle(
+                        fontSize: 13, fontWeight: FontWeight.w600),
+                  ),
+                ],
               ),
-            ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Price",
+                    style: TextStyle(fontSize: 11, color: Colors.grey),
+                  ),
+                  Text(
+                    tenant['price']!,
+                    style: const TextStyle(
+                        fontSize: 13, fontWeight: FontWeight.w600),
+                  ),
+                ],
+              ),
+              IconButton(
+                icon: const Icon(Icons.visibility, color: Colors.grey, size: 20),
+                onPressed: () => _showClientDetailsDialog(tenant),
+              ),
+            ],
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildPlanBadge(String label, String value) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 12,
-            color: Color(0xff6B7280),
-            fontWeight: FontWeight.w500,
-          ),
+  Widget _buildStatusIndicator(String status) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: status == 'Active'
+            ? const Color(0xffD1FAE5)
+            : AppColor.secondary,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Text(
+        status,
+        style: TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w600,
+          color: status == 'Active'
+              ? const Color(0xff065F46)
+              : const Color(0xff991B1B),
         ),
-        const SizedBox(height: 4),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-          decoration: BoxDecoration(
-            color: AppColor.green,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: AppColor.lessgreen,
-              width: 1,
-            ),
-          ),
-          child: Text(
-            value,
-            style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: AppColor.deepgreen,
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 
-  Widget _buildStatusBadge(String label, String value) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 12,
-            color: Color(0xff6B7280),
-            fontWeight: FontWeight.w500,
+  void _showClientDetailsDialog(Map<String, String> tenant) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        final width = MediaQuery.of(context).size.width;
+        return Dialog(
+          backgroundColor: AppColor.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
           ),
-        ),
-        const SizedBox(height: 4),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-          decoration: BoxDecoration(
-            color: value == 'Active'
-                ? const Color(0xffD1FAE5)
-                : AppColor.secondary,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Text(
-            value,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: value == 'Active'
-                  ? const Color(0xff065F46)
-                  : const Color(0xff991B1B),
+          child: Container(
+            width: width < 600 ? width * 0.9 : 600,
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Client Details',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xff111827),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: const Icon(Icons.close, size: 20),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'View and manage client account information',
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Color(0xff6B7280),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const Divider(),
+                const SizedBox(height: 16),
+                width < 500
+                    ? Column(
+                        children: [
+                          CustomBuilditem(
+                              label: 'Business Name',
+                              value: tenant['business']!),
+                          const SizedBox(height: 14),
+                          CustomBuilditem(
+                              label: 'Owner', value: tenant['owner']!),
+                          const SizedBox(height: 14),
+                          CustomBuilditem(
+                              label: 'Email', value: tenant['email']!),
+                          const SizedBox(height: 14),
+                          CustomBuilditem(
+                              label: 'Phone', value: tenant['phone']!),
+                          const SizedBox(height: 14),
+                          CustomBuilditem(
+                              label: 'Plan', value: tenant['plan']!),
+                          const SizedBox(height: 14),
+                          CustomBuilditem(
+                              label: 'Status', value: tenant['status']!),
+                          const SizedBox(height: 14),
+                          CustomBuilditem(
+                              label: 'Monthly Revenue', value: tenant['price']!),
+                          const SizedBox(height: 14),
+                          CustomBuilditem(
+                              label: 'Joined Date', value: 'Jan 15, 2024'),
+                        ],
+                      )
+                    : Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: CustomBuilditem(
+                                    label: 'Business Name',
+                                    value: tenant['business']!),
+                              ),
+                              const SizedBox(width: 20),
+                              Expanded(
+                                child: CustomBuilditem(
+                                    label: 'Owner', value: tenant['owner']!),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 14),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: CustomBuilditem(
+                                    label: 'Email', value: tenant['email']!),
+                              ),
+                              const SizedBox(width: 20),
+                              Expanded(
+                                child: CustomBuilditem(
+                                    label: 'Phone', value: tenant['phone']!),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 14),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: CustomBuilditem(
+                                    label: 'Plan', value: tenant['plan']!),
+                              ),
+                              const SizedBox(width: 20),
+                              Expanded(
+                                child: CustomBuilditem(
+                                    label: 'Status', value: tenant['status']!),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 14),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: CustomBuilditem(
+                                    label: 'Monthly Revenue',
+                                    value: tenant['price']!),
+                              ),
+                              const SizedBox(width: 20),
+                              Expanded(
+                                child: CustomBuilditem(
+                                    label: 'Joined Date',
+                                    value: 'Jan 15, 2024'),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                const SizedBox(height: 10),
+              ],
             ),
           ),
-        ),
-      ],
+        );
+      },
     );
   }
 }

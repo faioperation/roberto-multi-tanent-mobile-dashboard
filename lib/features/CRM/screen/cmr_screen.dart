@@ -13,6 +13,39 @@ class CmrScreen extends StatefulWidget {
 
 class _CmrScreenState extends State<CmrScreen> {
 
+  Widget _buildAddLeadButton(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (context) => const CustomAddlead (),
+        );
+      },
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        decoration: BoxDecoration(
+          color: AppColor.primary,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: const Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.add, color: Colors.white, size: 18),
+            SizedBox(width: 6),
+            Text(
+              "Add Lead",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildStatCards(double width) {
     final cards = [
       CustomStatCard(
@@ -56,53 +89,39 @@ class _CmrScreenState extends State<CmrScreen> {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-      Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const Expanded(
-          child: Text(
-            'CRM & Leads',
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: Color(0xff111827),
-            ),
-          ),
-        ),
-        const SizedBox(width: 16),
-        InkWell(
-          onTap: () {
-            showDialog(
-              context: context,
-              builder: (context) => const CustomAddlead (),
-            );
-          },
-          borderRadius: BorderRadius.circular(12),
-          child: Container(
-            padding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            decoration: BoxDecoration(
-              color: AppColor.primary,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.add, color: Colors.white, size: 18),
-                SizedBox(width: 6),
-                Text(
-                  "Add Lead",
+      width < 600 
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'CRM & Leads',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xff111827),
+                ),
+              ),
+              const SizedBox(height: 12),
+              _buildAddLeadButton(context),
+            ],
+          )
+        : Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Expanded(
+                child: Text(
+                  'CRM & Leads',
                   style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xff111827),
                   ),
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(width: 16),
+              _buildAddLeadButton(context),
+            ],
           ),
-        ),
-      ],
-    ),
 
     const SizedBox(height: 6),
 

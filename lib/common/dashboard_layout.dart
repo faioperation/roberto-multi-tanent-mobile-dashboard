@@ -252,7 +252,7 @@ class _DashboardShellState extends State<DashboardShell> {
 
     return Container(
       width: 260,
-      color: Colors.white,
+      color: AppColor.white,
       child: Column(
         children: [
           const SizedBox(height: 24),
@@ -273,7 +273,43 @@ class _DashboardShellState extends State<DashboardShell> {
               ],
             ),
           ),
-          const SizedBox(height: 32),
+          if (!widget.isSystemOwner) ...[
+            const SizedBox(height: 16),
+            const Divider(color: Color(0xffEEEEEE), height: 1, thickness: 1),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Row(
+                    children: [
+                      Icon(Icons.location_on_outlined, color: Color(0xff111827), size: 22),
+                      SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          "Queens Center",
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Color(0xff111827)),
+                        ),
+                      ),
+                      Icon(Icons.keyboard_arrow_down, color: Color(0xff111827)),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 30),
+                    child: Text(
+                      "719/B, Queens, NY",
+                      style: TextStyle(fontSize: 13, color: Color(0xff4A4A4A)),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Divider(color: Color(0xffEEEEEE), height: 1, thickness: 1),
+            const SizedBox(height: 8),
+          ] else ...[
+            const SizedBox(height: 32),
+          ],
           Expanded(
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -302,13 +338,15 @@ class _DashboardShellState extends State<DashboardShell> {
   // ─── Top Bar ─────────────────────────────────────────────────────────────
 
   Widget _buildTopBar(BuildContext context) {
-    bool isMobile = MediaQuery.of(context).size.width <= 900;
+    final width = MediaQuery.of(context).size.width;
+    final bool isMobile = width <= 900;
+    final bool isSmallMobile = width <= 600;
 
     return Container(
       height: 70,
-      padding: EdgeInsets.symmetric(horizontal: isMobile ? 16 : 24),
+      padding: EdgeInsets.symmetric(horizontal: isSmallMobile ? 12 : 24),
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: AppColor.white,
         border: Border(bottom: BorderSide(color: Color(0xffEEEEEE))),
       ),
       child: Row(
@@ -319,117 +357,137 @@ class _DashboardShellState extends State<DashboardShell> {
               onPressed: () => Scaffold.of(context).openDrawer(),
             ),
 
-          if (!isMobile) CustomSearch() else const Spacer(),
-
-          if (isMobile)
+          if (isMobile && !isSmallMobile)
             IconButton(
-              icon: const Icon(Icons.search, color: Colors.grey),
-              onPressed: () {},
+              icon: const Icon(Icons.search, color: AppColor.grey),
+              onPressed: () {
+                // Future: show search bar overlay
+              },
             ),
 
-          if (!isMobile) const Spacer(),
+          const Spacer(),
 
-          Stack(
-            children: [
-              IconButton(
-                icon: const Icon(Icons.notifications_none_outlined,
-                    color: Colors.grey),
-                onPressed: () {
-                  _selectItem('Notifications');
-                },
-              ),
-              Positioned(
-                right: 8,
-                top: 8,
-                child: Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: const BoxDecoration(
-                    color: AppColor.primary,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Text(
-                    "3",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 8,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+          // Notifications
+          _buildNotificationIcon(),
+
           const SizedBox(width: 16),
-          Row(
-            children: [
-              Container(
-                width: 35,
-                height: 35,
-                decoration: const BoxDecoration(
-                  color: Color(0xff4F46E5),
-                  shape: BoxShape.circle,
-                ),
-                child: const Center(
-                  child: Icon(Icons.person, color: Colors.white, size: 18),
+
+          // User Profile
+          _buildUserProfile(context, isMobile),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNotificationIcon() {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        IconButton(
+          icon: const Icon(Icons.notifications_none_outlined,
+              color: AppColor.grey),
+          onPressed: () {
+            _selectItem('Notifications');
+          },
+        ),
+        Positioned(
+          right: 6,
+          top: 6,
+          child: IgnorePointer(
+            child: Container(
+              padding: const EdgeInsets.all(4),
+              decoration: const BoxDecoration(
+                color: AppColor.primary,
+                shape: BoxShape.circle,
+              ),
+              child: const Text(
+                "3",
+                style: TextStyle(
+                  color: AppColor.white,
+                  fontSize: 8,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              if (!isMobile) ...[
-                const SizedBox(width: 10),
-                const Text(
-                  "John Doe",
-                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
-                ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
-                PopupMenuButton<String>(
-                  color: AppColor.white,
-                  padding: EdgeInsets.zero,
-                  icon: const Icon(
-                    Icons.keyboard_arrow_down,
-                    size: 20,
-                    color: AppColor.grey,
-                  ),
-                  onSelected: (value) {
-                    if (value == 'logout') {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginScreen()),
-                      );
-                    } else if (value == 'profile') {
-                      _selectItem('Edit Profile');
-                    }
-                  },
-                  itemBuilder: (BuildContext context) =>
-                      <PopupMenuEntry<String>>[
-                    if (!widget.isSystemOwner)
-                      const PopupMenuItem<String>(
-                        value: 'profile',
-                        child: Row(
-                          children: [
-                            Icon(Icons.person_outline, size: 18),
-                            SizedBox(width: 8),
-                            Text('Edit Profile', style: TextStyle(fontSize: 14)),
-                          ],
-                        ),
-                      ),
-                    const PopupMenuItem<String>(
-                      value: 'logout',
-                      child: Row(
-                        children: [
-                          Icon(Icons.logout, size: 18, color:  AppColor.primary),
-                          SizedBox(width: 8),
-                          Text('Logout',
-                              style:
-                                  TextStyle(color: AppColor.primary, fontSize: 14)),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+  Widget _buildUserProfile(BuildContext context, bool isMobile) {
+    return PopupMenuButton<String>(
+      color: AppColor.white,
+      padding: EdgeInsets.zero,
+      offset: const Offset(0, 45),
+      onSelected: (value) {
+        if (value == 'logout') {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const LoginScreen()),
+          );
+        } else if (value == 'profile') {
+          _selectItem('Edit Profile');
+        }
+      },
+      itemBuilder: (BuildContext context) =>
+          <PopupMenuEntry<String>>[
+        if (!widget.isSystemOwner)
+          const PopupMenuItem<String>(
+            value: 'profile',
+            child: Row(
+              children: [
+                Icon(Icons.person_outline, size: 18),
+                SizedBox(width: 8),
+                Text('Edit Profile', style: TextStyle(fontSize: 14)),
               ],
+            ),
+          ),
+        const PopupMenuItem<String>(
+          value: 'logout',
+          child: Row(
+            children: [
+              Icon(Icons.logout, size: 18, color:  AppColor.primary),
+              SizedBox(width: 8),
+              Text('Logout',
+                  style:
+                      TextStyle(color: AppColor.primary, fontSize: 14)),
             ],
           ),
-        ],
+        ),
+      ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 35,
+              height: 35,
+              decoration: const BoxDecoration(
+                color: AppColor.mini,
+                shape: BoxShape.circle,
+              ),
+              child: const Center(
+                child: Icon(Icons.person, color: AppColor.white, size: 18),
+              ),
+            ),
+            if (!isMobile) ...[
+              const SizedBox(width: 10),
+              const Text(
+                "John Doe",
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
+              ),
+            ],
+            const SizedBox(width: 4),
+            const Icon(
+              Icons.keyboard_arrow_down,
+              size: 20,
+              color: AppColor.grey,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -35,7 +35,7 @@ class _ChatListState extends State<ChatList> {
           Expanded(
             child: ListView(
               children: [
-                _buildChatListItem(0, "SJ", "Sarah Johnson", "2m ago", "Hi, I'd like to know more about..."),
+                _buildChatListItem(0, "R", "Roberto", "2m ago", "Hi, I'd like to know more about..."),
                 _buildChatListItem(1, "MC", "Michael Cher", "15m ago", "Thank you for the quick response!"),
                 _buildChatListItem(2, "EW", "Emma Wilso", "1h ago", "Can I schedule a booking for"),
                 _buildChatListItem(3, "DB", "David Brow", "2h ago", "What are your business hours?"),

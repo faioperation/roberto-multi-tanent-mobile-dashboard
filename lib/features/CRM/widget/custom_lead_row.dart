@@ -222,11 +222,12 @@ class CustomLeadRow extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) {
+        final width = MediaQuery.of(context).size.width;
         return Dialog(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           child: Container(
-            width: 500,
+            width: width < 600 ? width * 0.9 : 500,
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: AppColor.white,
@@ -239,27 +240,30 @@ class CustomLeadRow extends StatelessWidget {
                 // Header
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
-                          "Lead Details",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: AppColor.black,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            "Lead Details",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: AppColor.black,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          "View and manage lead information",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: AppColor.grey,
+                          SizedBox(height: 4),
+                          Text(
+                            "View and manage lead information",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: AppColor.grey,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     IconButton(
                       onPressed: () => Navigator.pop(context),
@@ -272,97 +276,68 @@ class CustomLeadRow extends StatelessWidget {
                 const SizedBox(height: 24),
 
                 // Data Grid
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: _buildDetailField("Name", name, isBold: true),
-                    ),
-                    Expanded(
-                      child: Column(
+                width < 500
+                    ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Status",
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: AppColor.grey,
-                              fontWeight: FontWeight.w500,
-                            ),
+                          _buildDetailField("Name", name, isBold: true),
+                          const SizedBox(height: 20),
+                          _buildStatusField(),
+                        ],
+                      )
+                    : Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: _buildDetailField("Name", name, isBold: true),
                           ),
-                          const SizedBox(height: 6),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: tagColor.withOpacity(0.15),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Text(
-                              tagText,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: tagColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                          Expanded(
+                            child: _buildStatusField(),
                           ),
                         ],
                       ),
-                    ),
-                  ],
-                ),
                 const SizedBox(height: 20),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: _buildDetailField("Email", email),
-                    ),
-                    Expanded(
-                      child: _buildDetailField("Phone", phone),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Column(
+                width < 500
+                    ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Source",
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: AppColor.grey,
-                              fontWeight: FontWeight.w500,
-                            ),
+                          _buildDetailField("Email", email),
+                          const SizedBox(height: 20),
+                          _buildDetailField("Phone", phone),
+                        ],
+                      )
+                    : Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: _buildDetailField("Email", email),
                           ),
-                          const SizedBox(height: 6),
-                          Row(
-                            children: [
-                              Icon(socialIcon, size: 16, color: AppColor.black),
-                              const SizedBox(width: 8),
-                              Text(
-                                socialText,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: AppColor.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
+                          Expanded(
+                            child: _buildDetailField("Phone", phone),
                           ),
                         ],
                       ),
-                    ),
-                    Expanded(
-                      child: _buildDetailField("Last Contact", time),
-                    ),
-                  ],
-                ),
+                const SizedBox(height: 20),
+                width < 500
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildSourceField(),
+                          const SizedBox(height: 20),
+                          _buildDetailField("Last Contact", time),
+                        ],
+                      )
+                    : Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: _buildSourceField(),
+                          ),
+                          Expanded(
+                            child: _buildDetailField("Last Contact", time),
+                          ),
+                        ],
+                      ),
                 const SizedBox(height: 20),
 
                 // Notes
@@ -387,6 +362,69 @@ class CustomLeadRow extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildStatusField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "Status",
+          style: TextStyle(
+            fontSize: 13,
+            color: AppColor.grey,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          decoration: BoxDecoration(
+            color: tagColor.withOpacity(0.15),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Text(
+            tagText,
+            style: TextStyle(
+              fontSize: 12,
+              color: tagColor,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSourceField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "Source",
+          style: TextStyle(
+            fontSize: 13,
+            color: AppColor.grey,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Row(
+          children: [
+            Icon(socialIcon, size: 16, color: AppColor.black),
+            const SizedBox(width: 8),
+            Text(
+              socialText,
+              style: const TextStyle(
+                fontSize: 14,
+                color: AppColor.black,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 

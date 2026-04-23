@@ -22,82 +22,71 @@ class CustomCrm extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Left Side (Texts)
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      "Lead Pipeline",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    SizedBox(height: 6),
-                    Text(
-                      "Manage your leads efficiently",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: AppColor.grey,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // Right Side (Search + Status)
-              Flexible(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Search
-                    CustomSearch(),
-
-                    const SizedBox(width: 10),
-
-                    // Status Button
-                    InkWell(
-                      onTap: () {
-                        print("Status clicked");
-                      },
-                      borderRadius: BorderRadius.circular(8),
-                      child: Container(
-                        height: 40,
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.grey.shade300),
+          isDesktop 
+            ? Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Left Side (Texts)
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text(
+                          "Lead Pipeline",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
-                        child: const Row(
-                          children: [
-                            Icon(
-                              Icons.filter_list,
-                              size: 18,
-                              color: Colors.grey,
-                            ),
-                            SizedBox(width: 6),
-                            Text(
-                              "All Status",
-                              style: TextStyle(fontSize: 13),
-                            ),
-                            SizedBox(width: 6),
-                            Icon(
-                              Icons.keyboard_arrow_down,
-                              size: 18,
-                            ),
-                          ],
+                        SizedBox(height: 6),
+                        Text(
+                          "Manage your leads efficiently",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: AppColor.grey,
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+
+                  // Right Side (Search + Status)
+                  Flexible(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Search
+                        CustomSearch(),
+
+                        const SizedBox(width: 10),
+
+                        // Status Button
+                        _buildStatusButton(),
+                      ],
+                    ),
+                  ),
+                ],
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Lead Pipeline",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(child: CustomSearch()),
+                      const SizedBox(width: 10),
+                      _buildStatusButton(),
+                    ],
+                  ),
+                ],
               ),
-            ],
-          ),
           const SizedBox(height: 26),
 
           Container(
@@ -195,6 +184,42 @@ class CustomCrm extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildStatusButton() {
+    return InkWell(
+      onTap: () {
+        print("Status clicked");
+      },
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        height: 40,
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Colors.grey.shade300),
+        ),
+        child: const Row(
+          children: [
+            Icon(
+              Icons.filter_list,
+              size: 18,
+              color: Colors.grey,
+            ),
+            SizedBox(width: 6),
+            Text(
+              "All Status",
+              style: TextStyle(fontSize: 13),
+            ),
+            SizedBox(width: 6),
+            Icon(
+              Icons.keyboard_arrow_down,
+              size: 18,
+            ),
+          ],
+        ),
       ),
     );
   }

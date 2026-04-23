@@ -20,8 +20,10 @@ class CustomNotification extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isMobile = MediaQuery.of(context).size.width <= 600;
+
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: EdgeInsets.all(isMobile ? 10 : 12),
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
         color: AppColor.white,
@@ -32,64 +34,60 @@ class CustomNotification extends StatelessWidget {
         ),
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           SvgPicture.asset(
             svgPath,
-            width: 46,
-            height: 46,
+            width: isMobile ? 36 : 46,
+            height: isMobile ? 36 : 46,
           ),
-
-          const SizedBox(width: 25),
-
+          SizedBox(width: isMobile ? 12 : 25),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 // TITLE + DOT
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff111827),
+                    Expanded(
+                      child: Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: isMobile ? 14 : 16,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xff111827),
+                        ),
                       ),
                     ),
-
                     if (showDot) ...[
-                      const SizedBox(width: 8),
-                      Container(
-                        width: 8,
-                        height: 8,
-                        decoration: const BoxDecoration(
-                          color: AppColor.dot,
-                          shape: BoxShape.circle,
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6.0),
+                        child: Container(
+                          width: 8,
+                          height: 8,
+                          decoration: const BoxDecoration(
+                            color: AppColor.dot,
+                            shape: BoxShape.circle,
+                          ),
                         ),
                       ),
                     ],
                   ],
                 ),
-
                 const SizedBox(height: 2),
-
                 Text(
                   subtitle,
-                  style: const TextStyle(
-                    fontSize: 13,
+                  style: TextStyle(
+                    fontSize: isMobile ? 12 : 13,
                     color: AppColor.grey,
                   ),
                 ),
-
-                const SizedBox(height: 2),
-
+                const SizedBox(height: 4),
                 Text(
                   time,
-                  style: const TextStyle(
-                    fontSize: 12,
+                  style: TextStyle(
+                    fontSize: isMobile ? 11 : 12,
                     color: AppColor.grey,
                   ),
                 ),

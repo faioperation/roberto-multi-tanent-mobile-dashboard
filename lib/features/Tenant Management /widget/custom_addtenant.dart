@@ -26,7 +26,9 @@ class _CustomAddtenantState extends State<CustomAddtenant> {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Container(
-        width: 500,
+        width: MediaQuery.of(context).size.width < 600
+            ? MediaQuery.of(context).size.width * 0.9
+            : 500,
         padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,

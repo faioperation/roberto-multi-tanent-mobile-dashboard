@@ -17,6 +17,9 @@ class CustomScreen extends StatefulWidget {
 class _CustomScreenState extends State<CustomScreen> {
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final isSmall = width < 400;
+
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -24,7 +27,8 @@ class _CustomScreenState extends State<CustomScreen> {
       child: Center(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+            padding: EdgeInsets.symmetric(
+                horizontal: isSmall ? 10 : 16, vertical: isSmall ? 16 : 32),
             child: Container(
               constraints: const BoxConstraints(maxWidth: 500),
               decoration: BoxDecoration(
@@ -38,7 +42,7 @@ class _CustomScreenState extends State<CustomScreen> {
                   ),
                 ],
               ),
-              padding: const EdgeInsets.all(32),
+              padding: EdgeInsets.all(isSmall ? 20 : 32),
               child: widget.child,
             ),
           ),

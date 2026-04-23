@@ -14,31 +14,29 @@ class _BusinessownerSettingsState extends State<BusinessownerSettings> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+    final isMobile = width < 600;
 
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // HEADER
-          const Row(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Settings',
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xff111827),
-                      ),
-                    ),
-                    SizedBox(height: 6),
-                    Text(
-                      'Manage your system preferences and configurations',
-                      style: TextStyle(fontSize: 15, color: Colors.grey),
-                    ),
-                  ],
+              Text(
+                'Settings',
+                style: TextStyle(
+                  fontSize: isMobile ? 22 : 28,
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xff111827),
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                'Manage your system preferences and configurations',
+                style: TextStyle(
+                  fontSize: isMobile ? 13 : 15,
+                  color: Colors.grey,
                 ),
               ),
             ],

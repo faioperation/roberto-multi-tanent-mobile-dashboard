@@ -14,164 +14,169 @@ class CustomHistory extends StatefulWidget {
 class _CustomHistoryState extends State<CustomHistory> {
   @override
   Widget build(BuildContext context) {
-    bool isDesktop = true;
+    final width = MediaQuery.of(context).size.width;
+    final bool isDesktop = width > 900;
+    final bool isMobile = width <= 600;
 
     return Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: AppColor.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.grey.shade300),
-        ),
-        child: Column(
+      width: double.infinity,
+      padding: EdgeInsets.all(isMobile ? 16 : 24),
+      decoration: BoxDecoration(
+        color: AppColor.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade300),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // TOP HEADER ROW
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // TOP HEADER ROW
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Billing History",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: AppColor.black,
-                        ),
-                      ),
-                      SizedBox(height: 6),
-                      Text(
-                        "View all past transactions and invoices",
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: AppColor.grey,
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  // EXPORT BUTTON
-                  InkWell(
-                    onTap: () {
-                      print("Export clicked");
-                    },
-                    borderRadius: BorderRadius.circular(12),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: AppColor.grey,
-                        ),
-                      ),
-                      child: const Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Icons.download, size: 18, color: AppColor.black),
-                          SizedBox(width: 6),
-                          Text(
-                            "Export",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: AppColor.black,
-                            ),
-                          ),
-                        ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      "Billing History",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: AppColor.black,
                       ),
                     ),
-                  ),
-                ],
+                    SizedBox(height: 6),
+                    Text(
+                      "View all past transactions and invoices",
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: AppColor.grey,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-        const SizedBox(height: 26),
 
-        Container(
-          decoration: BoxDecoration(
-            color: AppColor.white,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: const Color(0xffE5E7EB)),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Column(
-                children: [
-                if (isDesktop)
-            Container(
-          padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-            vertical: 14,
-          ),
-          color: AppColor.secondary,
-          child: Row(
-            children: const [
-              Expanded(
-                flex: 2,
-                child: CustomHeadder(label: 'Billing Date'),
-              ),
-              Expanded(
-                flex: 2,
-                child: CustomHeadder(label: 'Plan'),
-              ),
-              Expanded(
-                flex: 2,
-                child: CustomHeadder(label: 'Subscription Pricing'),
-              ),
-              Expanded(
-                flex: 2,
-                child: CustomHeadder(label: 'Expire Date'),
-              ),
-              Expanded(
-                flex: 2,
-                child: CustomHeadder(label: 'Status'),
-              ),
-              Expanded(
-                flex: 2,
-                child: CustomHeadder(label: 'Actions'),
+              // EXPORT BUTTON
+              InkWell(
+                onTap: () {
+                  print("Export clicked");
+                },
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: AppColor.grey,
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.download, size: 18, color: AppColor.black),
+                      if (!isMobile) ...[
+                        const SizedBox(width: 6),
+                        const Text(
+                          "Export",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: AppColor.black,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
               ),
             ],
           ),
+          const SizedBox(height: 26),
+
+          isDesktop ? _buildDesktopTable() : _buildMobileList(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDesktopTable() {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColor.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xffE5E7EB)),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 14,
+              ),
+              color: AppColor.secondary,
+              child: const Row(
+                children: [
+                  Expanded(flex: 2, child: CustomHeadder(label: 'Billing Date')),
+                  Expanded(flex: 2, child: CustomHeadder(label: 'Plan')),
+                  Expanded(flex: 2, child: CustomHeadder(label: 'Subscription Pricing')),
+                  Expanded(flex: 2, child: CustomHeadder(label: 'Expire Date')),
+                  Expanded(flex: 2, child: CustomHeadder(label: 'Status')),
+                  Expanded(flex: 2, child: CustomHeadder(label: 'Actions')),
+                ],
+              ),
+            ),
+            _buildRows(isMobile: false),
+          ],
         ),
-                  SubscriptionRow(
-                    date: "Apr 1, 2026",
-                    plan: "Half Moon",
-                    price: "\$49/Monthly",
-                    expireDate: "May 1, 2026",
-                    status: "Paid",
-                  ),
+      ),
+    );
+  }
 
-                  SubscriptionRow(
-                    date: "Mar 1, 2026",
-                    plan: "Half Moon",
-                    price: "\$49/Monthly",
-                    expireDate: "Apr 1, 2026",
-                    status: "Unpaid",
-                  ),
+  Widget _buildMobileList() {
+    return _buildRows(isMobile: true);
+  }
 
-                  SubscriptionRow(
-                    date: "Feb 1, 2026",
-                    plan: "Half Moon",
-                    price: "\$49/Monthly",
-                    expireDate: "Mar 1, 2026",
-                    status: "Paid",
-                  ),
-                  SubscriptionRow(
-                    date: "Jan 1, 2026",
-                    plan: "Half Moon",
-                    price: "\$49/Monthly",
-                    expireDate: "Feb 1, 2026",
-                    status: "Unpaid",
-                  ),
-                ]
-            )
-          )
-        )
-          ]
-        )
+  Widget _buildRows({required bool isMobile}) {
+    return Column(
+      children: [
+        SubscriptionRow(
+          date: "Apr 1, 2026",
+          plan: "Half Moon",
+          price: "\$49/Monthly",
+          expireDate: "May 1, 2026",
+          status: "Paid",
+          isMobile: isMobile,
+        ),
+        SubscriptionRow(
+          date: "Mar 1, 2026",
+          plan: "Half Moon",
+          price: "\$49/Monthly",
+          expireDate: "Apr 1, 2026",
+          status: "Unpaid",
+          isMobile: isMobile,
+        ),
+        SubscriptionRow(
+          date: "Feb 1, 2026",
+          plan: "Half Moon",
+          price: "\$49/Monthly",
+          expireDate: "Mar 1, 2026",
+          status: "Paid",
+          isMobile: isMobile,
+        ),
+        SubscriptionRow(
+          date: "Jan 1, 2026",
+          plan: "Half Moon",
+          price: "\$49/Monthly",
+          expireDate: "Feb 1, 2026",
+          status: "Unpaid",
+          isMobile: isMobile,
+        ),
+      ],
     );
   }
 }

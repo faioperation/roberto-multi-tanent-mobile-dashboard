@@ -933,45 +933,26 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Header
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Row(
-                children: [
-                  Icon(Icons.calendar_today_outlined,
-                      size: 20, color: Color(0xff374151)),
-                  SizedBox(width: 8),
-                  Text("Order Booking",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xff111827))),
-                ],
-              ),
-              Row(
-                children: [
-                  _buildNavIcon(Icons.chevron_left, () {
-                    setState(() {
-                      _focusedDay = DateTime(
-                          _focusedDay.year, _focusedDay.month - 1, _focusedDay.day);
-                    });
-                  }),
-                  const SizedBox(width: 16),
-                  Text(_getMonthYear(_focusedDay),
-                      style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xff111827))),
-                  const SizedBox(width: 16),
-                  _buildNavIcon(Icons.chevron_right, () {
-                    setState(() {
-                      _focusedDay = DateTime(
-                          _focusedDay.year, _focusedDay.month + 1, _focusedDay.day);
-                    });
-                  }),
-                ],
-              )
-            ],
+          LayoutBuilder(
+            builder: (context, headerConstraints) {
+              final isHeaderStacked = headerConstraints.maxWidth < 450;
+              return isHeaderStacked
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildCalendarTitle(),
+                        const SizedBox(height: 16),
+                        _buildCalendarNav(),
+                      ],
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _buildCalendarTitle(),
+                        _buildCalendarNav(),
+                      ],
+                    );
+            },
           ),
           const SizedBox(height: 24),
           // Calendar Grid
@@ -1118,6 +1099,48 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
         ),
         child: Icon(icon, size: 16, color: const Color(0xff6B7280)),
       ),
+    );
+  }
+
+  Widget _buildCalendarTitle() {
+    return const Row(
+      children: [
+        Icon(Icons.calendar_today_outlined,
+            size: 20, color: Color(0xff374151)),
+        SizedBox(width: 8),
+        Text("Order Booking",
+            style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Color(0xff111827))),
+      ],
+    );
+  }
+
+  Widget _buildCalendarNav() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _buildNavIcon(Icons.chevron_left, () {
+          setState(() {
+            _focusedDay = DateTime(
+                _focusedDay.year, _focusedDay.month - 1, _focusedDay.day);
+          });
+        }),
+        const SizedBox(width: 16),
+        Text(_getMonthYear(_focusedDay),
+            style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Color(0xff111827))),
+        const SizedBox(width: 16),
+        _buildNavIcon(Icons.chevron_right, () {
+          setState(() {
+            _focusedDay = DateTime(
+                _focusedDay.year, _focusedDay.month + 1, _focusedDay.day);
+          });
+        }),
+      ],
     );
   }
 
