@@ -2,16 +2,74 @@ import 'package:flutter/material.dart';
 import 'package:roberto/app/app_color.dart';
 import 'package:roberto/common/custom_search.dart';
 import 'package:roberto/features/CRM/widget/custom_lead_row.dart';
-import 'package:roberto/features/Tenant%20Management%20/widget/custom_headder.dart';
+import 'package:roberto/features/Tenant Management /widget/custom_headder.dart';
+import 'package:roberto/features/CRM/widget/crm_lead_model.dart';
 
-class CustomCrm extends StatelessWidget {
+class CustomCrm extends StatefulWidget {
   const CustomCrm({super.key});
+
+  @override
+  State<CustomCrm> createState() => _CustomCrmState();
+}
+
+class _CustomCrmState extends State<CustomCrm> {
+  String _selectedStatus = "All Status";
+
+  final List<CRMLead> _leads = [
+    CRMLead(
+      name: "Sarah Johnson",
+      email: "sarah.j@email.com",
+      phone: "++1 234 567 8901",
+      socialText: "Facebook",
+      socialIcon: Icons.facebook,
+      tagText: "Cold",
+      tagColor: AppColor.deepgreen,
+      time: "2 hours ago",
+      notes: "Interested in premium products and services.",
+    ),
+    CRMLead(
+      name: "Michael Chen",
+      email: "m.chen@email.com",
+      phone: "++1 234 567 8901",
+      socialText: "WhatsApp",
+      socialIcon: Icons.facebook,
+      tagText: "Warm",
+      tagColor: AppColor.greens,
+      time: "1 day ago",
+      notes: "Follow up next week for demo.",
+    ),
+    CRMLead(
+      name: "Emma Wilson",
+      email: "emma.w@email.com",
+      phone: "+1 234 567 8903",
+      socialText: "Instagram",
+      socialIcon: Icons.facebook,
+      tagText: "Booked",
+      tagColor: AppColor.ma,
+      time: "3 hours ago",
+      notes: "Meeting scheduled for Friday.",
+    ),
+    CRMLead(
+      name: "David Brown",
+      email: "d.brown@email.com",
+      phone: "+1 234 567 8904",
+      socialText: "Facebook",
+      socialIcon: Icons.facebook,
+      tagText: "Hot",
+      tagColor: AppColor.primary,
+      time: "5 days ago",
+      notes: "Ready for contract signing.",
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
     bool isDesktop = MediaQuery.of(context).size.width > 900;
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+
+    final filteredLeads = _selectedStatus == "All Status"
+        ? _leads
+        : _leads.where((lead) => lead.tagText == _selectedStatus).toList();
 
     return Container(
       width: double.infinity,
@@ -59,7 +117,7 @@ class CustomCrm extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         // Search
-                        CustomSearch(),
+                        const CustomSearch(),
 
                         const SizedBox(width: 10),
 
@@ -84,7 +142,7 @@ class CustomCrm extends StatelessWidget {
                   const SizedBox(height: 16),
                   Row(
                     children: [
-                      Expanded(child: CustomSearch()),
+                      const Expanded(child: CustomSearch()),
                       const SizedBox(width: 10),
                       _buildStatusButton(context),
                     ],
@@ -139,50 +197,17 @@ class CustomCrm extends StatelessWidget {
                         ],
                       ),
                     ),
-                  CustomLeadRow(
-                    name: "Sarah Johnson",
-                    email: "sarah.j@email.com",
-                    phone: "++1 234 567 8901",
-                    socialText: "Facebook",
-                    socialIcon: Icons.facebook,
-                    tagText: "Cold",
-                    tagColor: AppColor.deepgreen,
-                    time: "2 hours ago",
-                    notes: "Interested in premium products and services.",
-                  ),
-                  CustomLeadRow(
-                    name: "Michael Chen",
-                    email: "m.chen@email.com",
-                    phone: "++1 234 567 8901",
-                    socialText: "WhatsApp",
-                    socialIcon: Icons.facebook,
-                    tagText: "Warm",
-                    tagColor: AppColor.greens,
-                    time: "1 day ago",
-                    notes: "Follow up next week for demo.",
-                  ),
-                  CustomLeadRow(
-                    name: "Emma Wilson",
-                    email: "emma.w@email.com",
-                    phone: "+1 234 567 8903",
-                    socialText: "Instagram",
-                    socialIcon: Icons.facebook,
-                    tagText: "Booked",
-                    tagColor: AppColor.ma,
-                    time: "3 hours ago",
-                    notes: "Meeting scheduled for Friday.",
-                  ),
-                  CustomLeadRow(
-                    name: "David Brown",
-                    email: "d.brown@email.com",
-                    phone: "+1 234 567 8904",
-                    socialText: "Facebook",
-                    socialIcon: Icons.facebook,
-                    tagText: "Hot",
-                    tagColor: AppColor.primary,
-                    time: "5 days ago",
-                    notes: "Ready for contract signing.",
-                  ),
+                  ...filteredLeads.map((lead) => CustomLeadRow(
+                    name: lead.name,
+                    email: lead.email,
+                    phone: lead.phone,
+                    socialText: lead.socialText,
+                    socialIcon: lead.socialIcon,
+                    tagText: lead.tagText,
+                    tagColor: lead.tagColor,
+                    time: lead.time,
+                    notes: lead.notes,
+                  )),
                 ],
               ),
             ),
@@ -194,11 +219,22 @@ class CustomCrm extends StatelessWidget {
 
   Widget _buildStatusButton(BuildContext context) {
     final theme = Theme.of(context);
-    return InkWell(
-      onTap: () {
-        print("Status clicked");
+    final statuses = ["All Status", "Cold", "Warm", "Hot", "Booked"];
+
+    return PopupMenuButton<String>(
+      onSelected: (String status) {
+        setState(() {
+          _selectedStatus = status;
+        });
       },
-      borderRadius: BorderRadius.circular(8),
+      itemBuilder: (BuildContext context) {
+        return statuses.map((String status) {
+          return PopupMenuItem<String>(
+            value: status,
+            child: Text(status),
+          );
+        }).toList();
+      },
       child: Container(
         height: 40,
         padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -207,6 +243,7 @@ class CustomCrm extends StatelessWidget {
           border: Border.all(color: theme.dividerTheme.color ?? Colors.grey.shade300),
         ),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
               Icons.filter_list,
@@ -215,7 +252,7 @@ class CustomCrm extends StatelessWidget {
             ),
             const SizedBox(width: 6),
             Text(
-              "All Status",
+              _selectedStatus,
               style: TextStyle(fontSize: 13, color: theme.colorScheme.onSurface),
             ),
             const SizedBox(width: 6),

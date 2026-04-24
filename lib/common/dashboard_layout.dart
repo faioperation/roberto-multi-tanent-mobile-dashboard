@@ -28,6 +28,7 @@ class DashboardShell extends StatefulWidget {
 }
 
 class _DashboardShellState extends State<DashboardShell> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   String _activeItem = 'Overview';
   
   final List<Map<String, String>> _branches = [
@@ -48,25 +49,29 @@ class _DashboardShellState extends State<DashboardShell> {
     bool isDesktop = MediaQuery.of(context).size.width > 900;
 
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       drawer: isDesktop ? null : Drawer(child: _buildSidebar(context)),
-      body: Row(
-        children: [
-          if (isDesktop) _buildSidebar(context),
-          Expanded(
-            child: Column(
-              children: [
-                _buildTopBar(context),
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(24.0),
-                    child: _buildContent(context),
+      body: SafeArea(
+        bottom: false,
+        child: Row(
+          children: [
+            if (isDesktop) _buildSidebar(context),
+            Expanded(
+              child: Column(
+                children: [
+                  _buildTopBar(context),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.all(24.0),
+                      child: _buildContent(context),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -155,7 +160,7 @@ class _DashboardShellState extends State<DashboardShell> {
                 SvgPicture.asset('assets/logo.svg', height: 60),
                 const SizedBox(height: 10),
                 const Text(
-                  "Roberto Cargo's",
+                  "Tugatai Cargo's",
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
@@ -304,7 +309,7 @@ class _DashboardShellState extends State<DashboardShell> {
           if (isMobile)
             IconButton(
               icon: const Icon(Icons.menu),
-              onPressed: () => Scaffold.of(context).openDrawer(),
+              onPressed: () => _scaffoldKey.currentState?.openDrawer(),
             ),
 
           if (isMobile && !isSmallMobile)
