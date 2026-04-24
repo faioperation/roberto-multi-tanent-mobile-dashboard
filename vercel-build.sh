@@ -3,11 +3,14 @@
 # Exit on error
 set -e
 
+echo "--- Fixing Git Permissions ---"
+git config --global --add safe.directory *
+
 echo "--- Installing Flutter SDK ---"
 
-# Download Flutter (matching the SDK version in pubspec.yaml if possible, here using stable)
+# Download Flutter (matching the SDK version in pubspec.yaml if possible)
 # Vercel environment is Linux-based
-FLUTTER_VERSION="3.22.0" # You can change this to match your local version
+FLUTTER_VERSION="3.41.7" # Updated to match project requirements
 FLUTTER_CHANNEL="stable"
 
 if [ ! -d "flutter" ]; then
@@ -20,6 +23,7 @@ fi
 export PATH="$PATH:`pwd`/flutter/bin"
 
 echo "--- Flutter Version ---"
+git config --global --add safe.directory `pwd`/flutter
 flutter --version
 
 echo "--- Enabling Web ---"
