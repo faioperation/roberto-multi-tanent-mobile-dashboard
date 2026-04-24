@@ -24,6 +24,7 @@ class CustomOrders extends StatelessWidget {
 
         return StatefulBuilder(
           builder: (context, setDialogState) {
+            final theme = Theme.of(context);
             return Dialog(
               backgroundColor: Theme.of(context).cardTheme.color,
               shape: RoundedRectangleBorder(
@@ -87,7 +88,7 @@ class CustomOrders extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.surface : const Color(0xffF0F7FF),
+                        color: Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.surface : theme.colorScheme.primaryContainer.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Column(
@@ -203,14 +204,14 @@ class CustomOrders extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.surface : const Color(0xffFFF1F2),
+                        color: Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.surface : theme.colorScheme.errorContainer.withOpacity(0.2),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: const Text(
+                      child: Text(
                         'Customer will be notified that their order is confirmed and on the way.',
                         style: TextStyle(
                           fontSize: 12,
-                          color: Color(0xffBE123C),
+                          color: Theme.of(context).brightness == Brightness.dark ? theme.colorScheme.error : const Color(0xffBE123C),
                         ),
                       ),
                     ),

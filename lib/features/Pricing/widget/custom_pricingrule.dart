@@ -3,9 +3,26 @@ import 'package:roberto/app/app_color.dart';
 import 'package:roberto/features/Pricing/widget/custom_widgetrule.dart';
 import 'package:roberto/features/Tenant%20Management%20/widget/custom_headder.dart';
 
-class CustomPricingrule extends StatelessWidget {
-  const CustomPricingrule({super.key});
+import 'package:roberto/features/Pricing/widget/pricing_rule_mod.dart';
+import 'package:roberto/features/Pricing/widget/custom_addrule.dart';
 
+class CustomPricingrule extends StatefulWidget {
+  final List<PricingRuleMod> rules;
+  final Function(PricingRuleMod) onEdit;
+  final Function(String) onDelete;
+
+  const CustomPricingrule({
+    super.key,
+    required this.rules,
+    required this.onEdit,
+    required this.onDelete,
+  });
+
+  @override
+  State<CustomPricingrule> createState() => _CustomPricingruleState();
+}
+
+class _CustomPricingruleState extends State<CustomPricingrule> {
   @override
   Widget build(BuildContext context) {
     bool isDesktop = MediaQuery.of(context).size.width > 900;
@@ -16,7 +33,9 @@ class CustomPricingrule extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE)),
+        border: Border.all(
+            color: Theme.of(context).dividerTheme.color ??
+                const Color(0xffEEEEEE)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,13 +56,14 @@ class CustomPricingrule extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 26),
-
           if (isDesktop)
             Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).cardTheme.color,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE)),
+                border: Border.all(
+                    color: Theme.of(context).dividerTheme.color ??
+                        const Color(0xffEEEEEE)),
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -54,9 +74,11 @@ class CustomPricingrule extends StatelessWidget {
                         horizontal: 20,
                         vertical: 14,
                       ),
-                      color: Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.surface : AppColor.secondary,
-                      child: Row(
-                        children: const [
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Theme.of(context).colorScheme.surface
+                          : AppColor.secondary,
+                      child: const Row(
+                        children: [
                           Expanded(
                             flex: 2,
                             child: CustomHeadder(label: 'Rule Name'),
@@ -84,95 +106,14 @@ class CustomPricingrule extends StatelessWidget {
                 ),
               ),
             ),
-          CustomWidgetrule(
-            title: "Per KG Pricing",
-            badgeText: "weight",
-            description: "15 \$/kg",
-            onEdit: () {
-              print("Edit clicked");
-            },
-            onDelete: () {
-              print("Delete clicked");
-            },
-          ),
-
-
-          CustomWidgetrule(
-            title: "TV price",
-            badgeText: "product type",
-            description: "Electronics: +20%",
-            onEdit: () {
-              print("Edit clicked");
-            },
-            onDelete: () {
-              print("Delete clicked");
-            },
-          ),
-
-
-          CustomWidgetrule(
-            title: "Fixed item price",
-            badgeText: "custom",
-            description: "Order > \$500 → -10%",
-            onEdit: () {
-              print("Edit clicked");
-            },
-            onDelete: () {
-              print("Delete clicked");
-            },
-          ),
-
-
-          CustomWidgetrule(
-            title: "Carton/drum/bicycle price",
-            badgeText: "product type",
-            description: "Electronics: +20%",
-            onEdit: () {
-              print("Edit clicked");
-            },
-            onDelete: () {
-              print("Delete clicked");
-            },
-          ),
-
-
-          CustomWidgetrule(
-            title: "CBM conversion",
-            badgeText: "product type",
-            description: "Electronics: +20%",
-            onEdit: () {
-              print("Edit clicked");
-            },
-            onDelete: () {
-              print("Delete clicked");
-            },
-          ),
-
-
-          CustomWidgetrule(
-            title: "Customs fee",
-            badgeText: "product type",
-            description: "Electronics: +20%",
-            onEdit: () {
-              print("Edit clicked");
-            },
-            onDelete: () {
-              print("Delete clicked");
-            },
-          ),
-
-
-          CustomWidgetrule(
-            title: "Promotion & discount",
-            badgeText: "product type",
-            description: "Electronics: +20%",
-            onEdit: () {
-              print("Edit clicked");
-            },
-            onDelete: () {
-              print("Delete clicked");
-            },
-          ),
+          ...widget.rules.map((rule) => CustomWidgetrule(
+                key: ValueKey(rule.id),
+                title: rule.name,
+                badgeText: rule.type,
+                description: rule.value,
+                onEdit: () => widget.onEdit(rule),
+                onDelete: () => widget.onDelete(rule.id),
+              )),
         ],
       ),
     );

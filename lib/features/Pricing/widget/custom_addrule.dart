@@ -2,21 +2,49 @@ import 'package:flutter/material.dart';
 import 'package:roberto/app/app_color.dart';
 import 'package:roberto/features/Auth/widget/custom_textfield.dart';
 
+import 'package:roberto/features/Pricing/widget/pricing_rule_mod.dart';
+
 class CustomAddrule extends StatefulWidget {
-  const CustomAddrule({super.key});
+  final PricingRuleMod? rule;
+  final Function(PricingRuleMod)? onSave;
+
+  const CustomAddrule({super.key, this.rule, this.onSave});
 
   @override
   State<CustomAddrule> createState() => _CustomAddruleState();
 }
 
 class _CustomAddruleState extends State<CustomAddrule> {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController typeController = TextEditingController();
+  final TextEditingController valueController = TextEditingController();
   bool isActive = true;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.rule != null) {
+      nameController.text = widget.rule!.name;
+      typeController.text = widget.rule!.type;
+      valueController.text = widget.rule!.value;
+      isActive = widget.rule!.isActive;
+    }
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    typeController.dispose();
+    valueController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     bool isDesktop = width > 900;
     final theme = Theme.of(context);
+    final isEdit = widget.rule != null;
 
     return AlertDialog(
       backgroundColor: theme.cardTheme.color,
@@ -37,7 +65,7 @@ class _CustomAddruleState extends State<CustomAddrule> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Add Pricing Rule",
+                isEdit ? "Edit Pricing Rule" : "Add Pricing Rule",
                 style: TextStyle(
                   fontSize: isDesktop ? 20 : 16,
                   color: theme.colorScheme.onSurface,
@@ -47,13 +75,14 @@ class _CustomAddruleState extends State<CustomAddrule> {
               InkWell(
                 onTap: () => Navigator.pop(context),
                 borderRadius: BorderRadius.circular(20),
-                child: Icon(Icons.close, size: 20, color: theme.textTheme.bodySmall?.color),
+                child: Icon(Icons.close,
+                    size: 20, color: theme.textTheme.bodySmall?.color),
               ),
             ],
           ),
           const SizedBox(height: 6),
           Text(
-            "Create a new pricing rule",
+            isEdit ? "Modify the pricing rule details" : "Create a new pricing rule",
             style: TextStyle(
               fontSize: isDesktop ? 14 : 12,
               color: theme.textTheme.bodySmall?.color,
@@ -70,15 +99,18 @@ class _CustomAddruleState extends State<CustomAddrule> {
             children: [
               _buildLabel(context, "Rule Name"),
               const SizedBox(height: 6),
-              const CustomTextfield(hintText: "Enter rule name"),
+              CustomTextfield(
+                  hintText: "Enter rule name", controller: nameController),
               const SizedBox(height: 15),
               _buildLabel(context, "Rule Type"),
               const SizedBox(height: 6),
-              const CustomTextfield(hintText: "Select type"),
+              CustomTextfield(
+                  hintText: "Select type", controller: typeController),
               const SizedBox(height: 15),
               _buildLabel(context, "Value"),
               const SizedBox(height: 6),
-              const CustomTextfield(hintText: "e.g., 15 or +20%"),
+              CustomTextfield(
+                  hintText: "e.g., 15 or +20%", controller: valueController),
               const SizedBox(height: 15),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -100,7 +132,7 @@ class _CustomAddruleState extends State<CustomAddrule> {
                           isActive = value;
                         });
                       },
-                      activeColor: AppColor.mini,
+                      activeThumbColor: AppColor.greens,
                     ),
                   ),
                 ],
@@ -140,10 +172,13 @@ class _CustomAddruleState extends State<CustomAddrule> {
 
   List<Widget> _buttons(BuildContext context) {
     final theme = Theme.of(context);
+    final isEdit = widget.rule != null;
     return [
       ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: theme.brightness == Brightness.light ? Colors.grey.shade100 : theme.colorScheme.surface,
+          backgroundColor: theme.brightness == Brightness.light
+              ? Colors.grey.shade100
+              : theme.colorScheme.surface,
           foregroundColor: theme.colorScheme.onSurface,
           elevation: 0,
         ),
@@ -163,11 +198,21 @@ class _CustomAddruleState extends State<CustomAddrule> {
           elevation: 0,
         ),
         onPressed: () {
+          if (widget.onSave != null) {
+            final newRule = PricingRuleMod(
+              id: widget.rule?.id ?? DateTime.now().toString(),
+              name: nameController.text,
+              type: typeController.text,
+              value: valueController.text,
+              isActive: isActive,
+            );
+            widget.onSave!(newRule);
+          }
           Navigator.pop(context);
         },
-        child: const Text(
-          "Add Rule",
-          style: TextStyle(fontWeight: FontWeight.w600),
+        child: Text(
+          isEdit ? "Update Rule" : "Add Rule",
+          style: const TextStyle(fontWeight: FontWeight.w600),
         ),
       ),
       const SizedBox(height: 15),

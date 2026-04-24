@@ -7,6 +7,8 @@ import 'package:roberto/features/Pricing/widget/custom_pricingcalculator.dart';
 import 'package:roberto/features/Tenant%20Management%20/widget/custom_headder.dart';
 import 'package:roberto/features/Tenant%20Management%20/widget/custom_stat_card.dart';
 
+import 'package:roberto/features/Pricing/widget/pricing_rule_mod.dart';
+
 class PricingScreen extends StatefulWidget {
   const PricingScreen({super.key});
 
@@ -17,14 +19,75 @@ class PricingScreen extends StatefulWidget {
 class _PricingScreenState extends State<PricingScreen> {
   int _selectedTab = 0;
 
+  final List<PricingRuleMod> _rules = [
+    PricingRuleMod(
+      id: '1',
+      name: "Per KG Pricing",
+      type: "weight",
+      value: "15 \$/kg",
+    ),
+    PricingRuleMod(
+      id: '2',
+      name: "TV price",
+      type: "product type",
+      value: "Electronics: +20%",
+    ),
+    PricingRuleMod(
+      id: '3',
+      name: "Fixed item price",
+      type: "custom",
+      value: "Order > \$500 → -10%",
+    ),
+    PricingRuleMod(
+      id: '4',
+      name: "Carton/drum/bicycle price",
+      type: "product type",
+      value: "Electronics: +20%",
+    ),
+    PricingRuleMod(
+      id: '5',
+      name: "CBM conversion",
+      type: "product type",
+      value: "Electronics: +20%",
+    ),
+    PricingRuleMod(
+      id: '6',
+      name: "Customs fee",
+      type: "product type",
+      value: "Electronics: +20%",
+    ),
+    PricingRuleMod(
+      id: '7',
+      name: "Promotion & discount",
+      type: "product type",
+      value: "Electronics: +20%",
+    ),
+  ];
+
+  void _openAddRuleDialog({PricingRuleMod? rule}) {
+    showDialog(
+      context: context,
+      builder: (context) => CustomAddrule(
+        rule: rule,
+        onSave: (newRule) {
+          setState(() {
+            if (rule != null) {
+              final index = _rules.indexWhere((r) => r.id == rule.id);
+              if (index != -1) {
+                _rules[index] = newRule;
+              }
+            } else {
+              _rules.add(newRule);
+            }
+          });
+        },
+      ),
+    );
+  }
+
   Widget _buildAddRuleButton(BuildContext context) {
     return InkWell(
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (context) => const CustomAddrule(),
-        );
-      },
+      onTap: () => _openAddRuleDialog(),
       borderRadius: BorderRadius.circular(12),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -59,7 +122,7 @@ class _PricingScreenState extends State<PricingScreen> {
       ),
       CustomStatCard(
         label: 'Active Rules',
-        value: '3',
+        value: _rules.length.toString(),
         iconPath: 'assets/rule.svg',
       ),
       CustomStatCard(
@@ -93,57 +156,51 @@ class _PricingScreenState extends State<PricingScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-      width < 600
-          ? Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Pricing Management',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                _buildAddRuleButton(context),
-              ],
-            )
-          : Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    'Pricing Management',
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.onSurface,
+          width < 600
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Pricing Management',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
                     ),
-                  ),
+                    const SizedBox(height: 12),
+                    _buildAddRuleButton(context),
+                  ],
+                )
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Pricing Management',
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    _buildAddRuleButton(context),
+                  ],
                 ),
-                const SizedBox(width: 16),
-                _buildAddRuleButton(context),
-              ],
-            ),
-
           const SizedBox(height: 6),
-
           Text(
             'Manage pricing rules and product categories',
-            style: TextStyle(fontSize: 15, color: Theme.of(context).textTheme.bodyMedium?.color),
+            style: TextStyle(
+                fontSize: 15,
+                color: Theme.of(context).textTheme.bodyMedium?.color),
           ),
-
           const SizedBox(height: 20),
-
           _buildStatCards(width),
-
           const SizedBox(height: 25),
-
           _buildToggleTabs(),
-
           const SizedBox(height: 25),
-
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 250),
             transitionBuilder: (child, animation) => FadeTransition(
@@ -151,9 +208,18 @@ class _PricingScreenState extends State<PricingScreen> {
               child: child,
             ),
             child: _selectedTab == 0
-                ? const CustomPricingrule(key: ValueKey('Pricing Rules'))
+                ? CustomPricingrule(
+                    key: const ValueKey('Pricing Rules'),
+                    rules: _rules,
+                    onEdit: (rule) => _openAddRuleDialog(rule: rule),
+                    onDelete: (id) {
+                      setState(() {
+                        _rules.removeWhere((r) => r.id == id);
+                      });
+                    },
+                  )
                 : const CustomPricingcalculator(
-                key: ValueKey('Price Calculator')),
+                    key: ValueKey('Price Calculator')),
           ),
         ],
       ),

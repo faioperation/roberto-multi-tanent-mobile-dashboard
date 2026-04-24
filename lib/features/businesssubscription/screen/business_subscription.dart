@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:roberto/app/app_color.dart';
 import 'package:roberto/features/businesssubscription/widget/custom_plans.dart';
 import 'package:roberto/features/businesssubscription/widget/custom_history.dart';
+import 'package:roberto/features/Tenant%20Management%20/widget/custom_stat_card.dart';
 
 class BusinessSubscription extends StatefulWidget {
   const BusinessSubscription({super.key});
@@ -28,20 +29,67 @@ class _BusinessSubscriptionState extends State<BusinessSubscription> {
                   Text(
                     'Subscription Management',
                     style: TextStyle(
-                      fontSize: 28,
+                      fontSize: MediaQuery.of(context).size.width < 600 ? 24 : 28,
                       fontWeight: FontWeight.bold,
-                      color: theme.colorScheme.onSurface,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    'Configure and train your AI assistant',
-                    style: TextStyle(fontSize: 15, color: theme.textTheme.bodySmall?.color),
+                    'Manage plans, billing, and subscriptions',
+                    style: TextStyle(fontSize: 15, color: Theme.of(context).textTheme.bodyMedium?.color),
                   ),
                 ],
               ),
             ),
           ],
+        ),
+
+        const SizedBox(height: 28),
+        // ── Stat Cards ──────────────────────────────────────────────────────
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final isWide = constraints.maxWidth > 600;
+            final cards = [
+              CustomStatCard(
+                label: 'MRR',
+                value: '\$8.9K',
+                iconPath: "assets/MRR.svg",
+              ),
+              CustomStatCard(
+                label: 'ARR',
+                value: '\$107K',
+                iconPath: "assets/ARR.svg",
+              ),
+              CustomStatCard(
+                label: 'Active Subs',
+                value: '47',
+                iconPath: "assets/person.svg",
+              ),
+            ];
+            return isWide
+                ? Row(
+              children: cards
+                  .map((c) =>
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          right: cards.indexOf(c) < 2 ? 16 : 0),
+                      child: c,
+                    ),
+                  ))
+                  .toList(),
+            )
+                : Column(
+              children: cards
+                  .map((c) =>
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: c,
+                  ))
+                  .toList(),
+            );
+          },
         ),
 
         const SizedBox(height: 20),
@@ -67,13 +115,10 @@ class _BusinessSubscriptionState extends State<BusinessSubscription> {
   }
 
   Widget _buildToggleTabs() {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-    
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: isDark ? theme.colorScheme.surface : theme.colorScheme.secondary,
+        color: Theme.of(context).brightness == Brightness.light ? Colors.grey.shade100 : Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
@@ -90,25 +135,24 @@ class _BusinessSubscriptionState extends State<BusinessSubscription> {
     required int index,
     required String label,
   }) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
     final isActive = _selectedTab == index;
 
     return GestureDetector(
       onTap: () => setState(() => _selectedTab = index),
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 100),
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 13),
+        duration: const Duration(milliseconds: 180),
+        curve: Curves.easeInOut,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         decoration: BoxDecoration(
-          color: isActive ? (isDark ? theme.colorScheme.secondary : Colors.white) : Colors.transparent,
+          color: isActive ? Theme.of(context).cardTheme.color : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
           boxShadow: isActive
               ? [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Theme.of(context).shadowColor.withOpacity(Theme.of(context).brightness == Brightness.light ? 0.08 : 0.2),
               blurRadius: 4,
-              offset: const Offset(0, 2),
-            ),
+              offset: const Offset(0, 1),
+            )
           ]
               : [],
         ),
@@ -116,8 +160,8 @@ class _BusinessSubscriptionState extends State<BusinessSubscription> {
           label,
           style: TextStyle(
             fontSize: 14,
-            fontWeight: isActive ? FontWeight.w500 : FontWeight.w400,
-            color: isActive ? theme.colorScheme.onSurface : theme.textTheme.bodySmall?.color,
+            fontWeight: FontWeight.w500,
+            color: isActive ? Theme.of(context).colorScheme.onSurface : Theme.of(context).textTheme.bodyMedium?.color,
           ),
         ),
       ),

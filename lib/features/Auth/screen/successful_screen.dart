@@ -22,7 +22,7 @@ class _SuccessfulScreenState extends State<SuccessfulScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.secondary,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: CustomScreen(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -35,24 +35,24 @@ class _SuccessfulScreenState extends State<SuccessfulScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            const Center(
+            Center(
               child: Text(
                 "Password Updated Successfully!",
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w400,
-                  color: AppColor.black,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
             ),
             const SizedBox(height: 5),
-            const Center(
+            Center(
               child: Text(
                 "Your new password has been saved. You can now continue securely.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.grey,
+                  color: Theme.of(context).textTheme.bodyMedium?.color,
                 ),
               ),
             ),

@@ -25,7 +25,7 @@ class _CustomAgentState extends State<CustomAgent> {
             color: Theme.of(context).cardTheme.color,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE),
+              color: Theme.of(context).dividerTheme.color!,
               width: 1,
             ),
           ),

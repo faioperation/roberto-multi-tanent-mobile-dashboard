@@ -24,6 +24,7 @@ class CustomAddbranch extends StatefulWidget {
 
 class _CustomAddbranchState extends State<CustomAddbranch> {
   String _selectedStatus = "Active";
+  String? _selectedManager;
 
   @override
   void initState() {
@@ -85,6 +86,10 @@ class _CustomAddbranchState extends State<CustomAddbranch> {
                 hintText: "123 Street Name, Area",
                 initialValue: widget.address,
               ),
+              const SizedBox(height: 16),
+
+              _buildFieldLabel(context, "Assign Manager"),
+              _buildManagerDropdown(theme),
               const SizedBox(height: 16),
 
               _buildFieldLabel(context, "Status"),
@@ -167,6 +172,43 @@ class _CustomAddbranchState extends State<CustomAddbranch> {
             if (v != null) {
               setState(() => _selectedStatus = v);
             }
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildManagerDropdown(ThemeData theme) {
+    // These would normally come from a provider/state management
+    final managers = ["John Smith", "Michael Chen", "Sarah Johnson", "David Brown"];
+    
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      decoration: BoxDecoration(
+        color: theme.brightness == Brightness.dark
+            ? theme.colorScheme.surface
+            : const Color(0xffF9FAFB),
+        borderRadius: BorderRadius.circular(12),
+        border:
+            Border.all(color: theme.dividerTheme.color ?? Colors.transparent),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          value: _selectedManager,
+          hint: Text("Select Manager", style: TextStyle(fontSize: 14, color: theme.textTheme.bodySmall?.color)),
+          isExpanded: true,
+          dropdownColor: theme.cardTheme.color,
+          items: managers
+              .map((m) => DropdownMenuItem(
+                    value: m,
+                    child: Text(m,
+                        style: TextStyle(
+                            fontSize: 14, color: theme.colorScheme.onSurface)),
+                  ))
+              .toList(),
+          onChanged: (v) {
+            setState(() => _selectedManager = v);
           },
         ),
       ),

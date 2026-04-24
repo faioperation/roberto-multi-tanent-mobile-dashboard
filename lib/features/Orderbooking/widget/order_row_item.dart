@@ -99,18 +99,7 @@ class OrderRowItem extends StatelessWidget {
           // Status
           Expanded(
             flex: 2,
-            child: _buildStatusBadge(order.status),
-          ),
-          
-          // Courier
-          Expanded(
-            flex: 2,
-            child: Text(
-              order.courier,
-              style: TextStyle(
-                color: Theme.of(context).textTheme.bodyLarge?.color,
-              ),
-            ),
+            child: _buildStatusBadge(context, order.status),
           ),
           
           // Shipping Charge
@@ -144,17 +133,17 @@ class OrderRowItem extends StatelessWidget {
                 IconButton(
                   onPressed: onViewDetails,
                   icon: const Icon(Icons.visibility_outlined, size: 18),
-                  color: Colors.blue.shade600,
+                  color: Colors.blue.shade400,
                 ),
                 IconButton(
                   onPressed: onEdit,
                   icon: const Icon(Icons.edit_outlined, size: 18),
-                  color: Colors.green.shade600,
+                  color: Colors.green.shade400,
                 ),
                 IconButton(
                   onPressed: onDelete,
                   icon: const Icon(Icons.delete_outline, size: 18),
-                  color: Colors.red.shade600,
+                  color: Colors.red.shade400,
                 ),
               ],
             ),
@@ -164,25 +153,27 @@ class OrderRowItem extends StatelessWidget {
     );
   }
 
-  Widget _buildStatusBadge(OrderStatus status) {
+  Widget _buildStatusBadge(BuildContext context, OrderStatus status) {
     Color backgroundColor;
     Color textColor;
     String statusText;
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     switch (status) {
       case OrderStatus.pending:
-        backgroundColor = const Color(0xffFEF3C7);
-        textColor = const Color(0xffD97706);
+        backgroundColor = isDark ? Colors.amber.withOpacity(0.1) : const Color(0xffFEF3C7);
+        textColor = isDark ? Colors.amber.shade400 : const Color(0xffD97706);
         statusText = 'Pending';
         break;
       case OrderStatus.confirmed:
-        backgroundColor = const Color(0xffDBEAFE);
-        textColor = const Color(0xff2563EB);
+        backgroundColor = isDark ? Colors.blue.withOpacity(0.1) : const Color(0xffDBEAFE);
+        textColor = isDark ? Colors.blue.shade400 : const Color(0xff2563EB);
         statusText = 'Confirmed';
         break;
       case OrderStatus.delivered:
-        backgroundColor = const Color(0xffD1FAE5);
-        textColor = const Color(0xff059669);
+        backgroundColor = isDark ? Colors.green.withOpacity(0.1) : const Color(0xffD1FAE5);
+        textColor = isDark ? Colors.green.shade400 : const Color(0xff059669);
         statusText = 'Delivered';
         break;
     }

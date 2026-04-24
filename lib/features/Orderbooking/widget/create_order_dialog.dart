@@ -1,24 +1,73 @@
 import 'package:flutter/material.dart';
 import 'package:roberto/app/app_color.dart';
+import 'package:roberto/features/Orderbooking/widget/order_mod.dart';
 import 'package:roberto/features/Auth/widget/custom_textfield.dart';
 
 class CreateOrderDialog extends StatefulWidget {
-  const CreateOrderDialog({super.key});
+  final OrderMod? order;
+  const CreateOrderDialog({super.key, this.order});
 
   @override
   State<CreateOrderDialog> createState() => _CreateOrderDialogState();
 }
 
 class _CreateOrderDialogState extends State<CreateOrderDialog> {
+  late TextEditingController _nameController;
+  late TextEditingController _phoneController;
+  late TextEditingController _emailController;
+  late TextEditingController _fromController;
+  late TextEditingController _toController;
+  late TextEditingController _productController;
+  late TextEditingController _sizeController;
+  late TextEditingController _priceController;
+  late TextEditingController _notesController;
+
   int _quantity = 1;
   String? _selectedPaymentMethod = 'Cash on delivery';
   String? _selectedStatus = 'paid';
 
   @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController(text: widget.order?.customerName);
+    _phoneController = TextEditingController(text: widget.order?.phone);
+    _emailController = TextEditingController(text: widget.order?.email);
+    _fromController = TextEditingController(text: widget.order?.fromAddress);
+    _toController = TextEditingController(text: widget.order?.toAddress);
+    _productController = TextEditingController(text: widget.order?.productName);
+    _sizeController = TextEditingController(text: widget.order?.productSize);
+    _priceController = TextEditingController(text: widget.order?.price?.toString() ?? widget.order?.shippingCharge.toString());
+    _notesController = TextEditingController(text: widget.order?.notes);
+    
+    if (widget.order != null) {
+      _quantity = widget.order!.quantity;
+      _selectedPaymentMethod = widget.order!.paymentMethod ?? 'Cash on delivery';
+      // Map OrderStatus enum back to dialog strings if needed, 
+      // but for now let's keep it simple or align them
+      _selectedStatus = widget.order!.status == OrderStatus.pending ? 'unpaid' : 'paid';
+    }
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _phoneController.dispose();
+    _emailController.dispose();
+    _fromController.dispose();
+    _toController.dispose();
+    _productController.dispose();
+    _sizeController.dispose();
+    _priceController.dispose();
+    _notesController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      backgroundColor: Theme.of(context).cardTheme.color,
+      backgroundColor: theme.cardColor,
       surfaceTintColor: Colors.transparent,
       insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
       child: ConstrainedBox(
@@ -39,7 +88,7 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Create New Order",
+                          widget.order != null ? "Edit Order" : "Create New Order",
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -48,7 +97,7 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          "Create a new order for a customer",
+                          widget.order != null ? "Update existing order details" : "Create a new order for a customer",
                           style: TextStyle(
                             fontSize: 14,
                             color: Theme.of(context).textTheme.bodySmall?.color,
@@ -78,15 +127,15 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           _buildLabel("Customer Name"),
-                          const CustomTextfield(hintText: "Enter customer name"),
+                          CustomTextfield(hintText: "Enter customer name", controller: _nameController),
                           const SizedBox(height: 16),
                           
                           if (isMobile) ... [
                             _buildLabel("Phone Number"),
-                            const CustomTextfield(hintText: "+1 (555) 000-0000"),
+                            CustomTextfield(hintText: "+1 (555) 000-0000", controller: _phoneController),
                             const SizedBox(height: 16),
                             _buildLabel("Email (Optional)"),
-                            const CustomTextfield(hintText: "customer@email.com"),
+                            CustomTextfield(hintText: "customer@email.com", controller: _emailController),
                           ] else 
                             Row(
                               children: [
@@ -95,7 +144,7 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       _buildLabel("Phone Number"),
-                                      const CustomTextfield(hintText: "+1 (555) 000-0000"),
+                                      CustomTextfield(hintText: "+1 (555) 000-0000", controller: _phoneController),
                                     ],
                                   ),
                                 ),
@@ -105,7 +154,7 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       _buildLabel("Email (Optional)"),
-                                      const CustomTextfield(hintText: "customer@email.com"),
+                                      CustomTextfield(hintText: "customer@email.com", controller: _emailController),
                                     ],
                                   ),
                                 ),
@@ -114,19 +163,19 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
                           const SizedBox(height: 16),
                           
                           _buildLabel("Delivery Address ( From )"),
-                          const CustomTextfield(hintText: "Enter location"),
+                          CustomTextfield(hintText: "Enter location", controller: _fromController),
                           const SizedBox(height: 16),
                           
                           _buildLabel("To"),
-                          const CustomTextfield(hintText: "Enter location"),
+                          CustomTextfield(hintText: "Enter location", controller: _toController),
                           const SizedBox(height: 16),
                           
                           if (isMobile) ... [
                             _buildLabel("Select Product"),
-                            const CustomTextfield(hintText: "Type product Name"),
+                            CustomTextfield(hintText: "Type product Name", controller: _productController),
                             const SizedBox(height: 16),
                             _buildLabel("Select Size"),
-                            const CustomTextfield(hintText: "Type size/weight"),
+                            CustomTextfield(hintText: "Type size/weight", controller: _sizeController),
                           ] else 
                             Row(
                               children: [
@@ -135,7 +184,7 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       _buildLabel("Select Product"),
-                                      const CustomTextfield(hintText: "Type product Name"),
+                                      CustomTextfield(hintText: "Type product Name", controller: _productController),
                                     ],
                                   ),
                                 ),
@@ -145,7 +194,7 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       _buildLabel("Select Size"),
-                                      const CustomTextfield(hintText: "Type size/weight"),
+                                      CustomTextfield(hintText: "Type size/weight", controller: _sizeController),
                                     ],
                                   ),
                                 ),
@@ -158,7 +207,7 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
                             _buildQuantityDropdown(),
                             const SizedBox(height: 16),
                             _buildLabel("Price"),
-                            const CustomTextfield(hintText: "Enter price"),
+                            CustomTextfield(hintText: "Enter price", controller: _priceController),
                           ] else 
                             Row(
                               children: [
@@ -177,7 +226,7 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       _buildLabel("Price"),
-                                      const CustomTextfield(hintText: "Enter price"),
+                                      CustomTextfield(hintText: "Enter price", controller: _priceController),
                                     ],
                                   ),
                                 ),
@@ -227,7 +276,7 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
                                       _buildDropdown(
                                         hint: "paid",
                                         value: _selectedStatus,
-                                        items: ["paid", "Pending"],
+                                        items: ["paid", "unpaid"],
                                         onChanged: (val) => setState(() => _selectedStatus = val),
                                       ),
                                     ],
@@ -238,9 +287,10 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
                           const SizedBox(height: 16),
 
                           _buildLabel("Order Notes (Optional)"),
-                          const CustomTextfield(
+                          CustomTextfield(
                             hintText: "Add any special instructions",
                             maxLines: 3,
+                            controller: _notesController,
                           ),
                         ],
                       );
@@ -256,7 +306,33 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        // Create or Update Order object
+                        final updatedOrder = (widget.order ?? OrderMod(
+                          orderId: '#ORD-${DateTime.now().millisecondsSinceEpoch.toString().substring(7)}',
+                          customerName: _nameController.text,
+                          phone: _phoneController.text,
+                          address: _toController.text,
+                          status: _selectedStatus == 'paid' ? OrderStatus.confirmed : OrderStatus.pending,
+                          shippingCharge: double.tryParse(_priceController.text) ?? 0.0,
+                          deliveryTime: 'Today, Soon',
+                          avatarInitials: _nameController.text.isNotEmpty ? _nameController.text.substring(0, 1).toUpperCase() : 'U',
+                          avatarColor: Colors.blue,
+                        )).copyWith(
+                          customerName: _nameController.text,
+                          phone: _phoneController.text,
+                          email: _emailController.text,
+                          fromAddress: _fromController.text,
+                          toAddress: _toController.text,
+                          address: _toController.text,
+                          productName: _productController.text,
+                          productSize: _sizeController.text,
+                          quantity: _quantity,
+                          paymentMethod: _selectedPaymentMethod,
+                          notes: _notesController.text,
+                          price: double.tryParse(_priceController.text),
+                          status: _selectedStatus == 'paid' ? OrderStatus.confirmed : OrderStatus.pending,
+                        );
+                        Navigator.pop(context, updatedOrder);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColor.primary,
@@ -267,7 +343,7 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
                         ),
                         elevation: 0,
                       ),
-                      child: const Text("Create Order", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
+                      child: Text(widget.order != null ? "Save Changes" : "Create Order", style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -282,7 +358,7 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
-                        side: BorderSide(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE)),
+                        side: BorderSide(color: theme.dividerColor.withOpacity(0.1)),
                       ),
                       child: const Text("Cancel", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
                     ),
@@ -319,7 +395,7 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.surface : Colors.white,
+        color: Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.surface : Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE)),
       ),
@@ -340,7 +416,7 @@ class _CreateOrderDialogState extends State<CreateOrderDialog> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.surface : Colors.white,
+        color: Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.surface : Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: Theme.of(context).dividerTheme.color ?? const Color(0xffEEEEEE)),
       ),

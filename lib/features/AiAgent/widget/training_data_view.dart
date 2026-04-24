@@ -36,7 +36,7 @@ class _TrainingDataViewState extends State<TrainingDataView> {
       decoration: BoxDecoration(
         color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE), width: 1),
+        border: Border.all(color: theme.dividerTheme.color!, width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

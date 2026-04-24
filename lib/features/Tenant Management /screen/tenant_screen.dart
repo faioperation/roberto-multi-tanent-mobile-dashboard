@@ -210,14 +210,14 @@ class _TenantScreenState extends State<TenantScreen> {
                           child: CustomHeadder(label: 'Owner Name')),
                       Expanded(
                           flex: 4, child: CustomHeadder(label: 'Contact')),
-                      Expanded(flex: 2, child: CustomHeadder(label: 'Plan')),
-                      Expanded(flex: 2, child: CustomHeadder(label: 'Status')),
+                      Expanded(flex: 2, child: CustomHeadder(label: 'Plan', textAlign: TextAlign.center)),
+                      Expanded(flex: 2, child: CustomHeadder(label: 'Status', textAlign: TextAlign.center)),
                       Expanded(
                           flex: 2,
-                          child: CustomHeadder(label: 'Plan Price')),
+                          child: CustomHeadder(label: 'Plan Price', textAlign: TextAlign.center)),
                       Expanded(
                           flex: 1,
-                          child: CustomHeadder(label: 'Actions')),
+                          child: CustomHeadder(label: 'Actions', textAlign: TextAlign.center)),
                     ],
                   ),
                 ),
@@ -232,7 +232,7 @@ class _TenantScreenState extends State<TenantScreen> {
                     height: 1, color: theme.dividerTheme.color),
                 itemBuilder: (context, index) {
                   final t = _tenants[index];
-                  return isDesktop ? _buildRow(t) : _buildMobileCard(t);
+                  return isDesktop ? _buildRow(t, index) : _buildMobileCard(t, index);
                 },
               ),
             ],
@@ -243,7 +243,7 @@ class _TenantScreenState extends State<TenantScreen> {
     );
   }
 
-  Widget _buildRow(Map<String, String> tenant) {
+  Widget _buildRow(Map<String, String> tenant, int index) {
     final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -297,6 +297,7 @@ class _TenantScreenState extends State<TenantScreen> {
             flex: 2,
             child: Text(
               tenant['plan']!,
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w500,
@@ -306,12 +307,13 @@ class _TenantScreenState extends State<TenantScreen> {
           ),
           Expanded(
             flex: 2,
-            child: _buildStatusIndicator(tenant['status']!),
+            child: Center(child: _buildStatusDropdown(tenant, index)),
           ),
           Expanded(
             flex: 2,
             child: Text(
               tenant['price']!,
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
@@ -322,9 +324,11 @@ class _TenantScreenState extends State<TenantScreen> {
 
           Expanded(
             flex: 1,
-            child: IconButton(
-              icon: Icon(Icons.remove_red_eye, color: theme.textTheme.bodySmall?.color),
-              onPressed: () => _showClientDetailsDialog(tenant),
+            child: Center(
+              child: IconButton(
+                icon: Icon(Icons.remove_red_eye, color: theme.textTheme.bodySmall?.color),
+                onPressed: () => _showClientDetailsDialog(tenant),
+              ),
             ),
           ),
         ],
@@ -356,7 +360,7 @@ class _TenantScreenState extends State<TenantScreen> {
     );
   }
 
-  Widget _buildMobileCard(Map<String, String> tenant) {
+  Widget _buildMobileCard(Map<String, String> tenant, int index) {
     final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.all(16),
@@ -377,7 +381,7 @@ class _TenantScreenState extends State<TenantScreen> {
                   color: theme.colorScheme.onSurface,
                 ),
               ),
-              _buildStatusIndicator(tenant['status']!),
+              _buildStatusDropdown(tenant, index),
             ],
           ),
           const SizedBox(height: 8),
@@ -433,29 +437,78 @@ class _TenantScreenState extends State<TenantScreen> {
     );
   }
 
-  Widget _buildStatusIndicator(String status) {
+  Widget _buildStatusDropdown(Map<String, String> tenant, int index) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    
-    final isActive = status == 'Active';
-    final activeBg = isDark ? const Color(0xFF1B5E20).withOpacity(0.2) : const Color(0xffD1FAE5);
-    final suspendedBg = isDark ? const Color(0xFFB71C1C).withOpacity(0.2) : const Color(0xFFFFEBEE);
-    final activeColor = isDark ? const Color(0xFF81C784) : const Color(0xff065F46);
-    final suspendedColor = isDark ? const Color(0xFFE57373) : const Color(0xff991B1B);
+    final status = tenant['status']!;
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: isActive ? activeBg : suspendedBg,
-        borderRadius: BorderRadius.circular(12),
-        border: isDark ? Border.all(color: (isActive ? activeColor : suspendedColor).withOpacity(0.3)) : null,
+    Color bgColor;
+    Color textColor;
+
+    switch (status) {
+      case 'Active':
+        bgColor = isDark ? const Color(0xFF1B5E20).withOpacity(0.2) : const Color(0xffD1FAE5);
+        textColor = isDark ? const Color(0xFF81C784) : const Color(0xff065F46);
+        break;
+      case 'Suspended':
+        bgColor = isDark ? const Color(0xFFB71C1C).withOpacity(0.2) : const Color(0xFFFFEBEE);
+        textColor = isDark ? const Color(0xFFE57373) : const Color(0xff991B1B);
+        break;
+      case 'Inactive':
+      default:
+        bgColor = isDark ? Colors.grey.withOpacity(0.2) : Colors.grey.shade100;
+        textColor = isDark ? Colors.grey.shade400 : Colors.grey.shade700;
+        break;
+    }
+
+    return PopupMenuButton<String>(
+      onSelected: (String newStatus) {
+        setState(() {
+          _tenants[index]['status'] = newStatus;
+          // In a real app, you'd calculate price based on status/plan here
+        });
+      },
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+        _buildPopupItem('Active', isDark),
+        _buildPopupItem('Inactive', isDark),
+        _buildPopupItem('Suspended', isDark),
+      ],
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: BorderRadius.circular(12),
+          border: isDark ? Border.all(color: textColor.withOpacity(0.3)) : null,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              status,
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+                color: textColor,
+              ),
+            ),
+            const SizedBox(width: 4),
+            Icon(Icons.keyboard_arrow_down, size: 14, color: textColor),
+          ],
+        ),
       ),
+    );
+  }
+
+  PopupMenuItem<String> _buildPopupItem(String value, bool isDark) {
+    return PopupMenuItem<String>(
+      value: value,
+      height: 32,
       child: Text(
-        status,
+        value,
         style: TextStyle(
-          fontSize: 11,
-          fontWeight: FontWeight.w600,
-          color: isActive ? activeColor : suspendedColor,
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+          color: isDark ? Colors.white70 : Colors.black87,
         ),
       ),
     );

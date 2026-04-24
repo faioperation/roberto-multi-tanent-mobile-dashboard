@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.secondary,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: CustomScreen(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -44,24 +44,24 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
             ),
             const SizedBox(height: 20),
-            const Center(
+            Center(
               child: Text(
                 "Dashboard Login",
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w400,
-                  color: AppColor.black,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
             ),
             const SizedBox(height: 5),
-            const Center(
+            Center(
               child: Text(
                 "Secure access to farm management platform",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.grey,
+                  color: Theme.of(context).textTheme.bodyMedium?.color,
                 ),
               ),
             ),
@@ -69,12 +69,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
             Align(
               alignment: Alignment.centerLeft,
-              child: const Text(
+              child: Text(
                 "Email Address",
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: Colors.black87,
+                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
                 ),
               ),
             ),
@@ -88,12 +88,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
             Align(
               alignment: Alignment.centerLeft,
-              child: const Text(
+              child: Text(
                 "Password",
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: Colors.black87,
+                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
                 ),
               ),
             ),
@@ -115,11 +115,11 @@ class _LoginScreenState extends State<LoginScreen> {
               },
               child: Align(
                 alignment: Alignment.centerRight,
-                child: const Text(
+                child: Text(
                   "Forgot Password?",
                   style: TextStyle(
                     fontSize: 13,
-                    color: AppColor.black,
+                    color: Theme.of(context).colorScheme.onSurface,
                     fontWeight: FontWeight.w500,
                   ),
                 ),

@@ -43,11 +43,12 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
       phone: '+1 (555) 123-4567',
       address: 'Texas to New York',
       status: OrderStatus.pending,
-      courier: 'Not assigned',
       shippingCharge: 45.00,
-      deliveryTime: '12 Apr, 9:00 PM',
+      deliveryTime: '10 Apr, 9:00 AM',
       avatarInitials: 'SJ',
       avatarColor: const Color(0xFF3B6D11),
+      quantity: 1,
+      deliveryDate: DateTime(2026, 4, 10),
     ),
     OrderMod(
       orderId: '#ORD-002',
@@ -55,11 +56,12 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
       phone: '+1 (555) 123-4567',
       address: 'Texas to New York',
       status: OrderStatus.confirmed,
-      courier: 'FedEx',
       shippingCharge: 19.50,
-      deliveryTime: '12 Apr, 9:00 PM',
+      deliveryTime: '10 Apr, 10:30 AM',
       avatarInitials: 'EW',
       avatarColor: const Color(0xFF185FA5),
+      quantity: 1,
+      deliveryDate: DateTime(2026, 4, 10),
     ),
     OrderMod(
       orderId: '#ORD-003',
@@ -67,11 +69,12 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
       phone: '+1 (555) 123-4567',
       address: 'Texas to New York',
       status: OrderStatus.delivered,
-      courier: 'UPS',
       shippingCharge: 67.00,
-      deliveryTime: '12 Apr, 9:00 PM',
+      deliveryTime: '01 Apr, 2:00 PM',
       avatarInitials: 'DB',
       avatarColor: const Color(0xFF72243E),
+      quantity: 1,
+      deliveryDate: DateTime(2026, 4, 1),
     ),
     OrderMod(
       orderId: '#ORD-004',
@@ -79,11 +82,12 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
       phone: '+1 (555) 123-4567',
       address: 'Texas to New York',
       status: OrderStatus.confirmed,
-      courier: 'DHL',
       shippingCharge: 23.99,
-      deliveryTime: '12 Apr, 9:00 PM',
+      deliveryTime: '03 Apr, 4:00 PM',
       avatarInitials: 'SJ',
       avatarColor: const Color(0xFF3B6D11),
+      quantity: 1,
+      deliveryDate: DateTime(2026, 4, 3),
     ),
     OrderMod(
       orderId: '#ORD-005',
@@ -91,11 +95,152 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
       phone: '+1 (555) 123-4567',
       address: 'Texas to New York',
       status: OrderStatus.pending,
-      courier: 'Not assigned',
       shippingCharge: 80.00,
-      deliveryTime: '12 Apr, 9:00 PM',
+      deliveryTime: '07 Apr, 11:00 AM',
       avatarInitials: 'EW',
       avatarColor: const Color(0xFF185FA5),
+      quantity: 1,
+      deliveryDate: DateTime(2026, 4, 7),
+    ),
+    OrderMod(
+      orderId: '#ORD-006',
+      customerName: 'Michael Chen',
+      phone: '+1 (555) 987-6543',
+      address: 'California to Washington',
+      status: OrderStatus.confirmed,
+      shippingCharge: 35.50,
+      deliveryTime: '14 Apr, 2:00 PM',
+      avatarInitials: 'MC',
+      avatarColor: const Color(0xFFE11D48),
+      quantity: 2,
+      productName: 'Gaming Mouse',
+      deliveryDate: DateTime.now().add(const Duration(days: 1)),
+    ),
+    OrderMod(
+      orderId: '#ORD-007',
+      customerName: 'Sophia Garcia',
+      phone: '+1 (555) 456-7890',
+      address: 'Florida to Georgia',
+      status: OrderStatus.pending,
+      shippingCharge: 12.00,
+      deliveryTime: '15 Apr, 10:30 AM',
+      avatarInitials: 'SG',
+      avatarColor: const Color(0xFF7C3AED),
+      quantity: 1,
+      productName: 'Yoga Mat',
+      deliveryDate: DateTime.now().add(const Duration(days: 3)),
+    ),
+    OrderMod(
+      orderId: '#ORD-008',
+      customerName: 'James Miller',
+      phone: '+1 (555) 234-5678',
+      address: 'Illinois to Ohio',
+      status: OrderStatus.delivered,
+      shippingCharge: 55.00,
+      deliveryTime: '10 Apr, 4:45 PM',
+      avatarInitials: 'JM',
+      avatarColor: const Color(0xFF059669),
+      quantity: 1,
+      productName: 'Coffee Maker',
+      deliveryDate: DateTime.now().subtract(const Duration(days: 2)),
+    ),
+    OrderMod(
+      orderId: '#ORD-009',
+      customerName: 'Olivia Taylor',
+      phone: '+1 (555) 876-5432',
+      address: 'Arizona to Nevada',
+      status: OrderStatus.pending,
+      shippingCharge: 25.00,
+      deliveryTime: '16 Apr, 1:15 PM',
+      avatarInitials: 'OT',
+      avatarColor: const Color(0xFFD97706),
+      quantity: 3,
+      productName: 'Notebook Set',
+      deliveryDate: DateTime.now().add(const Duration(days: 4)),
+    ),
+    OrderMod(
+      orderId: '#ORD-010',
+      customerName: 'William Martinez',
+      phone: '+1 (555) 345-6789',
+      address: 'Michigan to Indiana',
+      status: OrderStatus.confirmed,
+      shippingCharge: 40.00,
+      deliveryTime: '13 Apr, 11:00 AM',
+      avatarInitials: 'WM',
+      avatarColor: const Color(0xFF2563EB),
+      quantity: 1,
+      productName: 'Backpack',
+      deliveryDate: DateTime.now(),
+    ),
+    OrderMod(
+      orderId: '#ORD-011',
+      customerName: 'Isabella Anderson',
+      phone: '+1 (555) 654-3210',
+      address: 'Virginia to Maryland',
+      status: OrderStatus.pending,
+      shippingCharge: 15.75,
+      deliveryTime: '17 Apr, 3:30 PM',
+      avatarInitials: 'IA',
+      avatarColor: const Color(0xFFDB2777),
+      quantity: 2,
+      productName: 'Water Bottle',
+      deliveryDate: DateTime.now().add(const Duration(days: 5)),
+    ),
+    OrderMod(
+      orderId: '#ORD-012',
+      customerName: 'Lucas Thompson',
+      phone: '+1 (555) 567-8901',
+      address: 'Oregon to Idaho',
+      status: OrderStatus.delivered,
+      shippingCharge: 22.00,
+      deliveryTime: '09 Apr, 9:20 AM',
+      avatarInitials: 'LT',
+      avatarColor: const Color(0xFF4B5563),
+      quantity: 1,
+      productName: 'Desk Lamp',
+      deliveryDate: DateTime.now().subtract(const Duration(days: 3)),
+    ),
+    OrderMod(
+      orderId: '#ORD-013',
+      customerName: 'Mia White',
+      phone: '+1 (555) 789-0123',
+      address: 'Colorado to Utah',
+      status: OrderStatus.confirmed,
+      shippingCharge: 30.00,
+      deliveryTime: '12 Apr, 12:00 PM',
+      avatarInitials: 'MW',
+      avatarColor: const Color(0xFF9333EA),
+      quantity: 1,
+      productName: 'Headphones',
+      deliveryDate: DateTime.now(),
+    ),
+    OrderMod(
+      orderId: '#ORD-014',
+      customerName: 'Ethan Harris',
+      phone: '+1 (555) 890-1234',
+      address: 'North Carolina to South Carolina',
+      status: OrderStatus.pending,
+      shippingCharge: 18.50,
+      deliveryTime: '18 Apr, 10:00 AM',
+      avatarInitials: 'EH',
+      avatarColor: const Color(0xFFEA580C),
+      quantity: 4,
+      productName: 'Socks Pack',
+      deliveryDate: DateTime.now().add(const Duration(days: 6)),
+    ),
+    OrderMod(
+      orderId: '#ORD-015',
+      customerName: 'Ava Martin',
+      phone: '+1 (555) 901-2345',
+      address: 'Massachusetts to Connecticut',
+      status: OrderStatus.confirmed,
+      shippingCharge: 42.00,
+      deliveryTime: '13 Apr, 2:30 PM',
+      avatarInitials: 'AM',
+      avatarColor: const Color(0xFF0D9488),
+      quantity: 1,
+      productName: 'Smart Watch',
+      deliveryDate: DateTime.now(),
     ),
   ];
 
@@ -198,12 +343,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
         const SizedBox(width: 10),
         // New Booking button
         ElevatedButton.icon(
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (context) => const CreateOrderDialog(),
-            );
-          },
+          onPressed: () => _openOrderDialog(),
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColor.primary,
             foregroundColor: Colors.white,
@@ -302,9 +442,9 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
       height: 40,
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
-        color: isDark ? theme.colorScheme.surface : Colors.white,
+        color: isDark ? theme.colorScheme.surface : theme.cardColor,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
+        border: Border.all(color: theme.dividerColor.withOpacity(0.1)),
       ),
       child: Row(
         children: [
@@ -317,7 +457,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
               decoration: InputDecoration(
                 hintText: 'Search orders...',
                 hintStyle:
-                    TextStyle(fontSize: 14, color: theme.textTheme.bodySmall?.color),
+                    TextStyle(fontSize: 14, color: theme.hintColor),
                 border: InputBorder.none,
                 isDense: true,
               ),
@@ -375,9 +515,9 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
     return Container(
       padding: EdgeInsets.all(isMobile ? 12 : 16),
       decoration: BoxDecoration(
-        color: isDark ? theme.colorScheme.surface.withOpacity(0.5) : const Color(0xffF9FAFB),
+        color: isDark ? theme.colorScheme.surface.withOpacity(0.5) : theme.colorScheme.surfaceVariant.withOpacity(0.3),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
+        border: Border.all(color: theme.dividerColor.withOpacity(0.1)),
       ),
       child: content,
     );
@@ -387,9 +527,9 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
   Widget _buildDesktopTable(ThemeData theme, bool isDark) {
     return Container(
       decoration: BoxDecoration(
-        color: theme.cardTheme.color,
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
+        border: Border.all(color: theme.dividerColor.withOpacity(0.1)),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
@@ -399,31 +539,30 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
             Container(
               padding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-              color: AppColor.secondary,
+              color: isDark ? theme.colorScheme.surfaceVariant.withOpacity(0.5) : AppColor.secondary,
               child: const Row(
                 children: [
-                  Expanded(flex: 2, child: CustomHeadder(label: 'Order ID')),
-                  Expanded(flex: 3, child: CustomHeadder(label: 'Customer')),
-                  Expanded(flex: 3, child: CustomHeadder(label: 'Address')),
-                  Expanded(flex: 2, child: CustomHeadder(label: 'Status')),
-                  Expanded(flex: 2, child: CustomHeadder(label: 'Courier')),
+                  Expanded(flex: 2, child: CustomHeadder(label: 'Order ID', textAlign: TextAlign.center)),
+                  Expanded(flex: 3, child: CustomHeadder(label: 'Customer', textAlign: TextAlign.center)),
+                  Expanded(flex: 3, child: CustomHeadder(label: 'Address', textAlign: TextAlign.center)),
+                  Expanded(flex: 2, child: CustomHeadder(label: 'Status', textAlign: TextAlign.center)),
                   Expanded(
                       flex: 2,
-                      child: CustomHeadder(label: 'Shipping Charge')),
+                      child: CustomHeadder(label: 'Shipping Charge', textAlign: TextAlign.center)),
                   Expanded(
-                      flex: 2, child: CustomHeadder(label: 'Delivery Time')),
-                  Expanded(flex: 3, child: CustomHeadder(label: 'Actions')),
+                      flex: 2, child: CustomHeadder(label: 'Delivery Time', textAlign: TextAlign.center)),
+                  Expanded(flex: 3, child: CustomHeadder(label: 'Actions', textAlign: TextAlign.center)),
                 ],
               ),
             ),
             // Rows
             if (_filteredOrders.isEmpty)
-              const Padding(
-                padding: EdgeInsets.all(40),
+              Padding(
+                padding: const EdgeInsets.all(40),
                 child: Center(
                   child: Text('No orders found',
                       style:
-                          TextStyle(color: Color(0xff6B7280), fontSize: 14)),
+                          TextStyle(color: theme.hintColor, fontSize: 14)),
                 ),
               )
             else
@@ -438,72 +577,72 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       decoration: BoxDecoration(
-        color: theme.cardTheme.color,
+        color: theme.cardColor,
         border: Border(
-            bottom: BorderSide(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE), width: 1)),
+            bottom: BorderSide(color: theme.dividerColor.withOpacity(0.1), width: 1)),
       ),
       child: Row(
         children: [
           // Order ID
           Expanded(
             flex: 2,
-            child: Text(order.orderId,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xff111827),
-                    fontSize: 13)),
+            child: Center(
+              child: Text(order.orderId,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: theme.colorScheme.onSurface,
+                      fontSize: 13)),
+            ),
           ),
           // Customer
           Expanded(
             flex: 3,
-            child: _buildCustomerCell(order, theme),
+            child: Center(child: _buildCustomerCell(order, theme)),
           ),
           // Address
           Expanded(
             flex: 3,
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.location_on_outlined,
-                    size: 14, color: Colors.grey.shade500),
+                    size: 14, color: theme.hintColor),
                 const SizedBox(width: 4),
-                Expanded(
+                Flexible(
                   child: Text(order.address,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                          color: Color(0xff6B7280), fontSize: 13)),
+                      style: TextStyle(
+                          color: theme.textTheme.bodyMedium?.color, fontSize: 13)),
                 ),
               ],
             ),
           ),
           // Status
-          Expanded(flex: 2, child: _buildStatusBadge(order.status)),
-          // Courier
-          Expanded(
-            flex: 2,
-            child: Text(order.courier,
-                style: const TextStyle(
-                    color: Color(0xff374151), fontSize: 13)),
-          ),
+          Expanded(flex: 2, child: Center(child: _buildStatusBadge(order.status))),
           // Shipping
           Expanded(
             flex: 2,
-            child: Text('\$${order.shippingCharge.toStringAsFixed(2)}',
-                style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xff111827),
-                    fontSize: 13)),
+            child: Center(
+              child: Text('\$${order.shippingCharge.toStringAsFixed(2)}',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      color: theme.colorScheme.onSurface,
+                      fontSize: 13)),
+            ),
           ),
           // Delivery Time
           Expanded(
             flex: 2,
-            child: Text(order.deliveryTime,
-                style: const TextStyle(
-                    color: Color(0xff6B7280), fontSize: 13)),
+            child: Center(
+              child: Text(order.deliveryTime,
+                  style: TextStyle(
+                      color: theme.hintColor, fontSize: 13)),
+            ),
           ),
           // Actions
           Expanded(
             flex: 3,
-            child: _buildActionButtons(context, order),
+            child: Center(child: _buildActionButtons(context, order)),
           ),
         ],
       ),
@@ -517,7 +656,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
         padding: const EdgeInsets.all(40),
         child: Center(
           child: Text('No orders found',
-              style: TextStyle(color: theme.textTheme.bodySmall?.color ?? const Color(0xff6B7280), fontSize: 14)),
+              style: TextStyle(color: theme.hintColor, fontSize: 14)),
         ),
       );
     }
@@ -533,9 +672,9 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: theme.cardTheme.color,
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
+        border: Border.all(color: theme.dividerColor.withOpacity(0.1)),
         boxShadow: [
           BoxShadow(
               color: Colors.black.withOpacity(isDark ? 0.2 : 0.04),
@@ -610,14 +749,6 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
                   theme: theme,
                 ),
               ),
-              Expanded(
-                child: _buildCardDetail(
-                  icon: Icons.local_shipping_outlined,
-                  label: 'Courier',
-                  value: order.courier,
-                  theme: theme,
-                ),
-              ),
             ],
           ),
           const SizedBox(height: 10),
@@ -659,7 +790,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
                   },
                   style: OutlinedButton.styleFrom(
                     foregroundColor: theme.colorScheme.onSurface,
-                    side: BorderSide(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
+                    side: BorderSide(color: theme.dividerColor.withOpacity(0.1)),
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8)),
@@ -672,7 +803,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
               _buildIconBtn(
                   icon: Icons.edit_outlined,
                   color: Colors.blue.shade400,
-                  onTap: () {}),
+                  onTap: () => _openOrderDialog(order: order)),
               const SizedBox(width: 6),
               _buildIconBtn(
                   icon: Icons.delete_outline,
@@ -767,39 +898,51 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
   }
 
   Widget _buildActionButtons(BuildContext context, OrderMod order) {
+    final theme = Theme.of(context);
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         GestureDetector(
           onTap: () {
             showDialog(
               context: context,
-              builder: (context) => CustomViewdetails(order: order),
+              builder: (context) => CustomViewdetails(
+                order: order,
+                onUpdatePressed: () => _showStatusUpdateDialog(order),
+              ),
             );
           },
-          child: Text('View Details',
-              style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 13)),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(6),
+              border: Border.all(color: theme.dividerColor.withOpacity(0.2)),
+            ),
+            child: Text('View Details',
+                style: TextStyle(
+                    color: theme.colorScheme.onSurface,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12)),
+          ),
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: 10),
         InkWell(
-          onTap: () {},
+          onTap: () => _openOrderDialog(order: order),
           borderRadius: BorderRadius.circular(6),
           child: Padding(
             padding: const EdgeInsets.all(4),
             child: Icon(Icons.edit_outlined,
-                size: 16, color: Theme.of(context).iconTheme.color),
+                size: 16, color: theme.iconTheme.color?.withOpacity(0.6)),
           ),
         ),
         const SizedBox(width: 4),
         InkWell(
           onTap: () {},
           borderRadius: BorderRadius.circular(6),
-          child: Padding(
+          child: const Padding(
             padding: const EdgeInsets.all(4),
             child: Icon(Icons.delete_outline,
-                size: 16, color: Theme.of(context).iconTheme.color),
+                size: 16, color: Colors.red),
           ),
         ),
       ],
@@ -849,14 +992,14 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
       height: 40,
       padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-        color: isDark ? theme.colorScheme.surface : Colors.white,
+        color: isDark ? theme.colorScheme.surface : theme.cardColor,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
+        border: Border.all(color: theme.dividerColor.withOpacity(0.1)),
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           value: value,
-          dropdownColor: theme.cardTheme.color,
+          dropdownColor: theme.cardColor,
           items: items
               .map((item) => DropdownMenuItem(
                     value: item,
@@ -872,26 +1015,28 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
   }
 
   Widget _buildStatusBadge(OrderStatus status) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     late Color bg, fg;
     late String label;
     late IconData icon;
 
     switch (status) {
       case OrderStatus.pending:
-        bg = const Color(0xffFEF3C7);
-        fg = const Color(0xffD97706);
+        bg = isDark ? Colors.amber.withOpacity(0.1) : const Color(0xffFEF3C7);
+        fg = isDark ? Colors.amber.shade400 : const Color(0xffD97706);
         label = 'Pending';
         icon = Icons.access_time;
         break;
       case OrderStatus.confirmed:
-        bg = const Color(0xffDBEAFE);
-        fg = const Color(0xff2563EB);
+        bg = isDark ? Colors.blue.withOpacity(0.1) : const Color(0xffDBEAFE);
+        fg = isDark ? Colors.blue.shade400 : const Color(0xff2563EB);
         label = 'Confirmed';
         icon = Icons.local_shipping_outlined;
         break;
       case OrderStatus.delivered:
-        bg = const Color(0xffD1FAE5);
-        fg = const Color(0xff059669);
+        bg = isDark ? Colors.green.withOpacity(0.1) : const Color(0xffD1FAE5);
+        fg = isDark ? Colors.green.shade400 : const Color(0xff059669);
         label = 'Delivered';
         icon = Icons.check_circle_outline;
         break;
@@ -1030,32 +1175,27 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
 
   Widget _buildCalendarCell(DateTime day, ThemeData theme, bool isDark,
       {bool isSelected = false, bool isToday = false}) {
-    // Mocking some events dynamically per day
-    int eventCount = 0;
-    bool isActive = false;
-    if (day.day == 1) {
-      isActive = true;
-      eventCount = 2;
-    } else if (day.day == 3) {
-      eventCount = 3;
-    } else if (day.day == 5) {
-      eventCount = 1;
-    } else if (day.day == 7) {
-      eventCount = 2;
-    }
-
+    // Count orders dynamically for this day
+    final dayOrders = _orders.where((o) => 
+      o.deliveryDate != null && 
+      o.deliveryDate!.year == day.year && 
+      o.deliveryDate!.month == day.month && 
+      o.deliveryDate!.day == day.day
+    ).toList();
+    
+    int eventCount = dayOrders.length;
     final hasEvent = eventCount > 0;
-    final isSpecialBlue = isActive && hasEvent;
+    final isSelectedActive = isSelected;
 
     return Container(
       margin: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: isSpecialBlue
+        color: isSelectedActive
             ? AppColor.primary
             : hasEvent
                 ? AppColor.primary.withOpacity(0.15)
                 : isSelected
-                    ? theme.dividerTheme.color ?? const Color(0xffEEEEEE)
+                    ? theme.dividerColor.withOpacity(0.2)
                     : Colors.transparent,
         borderRadius: BorderRadius.circular(12),
       ),
@@ -1068,7 +1208,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
                 fontWeight: isSelected || hasEvent
                     ? FontWeight.w600
                     : FontWeight.w500,
-                color: isSpecialBlue
+                color: isSelected
                     ? Colors.white
                     : hasEvent
                         ? AppColor.primary
@@ -1108,9 +1248,9 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
       child: Container(
         padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
-          color: isDark ? theme.colorScheme.surface : const Color(0xffF9FAFB),
+          color: isDark ? theme.colorScheme.surface : theme.colorScheme.surfaceVariant.withOpacity(0.3),
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
+          border: Border.all(color: theme.dividerColor.withOpacity(0.1)),
         ),
         child: Icon(icon, size: 16, color: theme.textTheme.bodyMedium?.color ?? const Color(0xff6B7280)),
       ),
@@ -1168,7 +1308,15 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
   }
 
   Widget _buildCalendarSidebar(ThemeData theme, bool isDark) {
-    final dayStr = '${_getMonthYear(_selectedDay ?? DateTime.now()).split(' ')[0]} ${_selectedDay?.day ?? DateTime.now().day}';
+    final selectedDay = _selectedDay ?? DateTime.now();
+    final dayStr = '${_getMonthYear(selectedDay).split(' ')[0]} ${selectedDay.day}';
+
+    final filteredOrders = _orders.where((o) => 
+      o.deliveryDate != null && 
+      o.deliveryDate!.year == selectedDay.year && 
+      o.deliveryDate!.month == selectedDay.month && 
+      o.deliveryDate!.day == selectedDay.day
+    ).toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1179,52 +1327,60 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
                 fontWeight: FontWeight.bold,
                 color: theme.colorScheme.onSurface)),
         const SizedBox(height: 4),
-        Text('2 deliverys scheduled',
+        Text('${filteredOrders.length} deliverys scheduled',
             style: TextStyle(fontSize: 13, color: theme.textTheme.bodySmall?.color ?? const Color(0xff6B7280))),
         const SizedBox(height: 16),
-        // Mock Cards
-        _buildSidebarOrderCard(
-            context: context,
-            orderId: 'ORD-001',
-            time: '10:00 AM',
-            name: 'Sarah Johnson',
-            status: OrderStatus.pending,
-            items: 'Office Chair x2, Desk',
-            actionText: 'Mark as Confirmed',
-            theme: theme,
-            isDark: isDark),
-        _buildSidebarOrderCard(
-            context: context,
-            orderId: 'ORD-002',
-            time: '10:00 AM',
-            name: 'Sarah Johnson',
-            status: OrderStatus.confirmed,
-            items: 'Office Chair x2, Desk',
-            actionText: 'Mark as Delivered',
-            theme: theme,
-            isDark: isDark),
+        
+        if (filteredOrders.isEmpty)
+          Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: theme.cardColor,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: theme.dividerColor.withOpacity(0.1)),
+            ),
+            child: Center(
+              child: Column(
+                children: [
+                  Icon(Icons.calendar_today_outlined, size: 40, color: theme.hintColor.withOpacity(0.3)),
+                  const SizedBox(height: 12),
+                  Text('No orders scheduled for this date',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: theme.hintColor, fontSize: 13)),
+                ],
+              ),
+            ),
+          )
+        else
+          ...filteredOrders.map((order) => _buildSidebarOrderCard(
+                context: context,
+                order: order,
+                theme: theme,
+                isDark: isDark,
+              )),
       ],
     );
   }
 
   Widget _buildSidebarOrderCard({
     required BuildContext context,
-    required String orderId,
-    required String time,
-    required String name,
-    required OrderStatus status,
-    required String items,
-    required String actionText,
+    required OrderMod order,
     required ThemeData theme,
     required bool isDark,
   }) {
+    final status = order.status;
+    final orderId = order.orderId;
+    final time = order.deliveryTime;
+    final name = order.customerName;
+    final items = '${order.productName ?? "Items"} x${order.quantity}';
+    final actionText = status == OrderStatus.pending ? 'Mark as Confirmed' : 'Mark as Delivered';
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: theme.cardTheme.color,
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
+        border: Border.all(color: theme.dividerColor.withOpacity(0.1)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1270,12 +1426,12 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
                     (o) => o.orderId.replaceAll('#', '') == orderId,
                     orElse: () => _orders.first);
 
-                const CustomOrders().showUpdateStatusDialog(
+                showDialog(
                   context: context,
-                  order: order,
-                  onUpdate: (status) {
-                    _updateOrderStatus(order.orderId, status);
-                  },
+                  builder: (context) => CustomViewdetails(
+                    order: order,
+                    onUpdatePressed: () => _showStatusUpdateDialog(order),
+                  ),
                 );
               },
               style: ElevatedButton.styleFrom(
@@ -1297,31 +1453,6 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
   }
 
 
-  Widget _buildDialogInfoRow(String label, String value) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(label,
-            style: const TextStyle(fontSize: 13, color: Color(0xff374151))),
-        Text(value,
-            style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: Color(0xff111827))),
-      ],
-    );
-  }
-
-  Widget _buildDialogStatusRow(String label, OrderStatus status) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(label,
-            style: const TextStyle(fontSize: 13, color: Color(0xff374151))),
-        _buildStatusBadge(status),
-      ],
-    );
-  }
 
   void _updateOrderStatus(String orderId, OrderStatus newStatus) {
     setState(() {
@@ -1330,6 +1461,36 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
         _orders[index] = _orders[index].copyWith(status: newStatus);
       }
     });
+  }
+
+  void _openOrderDialog({OrderMod? order}) {
+    showDialog<OrderMod>(
+      context: context,
+      builder: (context) => CreateOrderDialog(order: order),
+    ).then((result) {
+      if (result != null) {
+        setState(() {
+          if (order != null) {
+            final index = _orders.indexWhere((o) => o.orderId == order.orderId);
+            if (index != -1) {
+              _orders[index] = result;
+            }
+          } else {
+            _orders.insert(0, result);
+          }
+        });
+      }
+    });
+  }
+
+  void _showStatusUpdateDialog(OrderMod order) {
+    const CustomOrders().showUpdateStatusDialog(
+      context: context,
+      order: order,
+      onUpdate: (status) {
+        _updateOrderStatus(order.orderId, status);
+      },
+    );
   }
 
   Widget _buildSidebarItemRow(IconData icon, String text, ThemeData theme) {

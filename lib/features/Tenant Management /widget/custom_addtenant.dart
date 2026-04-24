@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:roberto/app/app_color.dart';
 import 'package:roberto/features/Tenant%20Management%20/widget/Custom_Minitextfield.dart';
+import 'package:roberto/features/Tenant%20Management%20/widget/Custom_MiniDropdown.dart';
 
 class CustomAddtenant extends StatefulWidget {
   const CustomAddtenant({super.key});
@@ -11,6 +12,10 @@ class CustomAddtenant extends StatefulWidget {
 
 class _CustomAddtenantState extends State<CustomAddtenant> {
   int selectedTab = 0;
+  String selectedBusinessType = "";
+  String selectedBranch = "2";
+  String selectedPlan = "Half Moon - \$49/mo";
+  String selectedBillingCycle = "Monthly";
 
   void changeTab(int index) {
     setState(() {
@@ -150,19 +155,35 @@ class _CustomAddtenantState extends State<CustomAddtenant> {
       children: [
         _inputLabel("Business Name"),
         const SizedBox(height: 5),
-        CustomMinitextfield(hint: "Enter business name"),
+        const CustomMinitextfield(hint: "Enter business name"),
 
         const SizedBox(height: 12),
 
-        _inputLabel("Business Name"),
+        _inputLabel("Business Type"),
         const SizedBox(height: 5),
-        CustomMinitextfield(hint: "Enter business name"),
+        CustomMiniDropdown(
+          value: selectedBusinessType,
+          items: const ["Retail", "Service", "Manufacturing", "Tech", "Other"],
+          hint: "Select type",
+          onChanged: (val) => setState(() => selectedBusinessType = val ?? ""),
+        ),
+
+        const SizedBox(height: 12),
+
+        _inputLabel("Select Branch"),
+        const SizedBox(height: 5),
+        CustomMiniDropdown(
+          value: selectedBranch,
+          items: const ["1", "2", "3", "4", "5"],
+          hint: "Select branch",
+          onChanged: (val) => setState(() => selectedBranch = val ?? ""),
+        ),
 
         const SizedBox(height: 12),
 
         _inputLabel("Description"),
         const SizedBox(height: 5),
-        CustomMinitextfield(
+        const CustomMinitextfield(
           hint: "Brief description of the business...",
           maxLines: 3,
         ),
@@ -203,19 +224,23 @@ class _CustomAddtenantState extends State<CustomAddtenant> {
       children: [
         _inputLabel("Subscription Plan"),
         const SizedBox(height: 5),
-        CustomMinitextfield(hint: "Basic - \$49/mo"),
+        CustomMiniDropdown(
+          value: selectedPlan,
+          items: const ["Half Moon - \$49/month", "Full Moon - \$199/month", "Moon Enterprise - \$499/month"],
+          hint: "Select plan",
+          onChanged: (val) => setState(() => selectedPlan = val ?? ""),
+        ),
 
         const SizedBox(height: 12),
 
         _inputLabel("Billing Cycle"),
         const SizedBox(height: 5),
-        CustomMinitextfield(hint: "Monthly / Yearly"),
-
-        const SizedBox(height: 12),
-
-        _inputLabel("Trial Period (days)"),
-        const SizedBox(height: 5),
-        CustomMinitextfield(hint: "14"),
+        CustomMiniDropdown(
+          value: selectedBillingCycle,
+          items: const ["Monthly", "Yearly"],
+          hint: "Select cycle",
+          onChanged: (val) => setState(() => selectedBillingCycle = val ?? ""),
+        ),
       ],
     );
   }

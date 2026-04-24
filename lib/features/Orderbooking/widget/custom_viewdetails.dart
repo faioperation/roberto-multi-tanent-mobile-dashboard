@@ -4,17 +4,20 @@ import 'package:roberto/features/Orderbooking/widget/order_mod.dart';
 
 class CustomViewdetails extends StatelessWidget {
   final OrderMod order;
+  final VoidCallback? onUpdatePressed;
 
-  const CustomViewdetails({Key? key, required this.order}) : super(key: key);
+  const CustomViewdetails({Key? key, required this.order, this.onUpdatePressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     final width = MediaQuery.of(context).size.width;
     final bool isMobile = width < 600;
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      backgroundColor: Colors.white,
+      backgroundColor: theme.cardColor,
       child: Container(
         width: isMobile ? width * 0.9 : 450,
         padding: const EdgeInsets.all(24),
@@ -24,42 +27,35 @@ class CustomViewdetails extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Header
-              _buildHeader(context),
+              _buildHeader(context, theme),
               const SizedBox(height: 24),
 
               // Order ID
-              _buildOrderIdSection(),
+              _buildOrderIdSection(context, theme),
               const SizedBox(height: 20),
 
               // Customer Information
-              _buildSectionTitle('Customer Information'),
+              _buildSectionTitle('Customer Information', theme),
               const SizedBox(height: 8),
               _buildInfoContainer([
-                _buildIconRow(Icons.person_outline, order.customerName),
+                _buildIconRow(Icons.person_outline, order.customerName, theme),
                 const SizedBox(height: 12),
-                _buildIconRow(Icons.phone_outlined, order.phone),
+                _buildIconRow(Icons.phone_outlined, order.phone, theme),
                 const SizedBox(height: 12),
-                _buildIconRow(Icons.location_on_outlined, order.address),
-              ]),
+                _buildIconRow(Icons.location_on_outlined, order.address, theme),
+              ], theme, isDark),
               const SizedBox(height: 20),
 
-              // Delivery Information
-              _buildSectionTitle('Delivery Information'),
-              const SizedBox(height: 8),
-              _buildInfoContainer([
-                _buildIconRow(
-                    Icons.local_shipping_outlined, 'Courier: ${order.courier}'),
-              ]),
               const SizedBox(height: 20),
 
               // Payment Information
-              _buildSectionTitle('Payment'),
+              _buildSectionTitle('Payment', theme),
               const SizedBox(height: 8),
-              _buildPaymentContainer(),
+              _buildPaymentContainer(theme, isDark),
               const SizedBox(height: 24),
 
               // Buttons
-              _buildActionButtons(context, width),
+              _buildActionButtons(context, width, theme),
             ],
           ),
         ),
@@ -67,7 +63,7 @@ class CustomViewdetails extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
+  Widget _buildHeader(BuildContext context, ThemeData theme) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -88,7 +84,7 @@ class CustomViewdetails extends StatelessWidget {
                 'Complete information about this order',
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.grey.shade500,
+                  color: theme.hintColor,
                 ),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
@@ -101,7 +97,7 @@ class CustomViewdetails extends StatelessWidget {
 
         IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.close, color: Color(0xff6B7280), size: 20),
+          icon: Icon(Icons.close, color: theme.hintColor, size: 20),
           padding: EdgeInsets.zero,
           constraints: const BoxConstraints(),
         ),
@@ -109,7 +105,7 @@ class CustomViewdetails extends StatelessWidget {
     );
   }
 
-  Widget _buildOrderIdSection() {
+  Widget _buildOrderIdSection(BuildContext context, ThemeData theme) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -127,62 +123,64 @@ class CustomViewdetails extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               order.orderId,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14,
-                color: Color(0xff6B7280),
+                color: theme.hintColor,
               ),
             ),
           ],
         ),
-        _buildStatusBadge(order.status),
+        _buildStatusBadge(context, order.status),
       ],
     );
   }
 
-  Widget _buildSectionTitle(String title) {
+  Widget _buildSectionTitle(String title, ThemeData theme) {
     return Text(
       title,
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.bold,
-        color: Color(0xff111827),
+        color: theme.colorScheme.onSurface,
       ),
     );
   }
 
-  Widget _buildInfoContainer(List<Widget> children) {
+  Widget _buildInfoContainer(List<Widget> children, ThemeData theme, bool isDark) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xffFEE2E2), // Pinkish color for consistency
+        color: isDark ? theme.colorScheme.surfaceVariant.withOpacity(0.15) : const Color(0xffFEE2E2),
         borderRadius: BorderRadius.circular(12),
+        border: isDark ? Border.all(color: theme.dividerColor.withOpacity(0.1)) : null,
       ),
       child: Column(children: children),
     );
   }
 
-  Widget _buildPaymentContainer() {
+  Widget _buildPaymentContainer(ThemeData theme, bool isDark) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xffFEE2E2),
+        color: isDark ? theme.colorScheme.surfaceVariant.withOpacity(0.15) : const Color(0xffFEE2E2),
         borderRadius: BorderRadius.circular(12),
+        border: isDark ? Border.all(color: theme.dividerColor.withOpacity(0.1)) : null,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(Icons.attach_money, size: 18, color: Color(0xff374151)),
-              SizedBox(width: 8),
+              Icon(Icons.attach_money, size: 18, color: theme.colorScheme.onSurface.withOpacity(0.7)),
+              const SizedBox(width: 8),
               Text('Total Amount',
-                  style: TextStyle(color: Color(0xff374151), fontSize: 14)),
+                  style: TextStyle(color: theme.colorScheme.onSurface.withOpacity(0.7), fontSize: 14)),
             ],
           ),
           Text(
             '\$${order.shippingCharge.toStringAsFixed(2)}',
-            style: const TextStyle(
-                color: Color(0xff111827),
+            style: TextStyle(
+                color: theme.colorScheme.onSurface,
                 fontSize: 16,
                 fontWeight: FontWeight.bold),
           ),
@@ -191,11 +189,16 @@ class CustomViewdetails extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButtons(BuildContext context, double width) {
+  Widget _buildActionButtons(BuildContext context, double width, ThemeData theme) {
     final bool isStack = width < 400;
 
     final updateBtn = ElevatedButton(
-      onPressed: () => Navigator.pop(context),
+      onPressed: () {
+        Navigator.pop(context); // Close view details
+        if (onUpdatePressed != null) {
+          onUpdatePressed!();
+        }
+      },
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColor.primary,
         padding: const EdgeInsets.symmetric(vertical: 14),
@@ -213,12 +216,12 @@ class CustomViewdetails extends StatelessWidget {
       style: OutlinedButton.styleFrom(
         padding: const EdgeInsets.symmetric(vertical: 14),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-        side: BorderSide(color: Colors.grey.shade300),
+        side: BorderSide(color: theme.dividerColor.withOpacity(0.2)),
       ),
-      child: const Center(
+      child: Center(
         child: Text('Print Invoice',
             style: TextStyle(
-                color: Color(0xff374151), fontWeight: FontWeight.w600)),
+                color: theme.colorScheme.onSurface, fontWeight: FontWeight.w600)),
       ),
     );
 
@@ -242,16 +245,16 @@ class CustomViewdetails extends StatelessWidget {
     );
   }
 
-  Widget _buildIconRow(IconData icon, String text) {
+  Widget _buildIconRow(IconData icon, String text, ThemeData theme) {
     return Row(
       children: [
-        Icon(icon, size: 18, color: const Color(0xff374151)),
+        Icon(icon, size: 18, color: theme.colorScheme.onSurface.withOpacity(0.7)),
         const SizedBox(width: 12),
         Expanded(
           child: Text(
             text,
-            style: const TextStyle(
-              color: Color(0xff374151),
+            style: TextStyle(
+              color: theme.colorScheme.onSurface.withOpacity(0.7),
               fontSize: 14,
             ),
           ),
@@ -260,24 +263,26 @@ class CustomViewdetails extends StatelessWidget {
     );
   }
 
-  Widget _buildStatusBadge(OrderStatus status) {
+  Widget _buildStatusBadge(BuildContext context, OrderStatus status) {
     late Color bg, fg;
     late String label;
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     switch (status) {
       case OrderStatus.pending:
-        bg = const Color(0xffFEF3C7);
-        fg = const Color(0xffD97706);
+        bg = isDark ? Colors.amber.withOpacity(0.1) : const Color(0xffFEF3C7);
+        fg = isDark ? Colors.amber.shade400 : const Color(0xffD97706);
         label = 'Pending';
         break;
       case OrderStatus.confirmed:
-        bg = const Color(0xffDBEAFE);
-        fg = const Color(0xff2563EB);
+        bg = isDark ? Colors.blue.withOpacity(0.1) : const Color(0xffDBEAFE);
+        fg = isDark ? Colors.blue.shade400 : const Color(0xff2563EB);
         label = 'Confirmed';
         break;
       case OrderStatus.delivered:
-        bg = const Color(0xffD1FAE5);
-        fg = const Color(0xff059669);
+        bg = isDark ? Colors.green.withOpacity(0.1) : const Color(0xffD1FAE5);
+        fg = isDark ? Colors.green.shade400 : const Color(0xff059669);
         label = 'Delivered';
         break;
     }

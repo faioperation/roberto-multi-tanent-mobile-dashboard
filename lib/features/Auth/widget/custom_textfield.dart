@@ -7,7 +7,7 @@ class CustomTextfield extends StatefulWidget {
   final String? initialValue;
   final bool isPassword;
   final TextEditingController? controller;
-  final Color textColor;
+  final Color? textColor;
   final int? maxLines;
   final int? minLines;
   final TextInputType? keyboardType;
@@ -19,7 +19,7 @@ class CustomTextfield extends StatefulWidget {
     this.initialValue,
     this.isPassword = false,
     this.controller,
-    this.textColor = Colors.black,
+    this.textColor,
     this.maxLines = 1,
     this.minLines,
     this.keyboardType,
@@ -57,25 +57,25 @@ class _CustomTextfieldState extends State<CustomTextfield> {
       minLines: widget.minLines,
       keyboardType: widget.keyboardType,
       style: TextStyle(
-        color: widget.textColor,
+        color: widget.textColor ?? Theme.of(context).textTheme.bodyLarge?.color,
         fontSize: 15,
       ),
       decoration: InputDecoration(
         hintText: widget.hintText,
         hintStyle: TextStyle(
-          color: Colors.grey.shade400,
+          color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.5),
           fontSize: 14,
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         filled: true,
-        fillColor: Theme.of(context).brightness == Brightness.dark ? Theme.of(context).colorScheme.surface : Colors.white,
+        fillColor: Theme.of(context).cardTheme.color,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: Colors.grey.shade300),
+          borderSide: BorderSide(color: Theme.of(context).dividerTheme.color!),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: Colors.grey.shade300),
+          borderSide: BorderSide(color: Theme.of(context).dividerTheme.color!),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),

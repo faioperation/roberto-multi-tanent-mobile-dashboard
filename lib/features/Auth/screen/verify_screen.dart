@@ -22,7 +22,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.secondary,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: CustomScreen(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -35,24 +35,24 @@ class _VerifyScreenState extends State<VerifyScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            const Center(
+            Center(
               child: Text(
                 "Check Your Email",
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w400,
-                  color: AppColor.black,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
             ),
             const SizedBox(height: 5),
-            const Center(
+            Center(
               child: Text(
                 "We sent a code to your email address",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.grey,
+                  color: Theme.of(context).textTheme.bodyMedium?.color,
                 ),
               ),
             ),
@@ -71,7 +71,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
                     fieldWidth: 40,
                     activeColor: AppColor.primary,
                     selectedColor: AppColor.primary,
-                    inactiveColor: AppColor.secondary),
+                    inactiveColor: Theme.of(context).dividerTheme.color),
                 animationDuration: const Duration(milliseconds: 300),
                 // controller: OTPController,
                 appContext: context,),
@@ -90,14 +90,14 @@ class _VerifyScreenState extends State<VerifyScreen> {
             GestureDetector(
               onTap: () {},
               child: RichText(
-                text: const TextSpan(
+                text: TextSpan(
                   text: "You have not received the email?  ",
                   style: TextStyle(
                     fontSize: 13,
-                    color: AppColor.black,
+                    color: Theme.of(context).colorScheme.onSurface,
                     fontWeight: FontWeight.w500,
                   ),
-                  children: [
+                  children: const [
                     TextSpan(
                       text: "Resend",
                       style: TextStyle(

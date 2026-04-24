@@ -72,11 +72,10 @@ class _AiagentScreenState extends State<AiagentScreen> {
 
   Widget _buildToggleTabs() {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: isDark ? theme.colorScheme.surface : theme.colorScheme.secondary,
+        color: theme.colorScheme.secondary,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(

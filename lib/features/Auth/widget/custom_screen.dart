@@ -23,7 +23,7 @@ class _CustomScreenState extends State<CustomScreen> {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      color: const Color(0xFFF7F7F7),
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: Center(
         child: SingleChildScrollView(
           child: Padding(
@@ -32,11 +32,12 @@ class _CustomScreenState extends State<CustomScreen> {
             child: Container(
               constraints: const BoxConstraints(maxWidth: 500),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(24),
+                border: Border.all(color: Theme.of(context).dividerTheme.color ?? Colors.transparent),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: Theme.of(context).shadowColor.withOpacity(0.05),
                     blurRadius: 20,
                     offset: const Offset(0, 10),
                   ),

@@ -21,7 +21,7 @@ class _ForgotScreenState extends State<ForgotScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.secondary,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: CustomScreen(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -34,24 +34,24 @@ class _ForgotScreenState extends State<ForgotScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            const Center(
+            Center(
               child: Text(
                 "Reset Password",
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w400,
-                  color: AppColor.black,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
             ),
             const SizedBox(height: 5),
-            const Center(
+            Center(
               child: Text(
                 "Enter your email to receive a reset link",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.grey,
+                  color: Theme.of(context).textTheme.bodyMedium?.color,
                 ),
               ),
             ),
@@ -59,12 +59,12 @@ class _ForgotScreenState extends State<ForgotScreen> {
 
             Align(
               alignment: Alignment.centerLeft,
-              child: const Text(
+              child: Text(
                 "Email Address",
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: Colors.black87,
+                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
                 ),
               ),
             ),

@@ -22,7 +22,7 @@ class _ResetScreenState extends State<ResetScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.secondary,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: CustomScreen(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -35,24 +35,24 @@ class _ResetScreenState extends State<ResetScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            const Center(
+            Center(
               child: Text(
                 "Set a new Password",
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w400,
-                  color: AppColor.black,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
             ),
             const SizedBox(height: 5),
-            const Center(
+            Center(
               child: Text(
                 "Ensure it different from previous ones for security",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.grey,
+                  color: Theme.of(context).textTheme.bodyMedium?.color,
                 ),
               ),
             ),
@@ -60,12 +60,12 @@ class _ResetScreenState extends State<ResetScreen> {
 
             Align(
               alignment: Alignment.centerLeft,
-              child: const Text(
+              child: Text(
                 "New Password",
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: Colors.black87,
+                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
                 ),
               ),
             ),
@@ -78,12 +78,12 @@ class _ResetScreenState extends State<ResetScreen> {
 
             Align(
               alignment: Alignment.centerLeft,
-              child: const Text(
+              child: Text(
                 "Confirm Password",
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: Colors.black87,
+                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
                 ),
               ),
             ),
