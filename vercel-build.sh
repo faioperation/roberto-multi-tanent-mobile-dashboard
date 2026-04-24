@@ -4,7 +4,7 @@
 set -e
 
 echo "--- Fixing Git Permissions ---"
-git config --global --add safe.directory *
+git config --global --add safe.directory "*"
 
 echo "--- Installing Flutter SDK ---"
 
@@ -23,7 +23,7 @@ fi
 export PATH="$PATH:`pwd`/flutter/bin"
 
 echo "--- Flutter Version ---"
-git config --global --add safe.directory `pwd`/flutter
+git config --global --add safe.directory "$(pwd)/flutter"
 flutter --version
 
 echo "--- Enabling Web ---"
