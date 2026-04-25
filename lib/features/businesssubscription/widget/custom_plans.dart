@@ -36,7 +36,7 @@ class CustomPlans extends StatelessWidget {
             price: "\$1250",
             iconPath: "assets/full.svg",
             features: [
-              "everything in Half Moon, plus:",
+              "everything in Connect, plus:",
               "multi-channel",
               "up to 5,000 chats/month",   
               "advanced AI assistant",
@@ -57,7 +57,7 @@ class CustomPlans extends StatelessWidget {
             price: "\$2050",
             iconPath: "assets/enter.svg",
             features: [
-              "everything in Full Moon, plus:",
+              "everything in Convert, plus:",
               "unlimited or high-volume chats",
               "multi-branch / multi-country",
               "advanced workflow automation",

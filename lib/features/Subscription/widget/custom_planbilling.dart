@@ -102,7 +102,7 @@ class _CustomPlanbillingState extends State<CustomPlanbilling> {
             price: "\$1250",
             iconPath: "assets/full.svg",
             features: [
-              "everything in Half Moon, plus:",
+              "everything in Connect, plus:",
               "multi-channel",
               "up to 5,000 chats/month",   
               "advanced AI assistant",
@@ -123,7 +123,7 @@ class _CustomPlanbillingState extends State<CustomPlanbilling> {
             price: "\$2050",
             iconPath: "assets/enter.svg",
             features: [
-              "everything in Full Moon, plus:",
+              "everything in Convert, plus:",
               "unlimited or high-volume chats",
               "multi-branch / multi-country",
               "advanced workflow automation",
@@ -136,6 +136,7 @@ class _CustomPlanbillingState extends State<CustomPlanbilling> {
             ],
           ),
         ];
+
 
         // 💻 Desktop
         if (isDesktop) {
