@@ -16,6 +16,7 @@ import 'package:roberto/features/businesssetting/screen/businessowner_settings.d
 import 'package:roberto/features/businesssubscription/screen/business_subscription.dart';
 import 'package:roberto/features/Auth/screen/login_screen.dart';
 import 'package:roberto/features/Overview/screen/overview_screen.dart';
+import 'package:roberto/features/DemoBooking/screen/demo_booking_screen.dart';
 
 
 import 'package:roberto/common/user_role.dart';
@@ -125,6 +126,9 @@ class _DashboardShellState extends State<DashboardShell> {
       case 'Notifications':
         return const NotificationScreen();
 
+      case 'Demo Bookings':
+        return const DemoBookingScreen();
+
       case 'Edit Profile':
         return const SettingScreen();
 
@@ -140,6 +144,7 @@ class _DashboardShellState extends State<DashboardShell> {
   Widget _buildSidebar(BuildContext context) {
     final systemOwnerItems = [
       {'icon': 'assets/overview.svg', 'label': 'Overview'},
+      {'icon': 'assets/inbox.svg', 'label': 'Demo Bookings'},
       {'icon': 'assets/subscription.svg', 'label': 'Tenant Management'},
       {'icon': 'assets/subscription.svg', 'label': 'Subscriptions'},
       {'icon': 'assets/setting.svg', 'label': 'Settings'},
