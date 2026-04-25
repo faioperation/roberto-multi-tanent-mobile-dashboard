@@ -11,7 +11,7 @@ class CustomPlans extends StatelessWidget {
         bool isDesktop = constraints.maxWidth > 900;
         bool isTablet = constraints.maxWidth > 600;
 
-        final plans = [
+ final plans = [
           CustomPlan(
             title: "CONNECT",
             subtitle: "Best for businesses getting started with AI automation",
@@ -36,7 +36,7 @@ class CustomPlans extends StatelessWidget {
             price: "\$1250",
             iconPath: "assets/full.svg",
             features: [
-              "everything in Connect, plus:",
+              "everything in CONNECT, plus:",
               "multi-channel",
               "up to 5,000 chats/month",   
               "advanced AI assistant",
@@ -57,7 +57,7 @@ class CustomPlans extends StatelessWidget {
             price: "\$2050",
             iconPath: "assets/enter.svg",
             features: [
-              "everything in Convert, plus:",
+              "everything in CONVERT, plus:",
               "unlimited or high-volume chats",
               "multi-branch / multi-country",
               "advanced workflow automation",
