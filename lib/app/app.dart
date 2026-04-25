@@ -13,7 +13,7 @@ class Roberto extends StatelessWidget {
       listenable: themeController,
       builder: (context, _) {
         return MaterialApp(
-          title: "Tugatai Cargo's",
+          title: "TUGATAI",
           debugShowCheckedModeBanner: false,
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
