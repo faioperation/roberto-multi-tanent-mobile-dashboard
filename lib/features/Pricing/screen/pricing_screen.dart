@@ -20,47 +20,14 @@ class _PricingScreenState extends State<PricingScreen> {
   int _selectedTab = 0;
 
   final List<PricingRuleMod> _rules = [
-    PricingRuleMod(
-      id: '1',
-      name: "Per KG Pricing",
-      type: "weight",
-      value: "15 \$/kg",
-    ),
-    PricingRuleMod(
-      id: '2',
-      name: "TV price",
-      type: "product type",
-      value: "Electronics: +20%",
-    ),
-    PricingRuleMod(
-      id: '3',
-      name: "Fixed item price",
-      type: "custom",
-      value: "Order > \$500 → -10%",
-    ),
-    PricingRuleMod(
-      id: '4',
-      name: "Carton/drum/bicycle price",
-      type: "product type",
-      value: "Electronics: +20%",
-    ),
-    PricingRuleMod(
-      id: '5',
-      name: "CBM conversion",
-      type: "product type",
-      value: "Electronics: +20%",
-    ),
-    PricingRuleMod(
-      id: '6',
-      name: "Customs fee",
-      type: "product type",
-      value: "Electronics: +20%",
-    ),
-    PricingRuleMod(
-      id: '7',
-      name: "Promotion & discount",
-      type: "product type",
-      value: "Electronics: +20%",
+    ...List.generate(
+      25,
+      (index) => PricingRuleMod(
+        id: '${index + 1}',
+        name: "Pricing Rule ${index + 1}",
+        type: ["weight", "product type", "custom"][index % 3],
+        value: "Value ${index + 1}",
+      ),
     ),
   ];
 
@@ -233,7 +200,7 @@ class _PricingScreenState extends State<PricingScreen> {
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
         color: isDark ? theme.colorScheme.surface : theme.colorScheme.secondary,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(24),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -249,40 +216,25 @@ class _PricingScreenState extends State<PricingScreen> {
     required int index,
     required String label,
   }) {
+    final theme = Theme.of(context);
     final isActive = _selectedTab == index;
 
     return GestureDetector(
       onTap: () => setState(() => _selectedTab = index),
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 100),
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 13),
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         decoration: BoxDecoration(
-          color: isActive ? Theme.of(context).cardTheme.color : Colors.transparent,
+          color: isActive ? AppColor.primary : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
-          boxShadow: isActive
-              ? [
-            BoxShadow(
-              color: Theme.of(context).shadowColor.withValues(alpha: Theme.of(context).brightness == Brightness.light ? 0.08 : 0.2),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
-            ),
-          ]
-              : [],
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight:
-                isActive ? FontWeight.w500 : FontWeight.w400,
-                color:
-                isActive ? Theme.of(context).colorScheme.onSurface : Theme.of(context).textTheme.bodyMedium?.color,
-              ),
-            ),
-          ],
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
+            color: isActive ? Colors.white : theme.textTheme.bodyMedium?.color,
+          ),
         ),
       ),
     );

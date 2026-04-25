@@ -4,6 +4,7 @@ import 'package:roberto/common/custom_search.dart';
 import 'package:roberto/features/CRM/widget/custom_lead_row.dart';
 import 'package:roberto/features/Tenant Management /widget/custom_headder.dart';
 import 'package:roberto/features/CRM/widget/crm_lead_model.dart';
+import 'package:roberto/common/custom_pagination.dart';
 
 class CustomCrm extends StatefulWidget {
   const CustomCrm({super.key});
@@ -14,9 +15,11 @@ class CustomCrm extends StatefulWidget {
 
 class _CustomCrmState extends State<CustomCrm> {
   String _selectedStatus = "All Status";
+  int _currentPage = 1;
+  static const int _itemsPerPage = 20;
 
   final List<CRMLead> _leads = [
-    CRMLead(
+     CRMLead(
       name: "Sarah Johnson",
       email: "sarah.j@email.com",
       phone: "++1 234 567 8901",
@@ -60,6 +63,47 @@ class _CustomCrmState extends State<CustomCrm> {
       time: "5 days ago",
       notes: "Ready for contract signing.",
     ),
+    CRMLead(
+      name: "Alice Cooper",
+      email: "alice.c@email.com",
+      phone: "+1 234 567 8910",
+      socialText: "Facebook",
+      socialIcon: Icons.facebook,
+      tagText: "Cold",
+      tagColor: AppColor.deepgreen,
+      time: "10 hours ago",
+      notes: "Potential for bulk order.",
+    ),
+    CRMLead(
+      name: "Bob Dylan",
+      email: "bob.d@email.com",
+      phone: "+1 234 567 8911",
+      socialText: "WhatsApp",
+      socialIcon: Icons.facebook,
+      tagText: "Warm",
+      tagColor: AppColor.greens,
+      time: "2 days ago",
+      notes: "Wants to see the full catalog.",
+    ),
+    ...List.generate(
+      25,
+      (index) => CRMLead(
+        name: "Lead ${index + 1}",
+        email: "lead${index + 1}@email.com",
+        phone: "+1 234 567 ${8000 + index}",
+        socialText: ["Facebook", "WhatsApp", "Instagram"][index % 3],
+        socialIcon: Icons.facebook,
+        tagText: ["Cold", "Warm", "Hot", "Booked"][index % 4],
+        tagColor: [
+          AppColor.deepgreen,
+          AppColor.greens,
+          AppColor.primary,
+          AppColor.ma
+        ][index % 4],
+        time: "${index + 1} hours ago",
+        notes: "Notes for lead ${index + 1}",
+      ),
+    ),
   ];
 
   @override
@@ -71,91 +115,99 @@ class _CustomCrmState extends State<CustomCrm> {
         ? _leads
         : _leads.where((lead) => lead.tagText == _selectedStatus).toList();
 
+    final paginatedLeads = filteredLeads.sublist(
+      (_currentPage - 1) * _itemsPerPage,
+      ((_currentPage * _itemsPerPage) > filteredLeads.length)
+          ? filteredLeads.length
+          : (_currentPage * _itemsPerPage),
+    );
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
+        border: Border.all(
+            color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          isDesktop 
-            ? Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Left Side (Texts)
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Lead Pipeline",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: theme.colorScheme.onSurface,
+          isDesktop
+              ? Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Left Side (Texts)
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Lead Pipeline",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: theme.colorScheme.onSurface,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          "Manage your leads efficiently",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: theme.textTheme.bodySmall?.color,
+                          const SizedBox(height: 6),
+                          Text(
+                            "Manage your leads efficiently",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: theme.textTheme.bodySmall?.color,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
 
-                  // Right Side (Search + Status)
-                  Flexible(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
+                    // Right Side (Search + Status)
+                    Flexible(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Search
+                          const CustomSearch(),
+
+                          const SizedBox(width: 10),
+
+                          // Status Button
+                          _buildStatusButton(context),
+                        ],
+                      ),
+                    ),
+                  ],
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Lead Pipeline",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: theme.colorScheme.onSurface,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
                       children: [
-                        // Search
-                        const CustomSearch(),
-
+                        const Expanded(child: CustomSearch()),
                         const SizedBox(width: 10),
-
-                        // Status Button
                         _buildStatusButton(context),
                       ],
                     ),
-                  ),
-                ],
-              )
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Lead Pipeline",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: theme.colorScheme.onSurface,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      const Expanded(child: CustomSearch()),
-                      const SizedBox(width: 10),
-                      _buildStatusButton(context),
-                    ],
-                  ),
-                ],
-              ),
+                  ],
+                ),
           const SizedBox(height: 26),
-
           Container(
             decoration: BoxDecoration(
               color: theme.cardTheme.color,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
+              border: Border.all(
+                  color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
@@ -167,7 +219,9 @@ class _CustomCrmState extends State<CustomCrm> {
                         horizontal: 20,
                         vertical: 14,
                       ),
-                      color: Theme.of(context).brightness == Brightness.dark ? theme.colorScheme.surface : theme.colorScheme.secondary,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? theme.colorScheme.surface
+                          : theme.colorScheme.secondary,
                       child: Row(
                         children: const [
                           Expanded(
@@ -197,17 +251,28 @@ class _CustomCrmState extends State<CustomCrm> {
                         ],
                       ),
                     ),
-                  ...filteredLeads.map((lead) => CustomLeadRow(
-                    name: lead.name,
-                    email: lead.email,
-                    phone: lead.phone,
-                    socialText: lead.socialText,
-                    socialIcon: lead.socialIcon,
-                    tagText: lead.tagText,
-                    tagColor: lead.tagColor,
-                    time: lead.time,
-                    notes: lead.notes,
-                  )),
+                  ...paginatedLeads.map((lead) => CustomLeadRow(
+                        name: lead.name,
+                        email: lead.email,
+                        phone: lead.phone,
+                        socialText: lead.socialText,
+                        socialIcon: lead.socialIcon,
+                        tagText: lead.tagText,
+                        tagColor: lead.tagColor,
+                        time: lead.time,
+                        notes: lead.notes,
+                      )),
+                  if (filteredLeads.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: CustomPagination(
+                        totalItems: filteredLeads.length,
+                        itemsPerPage: _itemsPerPage,
+                        currentPage: _currentPage,
+                        onPageChanged: (page) =>
+                            setState(() => _currentPage = page),
+                      ),
+                    ),
                 ],
               ),
             ),
@@ -225,6 +290,7 @@ class _CustomCrmState extends State<CustomCrm> {
       onSelected: (String status) {
         setState(() {
           _selectedStatus = status;
+          _currentPage = 1;
         });
       },
       itemBuilder: (BuildContext context) {

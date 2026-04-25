@@ -18,10 +18,17 @@ import 'package:roberto/features/Auth/screen/login_screen.dart';
 import 'package:roberto/features/Overview/screen/overview_screen.dart';
 
 
-class DashboardShell extends StatefulWidget {
-  final bool isSystemOwner;
+import 'package:roberto/common/user_role.dart';
 
-  const DashboardShell({super.key, this.isSystemOwner = false});
+class DashboardShell extends StatefulWidget {
+  final UserRole role;
+  final Map<String, String>? assignedBranch;
+
+  const DashboardShell({
+    super.key,
+    this.role = UserRole.businessOwner,
+    this.assignedBranch,
+  });
 
   @override
   State<DashboardShell> createState() => _DashboardShellState();
@@ -36,7 +43,13 @@ class _DashboardShellState extends State<DashboardShell> {
     {"name": "Brooklyn Hub", "address": "123, Brooklyn, NY"},
     {"name": "Manhattan Store", "address": "456, Manhattan, NY"},
   ];
-  late Map<String, String> _selectedBranch = _branches[0];
+  late Map<String, String> _selectedBranch;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedBranch = widget.assignedBranch ?? _branches[0];
+  }
 
   void _selectItem(String item) {
     setState(() {
@@ -80,17 +93,17 @@ class _DashboardShellState extends State<DashboardShell> {
 
     switch (_activeItem) {
       case 'Inbox':
-        return InboxScreen(isSystemOwner: widget.isSystemOwner);
+        return InboxScreen(isSystemOwner: widget.role == UserRole.systemOwner);
       case 'Tenant Management':
         return const TenantScreen();
 
       case 'Subscriptions':
-        return widget.isSystemOwner
+        return widget.role == UserRole.systemOwner
             ? const SubscriptionScreen()
             : const BusinessSubscription();
 
       case 'Settings':
-        return widget.isSystemOwner
+        return widget.role == UserRole.systemOwner
             ? const SettingScreen()
             : const BusinessownerSettings();
 
@@ -117,7 +130,7 @@ class _DashboardShellState extends State<DashboardShell> {
 
       case 'Overview':
       default:
-        return OverviewScreen(isSystemOwner: widget.isSystemOwner);
+        return OverviewScreen(isSystemOwner: widget.role == UserRole.systemOwner);
     }
   }
 
@@ -144,8 +157,22 @@ class _DashboardShellState extends State<DashboardShell> {
       {'icon': 'assets/setting.svg', 'label': 'Settings'},
     ];
 
-    final items =
-        widget.isSystemOwner ? systemOwnerItems : businessOwnerItems;
+    final managerItems = [
+      {'icon': 'assets/overview.svg', 'label': 'Overview'},
+      {'icon': 'assets/inbox.svg', 'label': 'Inbox'},
+      {'icon': 'assets/order.svg', 'label': 'Order Booking'},
+      {'icon': 'assets/pricing.svg', 'label': 'Pricing'},
+      {'icon': 'assets/crm.svg', 'label': 'CRM & Leads'},
+    ];
+
+    List<Map<String, String>> items;
+    if (widget.role == UserRole.systemOwner) {
+      items = systemOwnerItems;
+    } else if (widget.role == UserRole.manager) {
+      items = managerItems;
+    } else {
+      items = businessOwnerItems;
+    }
 
     return Container(
       width: 260,
@@ -169,7 +196,7 @@ class _DashboardShellState extends State<DashboardShell> {
               ],
             ),
           ),
-          if (!widget.isSystemOwner) ...[
+          if (widget.role != UserRole.systemOwner) ...[
             const SizedBox(height: 16),
             Divider(color: Theme.of(context).dividerTheme.color, height: 1, thickness: 1),
             Padding(
@@ -180,85 +207,55 @@ class _DashboardShellState extends State<DashboardShell> {
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                 ),
-                child: PopupMenuButton<Map<String, String>>(
-                  offset: const Offset(0, 50),
-                  position: PopupMenuPosition.under,
-                  color: Theme.of(context).cardTheme.color,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  onSelected: (Map<String, String> branch) {
-                    setState(() {
-                      _selectedBranch = branch;
-                    });
-                  },
-                  itemBuilder: (context) => _branches.map((branch) {
-                    return PopupMenuItem<Map<String, String>>(
-                      value: branch,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            branch['name']!,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: branch == _selectedBranch ? FontWeight.bold : FontWeight.normal,
-                              color: Theme.of(context).colorScheme.onSurface,
+                child: widget.role == UserRole.manager
+                    ? _buildStaticBranchInfo(context)
+                    : PopupMenuButton<Map<String, String>>(
+                        offset: const Offset(0, 50),
+                        position: PopupMenuPosition.under,
+                        color: Theme.of(context).cardTheme.color,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)),
+                        onSelected: (Map<String, String> branch) {
+                          setState(() {
+                            _selectedBranch = branch;
+                          });
+                        },
+                        itemBuilder: (context) => _branches.map((branch) {
+                          return PopupMenuItem<Map<String, String>>(
+                            value: branch,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  branch['name']!,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: branch == _selectedBranch
+                                        ? FontWeight.bold
+                                        : FontWeight.normal,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface,
+                                  ),
+                                ),
+                                Text(
+                                  branch['address']!,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.color,
+                                  ),
+                                ),
+                                if (branch != _branches.last)
+                                  const Divider(height: 16),
+                              ],
                             ),
-                          ),
-                          Text(
-                            branch['address']!,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Theme.of(context).textTheme.bodySmall?.color,
-                            ),
-                          ),
-                          if (branch != _branches.last)
-                            const Divider(height: 16),
-                        ],
+                          );
+                        }).toList(),
+                        child: _buildBranchSelectorTrigger(context),
                       ),
-                    );
-                  }).toList(),
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.5),
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.location_on_outlined, color: AppColor.primary, size: 22),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                _selectedBranch['name']!,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  color: Theme.of(context).colorScheme.onSurface,
-                                ),
-                              ),
-                              const SizedBox(height: 2),
-                              Text(
-                                _selectedBranch['address']!,
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  color: Theme.of(context).textTheme.bodySmall?.color,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Icon(
-                          Icons.keyboard_arrow_down,
-                          size: 18,
-                          color: Theme.of(context).textTheme.bodySmall?.color,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
               ),
             ),
             const SizedBox(height: 8),
@@ -388,7 +385,7 @@ class _DashboardShellState extends State<DashboardShell> {
       },
       itemBuilder: (BuildContext context) =>
           <PopupMenuEntry<String>>[
-        if (!widget.isSystemOwner)
+        if (widget.role != UserRole.systemOwner)
           const PopupMenuItem<String>(
             value: 'profile',
             child: Row(
@@ -444,6 +441,68 @@ class _DashboardShellState extends State<DashboardShell> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildStaticBranchInfo(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.5),
+      ),
+      child: _buildBranchInfoContent(context, showArrow: false),
+    );
+  }
+
+  Widget _buildBranchSelectorTrigger(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.5),
+      ),
+      child: _buildBranchInfoContent(context, showArrow: true),
+    );
+  }
+
+  Widget _buildBranchInfoContent(BuildContext context,
+      {required bool showArrow}) {
+    return Row(
+      children: [
+        const Icon(Icons.location_on_outlined,
+            color: AppColor.primary, size: 22),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                _selectedBranch['name']!,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                _selectedBranch['address']!,
+                style: TextStyle(
+                  fontSize: 11,
+                  color: Theme.of(context).textTheme.bodySmall?.color,
+                ),
+              ),
+            ],
+          ),
+        ),
+        if (showArrow)
+          Icon(
+            Icons.keyboard_arrow_down,
+            size: 18,
+            color: Theme.of(context).textTheme.bodySmall?.color,
+          ),
+      ],
     );
   }
 }

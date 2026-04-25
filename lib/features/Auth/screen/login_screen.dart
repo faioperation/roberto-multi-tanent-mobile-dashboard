@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:roberto/features/Auth/screen/forgot_screen.dart';
 import 'package:roberto/common/dashboard_layout.dart';
+import 'package:roberto/common/user_role.dart';
 import '../../../app/app_color.dart';
 import '../../../common/custom_button.dart';
 import '../widget/custom_screen.dart';
@@ -133,13 +134,27 @@ class _LoginScreenState extends State<LoginScreen> {
                 String email = _emailController.text.trim();
                 String password = _passwordController.text.trim();
 
-                bool isBusinessOwner = email == "sadia@gmail.com" && password == "11";
-                bool isSystemOwner = email == "salman@gmail.com" && password == "11";
+                UserRole? role;
+                Map<String, String>? assignedBranch;
+                
+                if (email == "salman@gmail.com" && password == "11") {
+                  role = UserRole.systemOwner;
+                } else if (email == "sadia@gmail.com" && password == "11") {
+                  role = UserRole.businessOwner;
+                } else if (email == "manager@gmail.com" && password == "11") {
+                  role = UserRole.manager;
+                  assignedBranch = {"name": "Brooklyn Hub", "address": "123, Brooklyn, NY"};
+                }
 
-                if (isBusinessOwner || isSystemOwner) {
+                if (role != null) {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (_) => DashboardShell(isSystemOwner: isSystemOwner)),
+                    MaterialPageRoute(
+                      builder: (_) => DashboardShell(
+                        role: role!,
+                        assignedBranch: assignedBranch,
+                      ),
+                    ),
                   );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(

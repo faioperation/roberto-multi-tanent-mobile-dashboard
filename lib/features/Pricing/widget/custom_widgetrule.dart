@@ -35,120 +35,124 @@ class _CustomWidgetruleState extends State<CustomWidgetrule> {
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: isDesktop ? 20 : 16,
-        vertical: isDesktop ? 14 : 16,
+        vertical: isDesktop ? 12 : 16,
       ),
       decoration: BoxDecoration(
-        color: theme.cardTheme.color,
+        color: theme.cardColor,
         borderRadius: isDesktop ? null : BorderRadius.circular(12),
         border: isDesktop
-            ? Border(bottom: BorderSide(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)))
-            : Border.all(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE)),
+            ? Border(
+                bottom: BorderSide(
+                    color: theme.dividerColor.withOpacity(0.1), width: 1))
+            : Border.all(color: theme.dividerColor.withOpacity(0.1)),
       ),
       margin: isDesktop ? EdgeInsets.zero : const EdgeInsets.only(bottom: 12),
       child: isDesktop
           ? Row(
-        children: [
-          // Title
-          Expanded(
-            flex: 2,
-            child: Text(
-              widget.title,
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: theme.colorScheme.onSurface,
-              ),
-            ),
-          ),
-
-          // Badge
-          Expanded(
-            flex: 3,
-            child: Row(
               children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 4, horizontal: 12),
-                  decoration: BoxDecoration(
-                    color: isDark ? theme.colorScheme.surface : const Color(0xffF3F4F6),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
+                // Title
+                Expanded(
+                  flex: 2,
                   child: Text(
-                    widget.badgeText,
-                    textAlign: TextAlign.center,
+                    widget.title,
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
                       color: theme.colorScheme.onSurface,
                     ),
                   ),
                 ),
-              ],
-            ),
-          ),
 
-          // Description
-          Expanded(
-            flex: 3,
-            child: Text(
-              widget.description,
-              style: TextStyle(
-                fontSize: 14,
-                color: theme.colorScheme.onSurface,
-              ),
-            ),
-          ),
-
-          // Switch
-          Expanded(
-            flex: 2,
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Transform.scale(
-                scale: 0.75,
-                child: Switch(
-                  value: isActive,
-                  onChanged: (value) {
-                    setState(() {
-                      isActive = value;
-                    });
-                  },
-                  activeThumbColor: AppColor.greens,
-                  materialTapTargetSize:
-                  MaterialTapTargetSize.shrinkWrap,
-                ),
-              ),
-            ),
-          ),
-
-          // Actions
-          Expanded(
-            flex: 2,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                IconButton(
-                  tooltip: "Edit",
-                  onPressed: widget.onEdit,
-                  icon: const Icon(
-                    Icons.edit,
-                    size: 18,
-                    color: Colors.blue,
+                // Badge
+                Expanded(
+                  flex: 3,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 4, horizontal: 12),
+                        decoration: BoxDecoration(
+                          color: isDark
+                              ? theme.colorScheme.surface
+                              : const Color(0xffF3F4F6),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          widget.badgeText,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: theme.colorScheme.onSurface,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                IconButton(
-                  tooltip: "Delete",
-                  onPressed: widget.onDelete,
-                  icon: const Icon(
-                    Icons.delete,
-                    size: 18,
-                    color: Colors.red,
+
+                // Description
+                Expanded(
+                  flex: 3,
+                  child: Text(
+                    widget.description,
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: theme.colorScheme.onSurface,
+                    ),
+                  ),
+                ),
+
+                // Switch
+                Expanded(
+                  flex: 2,
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Transform.scale(
+                      scale: 0.75,
+                      child: Switch(
+                        value: isActive,
+                        onChanged: (value) {
+                          setState(() {
+                            isActive = value;
+                          });
+                        },
+                        activeThumbColor: AppColor.greens,
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                    ),
+                  ),
+                ),
+
+                // Actions
+                Expanded(
+                  flex: 2,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      IconButton(
+                        tooltip: "Edit",
+                        onPressed: widget.onEdit,
+                        icon: const Icon(
+                          Icons.edit,
+                          size: 18,
+                          color: Colors.blue,
+                        ),
+                      ),
+                      IconButton(
+                        tooltip: "Delete",
+                        onPressed: widget.onDelete,
+                        icon: const Icon(
+                          Icons.delete,
+                          size: 18,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
-            ),
-          ),
-        ],
-      )
+            )
           : Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

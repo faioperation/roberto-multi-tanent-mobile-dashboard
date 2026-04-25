@@ -115,11 +115,14 @@ class _BusinessSubscriptionState extends State<BusinessSubscription> {
   }
 
   Widget _buildToggleTabs() {
+    final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.light ? Colors.grey.shade100 : Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(20),
+        color: Theme.of(context).brightness == Brightness.light
+            ? theme.colorScheme.secondary
+            : theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(24),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -135,33 +138,25 @@ class _BusinessSubscriptionState extends State<BusinessSubscription> {
     required int index,
     required String label,
   }) {
+    final theme = Theme.of(context);
     final isActive = _selectedTab == index;
 
     return GestureDetector(
       onTap: () => setState(() => _selectedTab = index),
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 180),
+        duration: const Duration(milliseconds: 200),
         curve: Curves.easeInOut,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         decoration: BoxDecoration(
-          color: isActive ? Theme.of(context).cardTheme.color : Colors.transparent,
+          color: isActive ? AppColor.primary : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
-          boxShadow: isActive
-              ? [
-            BoxShadow(
-              color: Theme.of(context).shadowColor.withOpacity(Theme.of(context).brightness == Brightness.light ? 0.08 : 0.2),
-              blurRadius: 4,
-              offset: const Offset(0, 1),
-            )
-          ]
-              : [],
         ),
         child: Text(
           label,
           style: TextStyle(
             fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: isActive ? Theme.of(context).colorScheme.onSurface : Theme.of(context).textTheme.bodyMedium?.color,
+            fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
+            color: isActive ? Colors.white : Theme.of(context).textTheme.bodyMedium?.color,
           ),
         ),
       ),

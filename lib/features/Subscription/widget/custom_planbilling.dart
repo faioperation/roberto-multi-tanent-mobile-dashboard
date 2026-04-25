@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:roberto/features/Subscription/widget/custom_plan.dart';
 import 'package:roberto/features/Subscription/widget/custom_Billing.dart';
 
+import '../../../app/app_color.dart';
+
 class CustomPlanbilling extends StatefulWidget {
   const CustomPlanbilling({super.key});
 
@@ -25,11 +27,14 @@ class _CustomPlanbillingState extends State<CustomPlanbilling> {
   }
 
   Widget _buildToggleBar() {
+    final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.light ? Colors.grey.shade100 : Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(20),
+        color: theme.brightness == Brightness.light
+            ? theme.colorScheme.secondary
+            : theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(24),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -42,6 +47,7 @@ class _CustomPlanbillingState extends State<CustomPlanbilling> {
   }
 
   Widget _tabButton(String label, int index) {
+    final theme = Theme.of(context);
     final isActive = _selectedIndex == index;
     return GestureDetector(
       onTap: () => setState(() => _selectedIndex = index),
@@ -50,24 +56,15 @@ class _CustomPlanbillingState extends State<CustomPlanbilling> {
         curve: Curves.easeInOut,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         decoration: BoxDecoration(
-          color: isActive ? Theme.of(context).cardTheme.color : Colors.transparent,
+          color: isActive ? AppColor.primary : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
-          boxShadow: isActive
-              ? [
-            BoxShadow(
-              color: Theme.of(context).shadowColor.withOpacity(Theme.of(context).brightness == Brightness.light ? 0.08 : 0.2),
-              blurRadius: 4,
-              offset: const Offset(0, 1),
-            )
-          ]
-              : [],
         ),
         child: Text(
           label,
           style: TextStyle(
             fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: isActive ? Theme.of(context).colorScheme.onSurface : Theme.of(context).textTheme.bodyMedium?.color,
+            fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
+            color: isActive ? Colors.white : theme.textTheme.bodyMedium?.color,
           ),
         ),
       ),

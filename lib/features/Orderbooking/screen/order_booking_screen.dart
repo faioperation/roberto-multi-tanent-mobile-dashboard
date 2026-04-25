@@ -8,6 +8,7 @@ import 'package:roberto/features/Tenant%20Management%20/widget/custom_headder.da
 import 'package:table_calendar/table_calendar.dart';
 import 'package:roberto/features/Auth/widget/custom_textfield.dart';
 import 'package:roberto/features/Orderbooking/widget/create_order_dialog.dart';
+import 'package:roberto/common/custom_pagination.dart';
 
 // Breakpoint
 const double _kDesktop = 700;
@@ -102,150 +103,40 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
       quantity: 1,
       deliveryDate: DateTime(2026, 4, 7),
     ),
-    OrderMod(
-      orderId: '#ORD-006',
-      customerName: 'Michael Chen',
-      phone: '+1 (555) 987-6543',
-      address: 'California to Washington',
-      status: OrderStatus.confirmed,
-      shippingCharge: 35.50,
-      deliveryTime: '14 Apr, 2:00 PM',
-      avatarInitials: 'MC',
-      avatarColor: const Color(0xFFE11D48),
-      quantity: 2,
-      productName: 'Gaming Mouse',
-      deliveryDate: DateTime.now().add(const Duration(days: 1)),
-    ),
-    OrderMod(
-      orderId: '#ORD-007',
-      customerName: 'Sophia Garcia',
-      phone: '+1 (555) 456-7890',
-      address: 'Florida to Georgia',
-      status: OrderStatus.pending,
-      shippingCharge: 12.00,
-      deliveryTime: '15 Apr, 10:30 AM',
-      avatarInitials: 'SG',
-      avatarColor: const Color(0xFF7C3AED),
-      quantity: 1,
-      productName: 'Yoga Mat',
-      deliveryDate: DateTime.now().add(const Duration(days: 3)),
-    ),
-    OrderMod(
-      orderId: '#ORD-008',
-      customerName: 'James Miller',
-      phone: '+1 (555) 234-5678',
-      address: 'Illinois to Ohio',
-      status: OrderStatus.delivered,
-      shippingCharge: 55.00,
-      deliveryTime: '10 Apr, 4:45 PM',
-      avatarInitials: 'JM',
-      avatarColor: const Color(0xFF059669),
-      quantity: 1,
-      productName: 'Coffee Maker',
-      deliveryDate: DateTime.now().subtract(const Duration(days: 2)),
-    ),
-    OrderMod(
-      orderId: '#ORD-009',
-      customerName: 'Olivia Taylor',
-      phone: '+1 (555) 876-5432',
-      address: 'Arizona to Nevada',
-      status: OrderStatus.pending,
-      shippingCharge: 25.00,
-      deliveryTime: '16 Apr, 1:15 PM',
-      avatarInitials: 'OT',
-      avatarColor: const Color(0xFFD97706),
-      quantity: 3,
-      productName: 'Notebook Set',
-      deliveryDate: DateTime.now().add(const Duration(days: 4)),
-    ),
-    OrderMod(
-      orderId: '#ORD-010',
-      customerName: 'William Martinez',
-      phone: '+1 (555) 345-6789',
-      address: 'Michigan to Indiana',
-      status: OrderStatus.confirmed,
-      shippingCharge: 40.00,
-      deliveryTime: '13 Apr, 11:00 AM',
-      avatarInitials: 'WM',
-      avatarColor: const Color(0xFF2563EB),
-      quantity: 1,
-      productName: 'Backpack',
-      deliveryDate: DateTime.now(),
-    ),
-    OrderMod(
-      orderId: '#ORD-011',
-      customerName: 'Isabella Anderson',
-      phone: '+1 (555) 654-3210',
-      address: 'Virginia to Maryland',
-      status: OrderStatus.pending,
-      shippingCharge: 15.75,
-      deliveryTime: '17 Apr, 3:30 PM',
-      avatarInitials: 'IA',
-      avatarColor: const Color(0xFFDB2777),
-      quantity: 2,
-      productName: 'Water Bottle',
-      deliveryDate: DateTime.now().add(const Duration(days: 5)),
-    ),
-    OrderMod(
-      orderId: '#ORD-012',
-      customerName: 'Lucas Thompson',
-      phone: '+1 (555) 567-8901',
-      address: 'Oregon to Idaho',
-      status: OrderStatus.delivered,
-      shippingCharge: 22.00,
-      deliveryTime: '09 Apr, 9:20 AM',
-      avatarInitials: 'LT',
-      avatarColor: const Color(0xFF4B5563),
-      quantity: 1,
-      productName: 'Desk Lamp',
-      deliveryDate: DateTime.now().subtract(const Duration(days: 3)),
-    ),
-    OrderMod(
-      orderId: '#ORD-013',
-      customerName: 'Mia White',
-      phone: '+1 (555) 789-0123',
-      address: 'Colorado to Utah',
-      status: OrderStatus.confirmed,
-      shippingCharge: 30.00,
-      deliveryTime: '12 Apr, 12:00 PM',
-      avatarInitials: 'MW',
-      avatarColor: const Color(0xFF9333EA),
-      quantity: 1,
-      productName: 'Headphones',
-      deliveryDate: DateTime.now(),
-    ),
-    OrderMod(
-      orderId: '#ORD-014',
-      customerName: 'Ethan Harris',
-      phone: '+1 (555) 890-1234',
-      address: 'North Carolina to South Carolina',
-      status: OrderStatus.pending,
-      shippingCharge: 18.50,
-      deliveryTime: '18 Apr, 10:00 AM',
-      avatarInitials: 'EH',
-      avatarColor: const Color(0xFFEA580C),
-      quantity: 4,
-      productName: 'Socks Pack',
-      deliveryDate: DateTime.now().add(const Duration(days: 6)),
-    ),
-    OrderMod(
-      orderId: '#ORD-015',
-      customerName: 'Ava Martin',
-      phone: '+1 (555) 901-2345',
-      address: 'Massachusetts to Connecticut',
-      status: OrderStatus.confirmed,
-      shippingCharge: 42.00,
-      deliveryTime: '13 Apr, 2:30 PM',
-      avatarInitials: 'AM',
-      avatarColor: const Color(0xFF0D9488),
-      quantity: 1,
-      productName: 'Smart Watch',
-      deliveryDate: DateTime.now(),
+    ...List.generate(
+      25,
+      (index) => OrderMod(
+        orderId: '#ORD-${(index + 1).toString().padLeft(3, '0')}',
+        customerName: [
+          'John Doe',
+          'Jane Smith',
+          'Sarah Wilson',
+          'Michael Brown',
+          'Emily Davis'
+        ][index % 5],
+        phone: '+1 (555) ${100 + index}-${2000 + index}',
+        address: 'New York to California',
+        status: [
+          OrderStatus.pending,
+          OrderStatus.confirmed,
+          OrderStatus.delivered
+        ][index % 3],
+        shippingCharge: 20.0 + index,
+        deliveryTime: 'Today, 10:00 AM',
+        avatarInitials: 'JD',
+        avatarColor: Colors.blue,
+        quantity: (index % 5) + 1,
+        productName: 'Product ${index + 1}',
+        deliveryDate: DateTime.now().add(Duration(days: index)),
+      ),
     ),
   ];
 
+  int _currentPage = 1;
+  static const int _itemsPerPage = 20;
+
   List<OrderMod> get _filteredOrders {
-    return _orders.where((order) {
+    final filtered = _orders.where((order) {
       final matchesSearch = _searchQuery.isEmpty ||
           order.orderId.toLowerCase().contains(_searchQuery.toLowerCase()) ||
           order.customerName.toLowerCase().contains(_searchQuery.toLowerCase());
@@ -260,6 +151,18 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
 
       return matchesSearch && matchesStatus;
     }).toList();
+
+    return filtered;
+  }
+
+  List<OrderMod> get _paginatedOrders {
+    final startIndex = (_currentPage - 1) * _itemsPerPage;
+    final endIndex = startIndex + _itemsPerPage;
+    if (startIndex >= _filteredOrders.length) return [];
+    return _filteredOrders.sublist(
+      startIndex,
+      endIndex > _filteredOrders.length ? _filteredOrders.length : endIndex,
+    );
   }
 
   //BUILD
@@ -452,7 +355,10 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
           const SizedBox(width: 8),
           Expanded(
             child: TextField(
-              onChanged: (v) => setState(() => _searchQuery = v),
+              onChanged: (v) => setState(() {
+                _searchQuery = v;
+                _currentPage = 1;
+              }),
               style: TextStyle(fontSize: 14, color: theme.colorScheme.onSurface),
               decoration: InputDecoration(
                 hintText: 'Search orders...',
@@ -472,7 +378,10 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
       theme: theme,
       isDark: isDark,
       items: ['All status', 'Pending', 'Confirmed', 'Delivered'],
-      onChanged: (v) => setState(() => _selectedStatus = v ?? 'All status'),
+      onChanged: (v) => setState(() {
+        _selectedStatus = v ?? 'All status';
+        _currentPage = 1;
+      }),
     );
 
     final timeDrop = _buildFilterDropdown(
@@ -480,7 +389,10 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
       theme: theme,
       isDark: isDark,
       items: ['All time', 'Today', 'This week', 'This month'],
-      onChanged: (v) => setState(() => _selectedTime = v ?? 'All time'),
+      onChanged: (v) => setState(() {
+        _selectedTime = v ?? 'All time';
+        _currentPage = 1;
+      }),
     );
 
     Widget content;
@@ -566,7 +478,17 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
                 ),
               )
             else
-              ..._filteredOrders.map((order) => _buildDesktopRow(order, theme, isDark)),
+              ..._paginatedOrders.map((order) => _buildDesktopRow(order, theme, isDark)),
+            if (_filteredOrders.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: CustomPagination(
+                  totalItems: _filteredOrders.length,
+                  itemsPerPage: _itemsPerPage,
+                  currentPage: _currentPage,
+                  onPageChanged: (page) => setState(() => _currentPage = page),
+                ),
+              ),
           ],
         ),
       ),
@@ -662,8 +584,16 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
     }
 
     return Column(
-      children:
-          _filteredOrders.map((order) => _buildMobileCard(order, theme, isDark)).toList(),
+      children: [
+        ..._paginatedOrders.map((order) => _buildMobileCard(order, theme, isDark)),
+        if (_filteredOrders.isNotEmpty)
+          CustomPagination(
+            totalItems: _filteredOrders.length,
+            itemsPerPage: _itemsPerPage,
+            currentPage: _currentPage,
+            onPageChanged: (page) => setState(() => _currentPage = page),
+          ),
+      ],
     );
   }
 

@@ -122,7 +122,7 @@ class _ManagementScreenState extends State<ManagementScreen> {
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
           color: isDark ? theme.colorScheme.surface : theme.colorScheme.secondary,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(24),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -149,29 +149,16 @@ class _ManagementScreenState extends State<ManagementScreen> {
         duration: const Duration(milliseconds: 100),
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         decoration: BoxDecoration(
-          color: isActive 
-            ? (isDark ? theme.colorScheme.secondary : Colors.white) 
-            : Colors.transparent,
+          color: isActive ? AppColor.primary : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
-          boxShadow: isActive && !isDark
-              ? [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.08),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
-                  ),
-                ]
-              : [],
         ),
         child: Center(
           child: Text(
             label,
             style: TextStyle(
               fontSize: 14,
-              fontWeight: isActive ? FontWeight.w500 : FontWeight.w400,
-              color: isActive 
-                ? (isDark ? theme.colorScheme.onSecondary : theme.colorScheme.onSurface) 
-                : theme.textTheme.bodySmall?.color,
+              fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
+              color: isActive ? Colors.white : theme.textTheme.bodyMedium?.color,
             ),
           ),
         ),
