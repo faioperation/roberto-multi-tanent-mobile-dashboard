@@ -144,13 +144,13 @@ class _SettingScreenState extends State<SettingScreen> {
                           ],
                         ),
 
-                        const SizedBox(height: 16),
-
-                        CustomProfile(
-                          label: "Email Address",
-                          hint: "systemowner@company.com",
-                          icon: Icons.email_outlined,
-                        ),
+                        // const SizedBox(height: 16),
+                        //
+                        // CustomProfile(
+                        //   label: "Email Address",
+                        //   hint: "systemowner@company.com",
+                        //   icon: Icons.email_outlined,
+                        // ),
 
                         const SizedBox(height: 16),
 
