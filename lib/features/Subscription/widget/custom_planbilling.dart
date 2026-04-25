@@ -79,9 +79,9 @@ class _CustomPlanbillingState extends State<CustomPlanbilling> {
 
         final plans = [
           CustomPlan(
-            title: "Half Moon",
-            subtitle: "For small businesses / entry plan",
-            price: "\$49",
+            title: "CONNECT",
+            subtitle: "Best for businesses getting started with AI automation",
+            price: "\$700",
             iconPath: "assets/half.svg",
             features: [
               "2 channels",
@@ -97,9 +97,9 @@ class _CustomPlanbillingState extends State<CustomPlanbilling> {
             ],
           ),
           CustomPlan(
-            title: "Full Moon",
-            subtitle: "Main commercial plan",
-            price: "\$199",
+            title: "CONVERT",
+            subtitle: "Best for growing businesses that need more leads, bookings, and automation",
+            price: "\$1250",
             iconPath: "assets/full.svg",
             features: [
               "everything in Half Moon, plus:",
@@ -118,9 +118,9 @@ class _CustomPlanbillingState extends State<CustomPlanbilling> {
             ],
           ),
           CustomPlan(
-            title: "Moon Enterprise",
-            subtitle: "Advanced / high-volume plan",
-            price: "\$499",
+            title: "CONTROL",
+            subtitle: "Best for high-volume teams and serious businesses",
+            price: "\$2050",
             iconPath: "assets/enter.svg",
             features: [
               "everything in Full Moon, plus:",
