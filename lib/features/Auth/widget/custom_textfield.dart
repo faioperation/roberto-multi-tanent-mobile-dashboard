@@ -11,6 +11,8 @@ class CustomTextfield extends StatefulWidget {
   final int? maxLines;
   final int? minLines;
   final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
+  final Function(String)? onSubmitted;
   final Widget? suffixIcon;
 
   const CustomTextfield({
@@ -23,6 +25,8 @@ class CustomTextfield extends StatefulWidget {
     this.maxLines = 1,
     this.minLines,
     this.keyboardType,
+    this.textInputAction,
+    this.onSubmitted,
     this.suffixIcon,
   });
 
@@ -56,6 +60,8 @@ class _CustomTextfieldState extends State<CustomTextfield> {
       maxLines: widget.isPassword ? 1 : widget.maxLines,
       minLines: widget.minLines,
       keyboardType: widget.keyboardType,
+      textInputAction: widget.textInputAction,
+      onSubmitted: widget.onSubmitted,
       style: TextStyle(
         color: widget.textColor ?? Theme.of(context).textTheme.bodyLarge?.color,
         fontSize: 15,

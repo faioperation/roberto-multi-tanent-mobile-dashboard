@@ -71,23 +71,27 @@ class _ForgotScreenState extends State<ForgotScreen> {
             const SizedBox(height: 8),
             CustomTextfield(
               hintText: "owner@platform.com",
+              textInputAction: TextInputAction.done,
+              onSubmitted: (_) => _handleSend(),
             ),
 
             const SizedBox(height: 25),
             CustomButton(
               text: "Send",
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const VerifyScreen()),
-                );
-              },
+              onTap: _handleSend,
             ),
             const SizedBox(height: 20),
 
           ],
         ),
       ),
+    );
+  }
+
+  void _handleSend() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const VerifyScreen()),
     );
   }
 }

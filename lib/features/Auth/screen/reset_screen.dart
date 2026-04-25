@@ -73,6 +73,7 @@ class _ResetScreenState extends State<ResetScreen> {
             CustomTextfield(
               hintText: "*********",
               isPassword: true,
+              textInputAction: TextInputAction.next,
             ),
             const SizedBox(height: 20),
 
@@ -92,17 +93,14 @@ class _ResetScreenState extends State<ResetScreen> {
             CustomTextfield(
               hintText: "*********",
               isPassword: true,
+              textInputAction: TextInputAction.done,
+              onSubmitted: (_) => _handleReset(),
             ),
 
             const SizedBox(height: 25),
             CustomButton(
               text: "Reset Password",
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const SuccessfulScreen()),
-                );
-              },
+              onTap: _handleReset,
             ),
 
             const SizedBox(height: 20),
@@ -110,6 +108,13 @@ class _ResetScreenState extends State<ResetScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  void _handleReset() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const SuccessfulScreen()),
     );
   }
 }

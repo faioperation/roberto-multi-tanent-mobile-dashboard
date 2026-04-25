@@ -74,17 +74,14 @@ class _VerifyScreenState extends State<VerifyScreen> {
                     inactiveColor: Theme.of(context).dividerTheme.color),
                 animationDuration: const Duration(milliseconds: 300),
                 // controller: OTPController,
-                appContext: context,),
+                appContext: context,
+                onSubmitted: (_) => _handleVerify(),
+            ),
 
             const SizedBox(height: 25),
             CustomButton(
               text: "Verify",
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) =>  ResetScreen()),
-                );
-              },
+              onTap: _handleVerify,
             ),
             const SizedBox(height: 20),
             GestureDetector(
@@ -112,6 +109,13 @@ class _VerifyScreenState extends State<VerifyScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  void _handleVerify() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const ResetScreen()),
     );
   }
 }

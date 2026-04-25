@@ -8,8 +8,6 @@ import '../../../common/custom_button.dart';
 import '../widget/custom_screen.dart';
 import '../widget/custom_textfield.dart';
 
-
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -28,7 +26,6 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,10 +36,10 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Center(
-                child: SvgPicture.asset(
-                  'assets/logo.svg',
-                  height: 80,
-                ),
+              child: SvgPicture.asset(
+                'assets/logo.svg',
+                height: 80,
+              ),
             ),
             const SizedBox(height: 20),
             Center(
@@ -83,6 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
             CustomTextfield(
               hintText: "owner@platform.com",
               controller: _emailController,
+              textInputAction: TextInputAction.next,
             ),
 
             const SizedBox(height: 20),
@@ -104,6 +102,8 @@ class _LoginScreenState extends State<LoginScreen> {
               hintText: "*********",
               isPassword: true,
               controller: _passwordController,
+              textInputAction: TextInputAction.done,
+              onSubmitted: (_) => _handleLogin(),
             ),
 
             const SizedBox(height: 15),
@@ -130,49 +130,51 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(height: 20),
             CustomButton(
               text: "Login",
-              onTap: () {
-                String email = _emailController.text.trim();
-                String password = _passwordController.text.trim();
-
-                UserRole? role;
-                Map<String, String>? assignedBranch;
-                
-                if (email == "salman@gmail.com" && password == "11") {
-                  role = UserRole.systemOwner;
-                } else if (email == "sadia@gmail.com" && password == "11") {
-                  role = UserRole.businessOwner;
-                } else if (email == "manager@gmail.com" && password == "11") {
-                  role = UserRole.manager;
-                  assignedBranch = {"name": "Brooklyn Hub", "address": "123, Brooklyn, NY"};
-                }
-
-                if (role != null) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => DashboardShell(
-                        role: role!,
-                        assignedBranch: assignedBranch,
-                      ),
-                    ),
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Invalid email or password"),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                }
-              },
+              onTap: _handleLogin,
             ),
-
-
             const SizedBox(height: 20),
-
           ],
         ),
       ),
     );
+  }
+
+  void _handleLogin() {
+    String email = _emailController.text.trim();
+    String password = _passwordController.text.trim();
+
+    UserRole? role;
+    Map<String, String>? assignedBranch;
+
+    if (email == "salman@gmail.com" && password == "11") {
+      role = UserRole.systemOwner;
+    } else if (email == "sadia@gmail.com" && password == "11") {
+      role = UserRole.businessOwner;
+    } else if (email == "manager@gmail.com" && password == "11") {
+      role = UserRole.manager;
+      assignedBranch = {
+        "name": "Brooklyn Hub",
+        "address": "123, Brooklyn, NY"
+      };
+    }
+
+    if (role != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => DashboardShell(
+            role: role!,
+            assignedBranch: assignedBranch,
+          ),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Invalid email or password"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 }
