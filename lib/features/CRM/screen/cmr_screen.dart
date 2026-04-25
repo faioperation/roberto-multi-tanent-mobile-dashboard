@@ -5,7 +5,8 @@ import 'package:roberto/features/CRM/widget/custom_addlead.dart';
 import 'package:roberto/features/Tenant%20Management%20/widget/custom_stat_card.dart';
 
 class CmrScreen extends StatefulWidget {
-  const CmrScreen({super.key});
+  final Function(String)? onNavigate;
+  const CmrScreen({super.key, this.onNavigate});
 
   @override
   State<CmrScreen> createState() => _CmrScreenState();
@@ -132,7 +133,7 @@ class _CmrScreenState extends State<CmrScreen> {
         _buildStatCards(width),
 
         const SizedBox(height: 25),
-        const CustomCrm(),
+        CustomCrm(onNavigate: widget.onNavigate),
 
       ],
     ),

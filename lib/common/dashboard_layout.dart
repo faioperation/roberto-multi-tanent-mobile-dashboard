@@ -118,7 +118,7 @@ class _DashboardShellState extends State<DashboardShell> {
         return const PricingScreen();
 
       case 'CRM & Leads':
-        return const CmrScreen();
+        return CmrScreen(onNavigate: _selectItem);
 
       case 'Management':
         return const ManagementScreen();

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:roberto/app/app_color.dart';
 
 class CustomLeadRow extends StatelessWidget {
@@ -8,10 +9,11 @@ class CustomLeadRow extends StatelessWidget {
   final String tagText;
   final Color tagColor;
   final String time;
-  final IconData socialIcon;
+  final String socialIcon;
   final String socialText;
 
   final String? notes;
+  final Function(String)? onNavigate;
 
   const CustomLeadRow({
     super.key,
@@ -24,6 +26,7 @@ class CustomLeadRow extends StatelessWidget {
     required this.socialIcon,
     required this.socialText,
     this.notes,
+    this.onNavigate,
   });
 
   @override
@@ -35,12 +38,14 @@ class CustomLeadRow extends StatelessWidget {
       return _buildMobileCard(context);
     }
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE))),
-      ),
-      child: Row(
+    return InkWell(
+      onTap: () => onNavigate?.call('Inbox'),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE))),
+        ),
+        child: Row(
         children: [
           // NAME
           Expanded(
@@ -75,10 +80,10 @@ class CustomLeadRow extends StatelessWidget {
             flex: 2,
             child: Row(
               children: [
-                Icon(
+                SvgPicture.asset(
                   socialIcon,
-                  size: 18,
-                  color: theme.colorScheme.onSurface,
+                  width: 18,
+                  height: 18,
                 ),
                 const SizedBox(width: 6),
                 Text(
@@ -142,19 +147,22 @@ class CustomLeadRow extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildMobileCard(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE))),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+    return InkWell(
+      onTap: () => onNavigate?.call('Inbox'),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(color: theme.dividerTheme.color ?? const Color(0xffEEEEEE))),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -194,7 +202,11 @@ class CustomLeadRow extends StatelessWidget {
             children: [
               Row(
                 children: [
-                   Icon(socialIcon, size: 16, color: theme.textTheme.bodySmall?.color),
+                   SvgPicture.asset(
+                    socialIcon,
+                    width: 16,
+                    height: 16,
+                  ),
                   const SizedBox(width: 4),
                   Text(
                     socialText,
@@ -219,8 +231,9 @@ class CustomLeadRow extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 
   void _showLeadDetails(BuildContext context) {
     showDialog(
@@ -420,7 +433,11 @@ class CustomLeadRow extends StatelessWidget {
         const SizedBox(height: 6),
         Row(
           children: [
-            Icon(socialIcon, size: 16, color: theme.colorScheme.onSurface),
+            SvgPicture.asset(
+              socialIcon,
+              width: 18,
+              height: 18,
+            ),
             const SizedBox(width: 8),
             Text(
               socialText,

@@ -5,7 +5,7 @@ class CRMLead {
   final String email;
   final String phone;
   final String socialText;
-  final IconData socialIcon;
+  final String socialIcon;
   final String tagText;
   final Color tagColor;
   final String time;

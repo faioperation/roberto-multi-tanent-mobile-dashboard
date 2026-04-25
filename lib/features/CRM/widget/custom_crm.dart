@@ -7,7 +7,8 @@ import 'package:roberto/features/CRM/widget/crm_lead_model.dart';
 import 'package:roberto/common/custom_pagination.dart';
 
 class CustomCrm extends StatefulWidget {
-  const CustomCrm({super.key});
+  final Function(String)? onNavigate;
+  const CustomCrm({super.key, this.onNavigate});
 
   @override
   State<CustomCrm> createState() => _CustomCrmState();
@@ -24,7 +25,7 @@ class _CustomCrmState extends State<CustomCrm> {
       email: "sarah.j@email.com",
       phone: "++1 234 567 8901",
       socialText: "Facebook",
-      socialIcon: Icons.facebook,
+      socialIcon: "assets/facebook.svg",
       tagText: "Cold",
       tagColor: AppColor.deepgreen,
       time: "2 hours ago",
@@ -35,7 +36,7 @@ class _CustomCrmState extends State<CustomCrm> {
       email: "m.chen@email.com",
       phone: "++1 234 567 8901",
       socialText: "WhatsApp",
-      socialIcon: Icons.facebook,
+      socialIcon: "assets/whatsapp.svg",
       tagText: "Warm",
       tagColor: AppColor.greens,
       time: "1 day ago",
@@ -46,7 +47,7 @@ class _CustomCrmState extends State<CustomCrm> {
       email: "emma.w@email.com",
       phone: "+1 234 567 8903",
       socialText: "Instagram",
-      socialIcon: Icons.facebook,
+      socialIcon: "assets/instagram.svg",
       tagText: "Booked",
       tagColor: AppColor.ma,
       time: "3 hours ago",
@@ -57,7 +58,7 @@ class _CustomCrmState extends State<CustomCrm> {
       email: "d.brown@email.com",
       phone: "+1 234 567 8904",
       socialText: "Facebook",
-      socialIcon: Icons.facebook,
+      socialIcon: "assets/facebook.svg",
       tagText: "Hot",
       tagColor: AppColor.primary,
       time: "5 days ago",
@@ -68,7 +69,7 @@ class _CustomCrmState extends State<CustomCrm> {
       email: "alice.c@email.com",
       phone: "+1 234 567 8910",
       socialText: "Facebook",
-      socialIcon: Icons.facebook,
+      socialIcon: "assets/facebook.svg",
       tagText: "Cold",
       tagColor: AppColor.deepgreen,
       time: "10 hours ago",
@@ -79,7 +80,7 @@ class _CustomCrmState extends State<CustomCrm> {
       email: "bob.d@email.com",
       phone: "+1 234 567 8911",
       socialText: "WhatsApp",
-      socialIcon: Icons.facebook,
+      socialIcon: "assets/whatsapp.svg",
       tagText: "Warm",
       tagColor: AppColor.greens,
       time: "2 days ago",
@@ -92,7 +93,11 @@ class _CustomCrmState extends State<CustomCrm> {
         email: "lead${index + 1}@email.com",
         phone: "+1 234 567 ${8000 + index}",
         socialText: ["Facebook", "WhatsApp", "Instagram"][index % 3],
-        socialIcon: Icons.facebook,
+        socialIcon: [
+          "assets/facebook.svg",
+          "assets/whatsapp.svg",
+          "assets/instagram.svg"
+        ][index % 3],
         tagText: ["Cold", "Warm", "Hot", "Booked"][index % 4],
         tagColor: [
           AppColor.deepgreen,
@@ -261,6 +266,7 @@ class _CustomCrmState extends State<CustomCrm> {
                         tagColor: lead.tagColor,
                         time: lead.time,
                         notes: lead.notes,
+                        onNavigate: widget.onNavigate,
                       )),
                   if (filteredLeads.isNotEmpty)
                     Padding(

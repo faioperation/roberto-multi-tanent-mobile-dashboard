@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:roberto/app/app_color.dart';
 
 class ChatList extends StatefulWidget {
@@ -25,9 +26,9 @@ class _ChatListState extends State<ChatList> {
           _buildFilterItem(-1, null, "All", "45"),
           
           // Social Filters
-          _buildFilterItem(0, Icons.facebook, "Facebook", "15"),
-          _buildFilterItem(1, Icons.camera_alt_outlined, "Instagram", "20"),
-          _buildFilterItem(2, Icons.message_outlined, "WhatsApp", "10"),
+          _buildFilterItem(0, "assets/facebook.svg", "Facebook", "15"),
+          _buildFilterItem(1, "assets/instagram.svg", "Instagram", "20"),
+          _buildFilterItem(2, "assets/whatsapp.svg", "WhatsApp", "10"),
           
           const Divider(height: 16),
           
@@ -35,11 +36,11 @@ class _ChatListState extends State<ChatList> {
           Expanded(
             child: ListView(
               children: [
-                _buildChatListItem(0, "R", "Roberto", "2m ago", "Hi, I'd like to know more about..."),
-                _buildChatListItem(1, "MC", "Michael Cher", "15m ago", "Thank you for the quick response!"),
-                _buildChatListItem(2, "EW", "Emma Wilso", "1h ago", "Can I schedule a booking for"),
-                _buildChatListItem(3, "DB", "David Brow", "2h ago", "What are your business hours?"),
-                _buildChatListItem(4, "LA", "Lisa Andersor", "3h ago", "I received my order, it's perfect!"),
+                _buildChatListItem(0, "R", "Roberto", "2m ago", "Hi, I'd like to know more about...", "assets/facebook.svg"),
+                _buildChatListItem(1, "MC", "Michael Cher", "15m ago", "Thank you for the quick response!", "assets/whatsapp.svg"),
+                _buildChatListItem(2, "EW", "Emma Wilso", "1h ago", "Can I schedule a booking for", "assets/instagram.svg"),
+                _buildChatListItem(3, "DB", "David Brow", "2h ago", "What are your business hours?", "assets/facebook.svg"),
+                _buildChatListItem(4, "LA", "Lisa Andersor", "3h ago", "I received my order, it's perfect!", "assets/whatsapp.svg"),
               ],
             ),
           ),
@@ -48,7 +49,7 @@ class _ChatListState extends State<ChatList> {
     );
   }
 
-  Widget _buildFilterItem(int index, IconData? icon, String title, String count) {
+  Widget _buildFilterItem(int index, String? iconPath, String title, String count) {
     bool isActive = _activeFilterIndex == index;
     return InkWell(
       onTap: () {
@@ -69,11 +70,11 @@ class _ChatListState extends State<ChatList> {
               horizontal: isActive ? 16 : 0, vertical: isActive ? 8 : 8),
           child: Row(
             children: [
-              if (icon != null) ...[
-                Icon(
-                  icon,
-                  size: 20,
-                  color: isActive ? Colors.white : Theme.of(context).textTheme.bodyMedium?.color,
+              if (iconPath != null) ...[
+                SvgPicture.asset(
+                  iconPath,
+                  width: 20,
+                  height: 20,
                 ),
                 const SizedBox(width: 12),
               ],
@@ -117,7 +118,7 @@ class _ChatListState extends State<ChatList> {
     );
   }
 
-  Widget _buildChatListItem(int index, String initials, String name, String time, String preview) {
+  Widget _buildChatListItem(int index, String initials, String name, String time, String preview, String socialIconPath) {
     bool isActive = _activeChatIndex == index;
     return InkWell(
       onTap: () {
@@ -134,22 +135,42 @@ class _ChatListState extends State<ChatList> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 40,
-              height: 40,
-              decoration: const BoxDecoration(
-                color: AppColor.primary,
-                shape: BoxShape.circle,
-              ),
-              child: Center(
-                child: Text(
-                  initials,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+            Stack(
+              children: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: const BoxDecoration(
+                    color: AppColor.primary,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Center(
+                    child: Text(
+                      initials,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                Positioned(
+                  right: 0,
+                  bottom: 0,
+                  child: Container(
+                    padding: const EdgeInsets.all(2),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    child: SvgPicture.asset(
+                      socialIconPath,
+                      width: 14,
+                      height: 14,
+                    ),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(width: 12),
             Expanded(
