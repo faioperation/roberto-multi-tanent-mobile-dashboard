@@ -455,7 +455,7 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
               child: const Row(
                 children: [
                   Expanded(flex: 2, child: CustomHeadder(label: 'Order ID', textAlign: TextAlign.center)),
-                  Expanded(flex: 3, child: CustomHeadder(label: 'Customer', textAlign: TextAlign.center)),
+                  Expanded(flex: 3, child: CustomHeadder(label: 'Customer', textAlign: TextAlign.start)),
                   Expanded(flex: 3, child: CustomHeadder(label: 'Address', textAlign: TextAlign.center)),
                   Expanded(flex: 2, child: CustomHeadder(label: 'Status', textAlign: TextAlign.center)),
                   Expanded(

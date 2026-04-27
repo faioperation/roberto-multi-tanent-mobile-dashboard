@@ -230,11 +230,11 @@ class _CustomCrmState extends State<CustomCrm> {
                       child: Row(
                         children: const [
                           Expanded(
-                            flex: 2,
+                            flex: 3,
                             child: CustomHeadder(label: 'Name'),
                           ),
                           Expanded(
-                            flex: 2,
+                            flex: 3,
                             child: CustomHeadder(label: 'Contact'),
                           ),
                           Expanded(
@@ -250,7 +250,7 @@ class _CustomCrmState extends State<CustomCrm> {
                             child: CustomHeadder(label: 'Last Contact'),
                           ),
                           Expanded(
-                            flex: 2,
+                            flex: 1,
                             child: CustomHeadder(label: 'Actions'),
                           ),
                         ],

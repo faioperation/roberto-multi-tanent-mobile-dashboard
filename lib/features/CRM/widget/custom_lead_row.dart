@@ -49,7 +49,7 @@ class CustomLeadRow extends StatelessWidget {
         children: [
           // NAME
           Expanded(
-            flex: 2,
+            flex: 3,
             child: Text(
               name,
               style: TextStyle(
@@ -62,7 +62,7 @@ class CustomLeadRow extends StatelessWidget {
 
           // CONTACT (EMAIL + PHONE)
           Expanded(
-            flex: 2,
+            flex: 3,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -134,7 +134,7 @@ class CustomLeadRow extends StatelessWidget {
 
           // ACTIONS (EYE ICON)
           Expanded(
-            flex: 2,
+            flex: 1,
             child: Align(
               alignment: Alignment.centerLeft,
               child: IconButton(
