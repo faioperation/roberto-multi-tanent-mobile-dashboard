@@ -3,18 +3,20 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../app/app_color.dart';
 
 class SidebarItem extends StatelessWidget {
-  final String iconPath;
+  final String? iconPath;
+  final IconData? icon;
   final String label;
   final bool isActive;
   final VoidCallback onTap;
 
   const SidebarItem({
     super.key,
-    required this.iconPath,
+    this.iconPath,
+    this.icon,
     required this.label,
     required this.isActive,
     required this.onTap,
-  });
+  }) : assert(iconPath != null || icon != null);
 
   @override
   Widget build(BuildContext context) {
@@ -30,15 +32,22 @@ class SidebarItem extends StatelessWidget {
         ),
         child: Row(
           children: [
-            SvgPicture.asset(
-              iconPath,
-              width: 20,
-              height: 20,
-              colorFilter: ColorFilter.mode(
-                isActive ? Colors.white : Theme.of(context).textTheme.bodyMedium?.color ?? const Color(0xff6B7280),
-                BlendMode.srcIn,
+            if (iconPath != null)
+              SvgPicture.asset(
+                iconPath!,
+                width: 20,
+                height: 20,
+                colorFilter: ColorFilter.mode(
+                  isActive ? Colors.white : Theme.of(context).textTheme.bodyMedium?.color ?? const Color(0xff6B7280),
+                  BlendMode.srcIn,
+                ),
+              )
+            else if (icon != null)
+              Icon(
+                icon,
+                size: 20,
+                color: isActive ? Colors.white : Theme.of(context).textTheme.bodyMedium?.color ?? const Color(0xff6B7280),
               ),
-            ),
             const SizedBox(width: 12),
             Text(
               label,

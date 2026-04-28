@@ -17,6 +17,8 @@ import 'package:roberto/features/businesssubscription/screen/business_subscripti
 import 'package:roberto/features/Auth/screen/login_screen.dart';
 import 'package:roberto/features/Overview/screen/overview_screen.dart';
 import 'package:roberto/features/DemoBooking/screen/demo_booking_screen.dart';
+import 'package:roberto/features/WhatsAppCampaigns/screen/whatsapp_campaigns_screen.dart';
+
 
 
 import 'package:roberto/common/user_role.dart';
@@ -132,7 +134,11 @@ class _DashboardShellState extends State<DashboardShell> {
       case 'Edit Profile':
         return const SettingScreen();
 
+      case 'Campaigns':
+        return const WhatsAppCampaignsScreen();
+
       case 'Overview':
+
       default:
         return OverviewScreen(isSystemOwner: widget.role == UserRole.systemOwner);
     }
@@ -156,6 +162,7 @@ class _DashboardShellState extends State<DashboardShell> {
       {'icon': 'assets/order.svg', 'label': 'Order Booking'},
       {'icon': 'assets/aiagent.svg', 'label': 'AI Agent'},
       {'icon': 'assets/pricing.svg', 'label': 'Pricing'},
+      {'icon': Icons.send, 'label': 'Campaigns'},
       {'icon': 'assets/crm.svg', 'label': 'CRM & Leads'},
       {'icon': 'assets/subscription.svg', 'label': 'Subscriptions'},
       {'icon': 'assets/management.svg', 'label': 'Management'},
@@ -170,7 +177,7 @@ class _DashboardShellState extends State<DashboardShell> {
       {'icon': 'assets/crm.svg', 'label': 'CRM & Leads'},
     ];
 
-    List<Map<String, String>> items;
+    List<Map<String, dynamic>> items;
     if (widget.role == UserRole.systemOwner) {
       items = systemOwnerItems;
     } else if (widget.role == UserRole.manager) {
@@ -271,9 +278,11 @@ class _DashboardShellState extends State<DashboardShell> {
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               children: items.map((item) {
-                final label = item['label']!;
+                final label = item['label']! as String;
+                final iconData = item['icon'];
                 return SidebarItem(
-                  iconPath: item['icon']!,
+                  iconPath: iconData is String ? iconData : null,
+                  icon: iconData is IconData ? iconData : null,
                   label: label,
                   isActive: _activeItem == label,
                   onTap: () {
