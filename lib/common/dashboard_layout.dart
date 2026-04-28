@@ -109,7 +109,7 @@ class _DashboardShellState extends State<DashboardShell> {
             : const BusinessownerSettings();
 
       case 'Order Booking':
-        return const OrderBookingScreen();
+        return OrderBookingScreen(onNavigate: _selectItem);
 
       case 'AI Agent':
         return const AiagentScreen();

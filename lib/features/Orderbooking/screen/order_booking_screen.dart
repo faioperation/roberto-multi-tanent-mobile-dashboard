@@ -14,7 +14,8 @@ import 'package:roberto/common/custom_pagination.dart';
 const double _kDesktop = 700;
 
 class OrderBookingScreen extends StatefulWidget {
-  const OrderBookingScreen({super.key});
+  final Function(String)? onNavigate;
+  const OrderBookingScreen({super.key, this.onNavigate});
 
   @override
   State<OrderBookingScreen> createState() => _OrderBookingScreenState();
@@ -1375,6 +1376,25 @@ class _OrderBookingScreenState extends State<OrderBookingScreen> {
               child: Text(actionText,
                   style: const TextStyle(
                       fontWeight: FontWeight.w600, fontSize: 13)),
+            ),
+          ),
+          const SizedBox(height: 10),
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton.icon(
+              onPressed: () {
+                widget.onNavigate?.call('Inbox');
+              },
+              style: OutlinedButton.styleFrom(
+                foregroundColor: AppColor.primary,
+                side: const BorderSide(color: AppColor.primary),
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8)),
+              ),
+              icon: const Icon(Icons.chat_outlined, size: 16),
+              label: const Text('See Latest Chat',
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
             ),
           )
         ],
