@@ -140,7 +140,7 @@ class _DashboardShellState extends State<DashboardShell> {
       case 'Overview':
 
       default:
-        return OverviewScreen(isSystemOwner: widget.role == UserRole.systemOwner);
+        return OverviewScreen(role: widget.role);
     }
   }
 
