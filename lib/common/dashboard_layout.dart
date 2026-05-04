@@ -18,6 +18,8 @@ import 'package:roberto/features/Auth/screen/login_screen.dart';
 import 'package:roberto/features/Overview/screen/overview_screen.dart';
 import 'package:roberto/features/DemoBooking/screen/demo_booking_screen.dart';
 import 'package:roberto/features/WhatsAppCampaigns/screen/whatsapp_campaigns_screen.dart';
+import 'package:roberto/app/app_routes.dart';
+import 'package:roberto/common/user_role.dart';
 
 
 
@@ -26,11 +28,13 @@ import 'package:roberto/common/user_role.dart';
 class DashboardShell extends StatefulWidget {
   final UserRole role;
   final Map<String, String>? assignedBranch;
+  final String? initialItem;
 
   const DashboardShell({
     super.key,
     this.role = UserRole.businessOwner,
     this.assignedBranch,
+    this.initialItem,
   });
 
   @override
@@ -52,12 +56,48 @@ class _DashboardShellState extends State<DashboardShell> {
   void initState() {
     super.initState();
     _selectedBranch = widget.assignedBranch ?? _branches[0];
+    if (widget.initialItem != null) {
+      _activeItem = widget.initialItem!;
+    }
+  }
+
+  void _navigateTo(String item) {
+    String? route;
+    switch (item) {
+      case 'Overview': route = Routes.overview; break;
+      case 'Inbox': route = Routes.inbox; break;
+      case 'Order Booking': route = Routes.orderBooking; break;
+      case 'AI Agent': route = Routes.aiAgent; break;
+      case 'Pricing': route = Routes.pricing; break;
+      case 'Campaigns': route = Routes.campaigns; break;
+      case 'CRM & Leads': route = Routes.crmLeads; break;
+      case 'Subscriptions': route = Routes.subscriptions; break;
+      case 'Management': route = Routes.management; break;
+      case 'Settings': route = Routes.settings; break;
+      case 'Demo Bookings': route = Routes.demoBookings; break;
+      case 'Notifications': route = Routes.notifications; break;
+      case 'Edit Profile': route = Routes.settings; break;
+      case 'Tenant Management': route = Routes.management; break; // Map to management or dedicated route
+    }
+
+    if (route != null && route != ModalRoute.of(context)?.settings.name) {
+      Navigator.pushReplacementNamed(
+        context,
+        route,
+        arguments: {
+          'role': widget.role,
+          'assignedBranch': _selectedBranch,
+        },
+      );
+    } else {
+      setState(() {
+        _activeItem = item;
+      });
+    }
   }
 
   void _selectItem(String item) {
-    setState(() {
-      _activeItem = item;
-    });
+    _navigateTo(item);
   }
 
   @override
@@ -72,15 +112,17 @@ class _DashboardShellState extends State<DashboardShell> {
         bottom: false,
         child: Row(
           children: [
-            if (isDesktop) _buildSidebar(context),
+            if (isDesktop) RepaintBoundary(child: _buildSidebar(context)),
             Expanded(
               child: Column(
                 children: [
-                  _buildTopBar(context),
+                  RepaintBoundary(child: _buildTopBar(context)),
                   Expanded(
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.all(24.0),
-                      child: _buildContent(context),
+                    child: RepaintBoundary(
+                      child: SingleChildScrollView(
+                        padding: const EdgeInsets.all(24.0),
+                        child: _buildContent(context),
+                      ),
                     ),
                   ),
                 ],
@@ -146,44 +188,44 @@ class _DashboardShellState extends State<DashboardShell> {
 
 
   // ─── Sidebar ─────────────────────────────────────────────────────────────
+  
+  static const List<Map<String, dynamic>> _systemOwnerItems = [
+    {'icon': 'assets/overview.svg', 'label': 'Overview'},
+    {'icon': 'assets/inbox.svg', 'label': 'Demo Bookings'},
+    {'icon': 'assets/subscription.svg', 'label': 'Tenant Management'},
+    {'icon': 'assets/subscription.svg', 'label': 'Subscriptions'},
+    {'icon': 'assets/setting.svg', 'label': 'Settings'},
+  ];
+
+  static const List<Map<String, dynamic>> _businessOwnerItems = [
+    {'icon': 'assets/overview.svg', 'label': 'Overview'},
+    {'icon': 'assets/inbox.svg', 'label': 'Inbox'},
+    {'icon': 'assets/order.svg', 'label': 'Order Booking'},
+    {'icon': 'assets/aiagent.svg', 'label': 'AI Agent'},
+    {'icon': 'assets/pricing.svg', 'label': 'Pricing'},
+    {'icon': Icons.send, 'label': 'Campaigns'},
+    {'icon': 'assets/crm.svg', 'label': 'CRM & Leads'},
+    {'icon': 'assets/subscription.svg', 'label': 'Subscriptions'},
+    {'icon': 'assets/management.svg', 'label': 'Management'},
+    {'icon': 'assets/setting.svg', 'label': 'Settings'},
+  ];
+
+  static const List<Map<String, dynamic>> _managerItems = [
+    {'icon': 'assets/overview.svg', 'label': 'Overview'},
+    {'icon': 'assets/inbox.svg', 'label': 'Inbox'},
+    {'icon': 'assets/order.svg', 'label': 'Order Booking'},
+    {'icon': 'assets/pricing.svg', 'label': 'Pricing'},
+    {'icon': 'assets/crm.svg', 'label': 'CRM & Leads'},
+  ];
 
   Widget _buildSidebar(BuildContext context) {
-    final systemOwnerItems = [
-      {'icon': 'assets/overview.svg', 'label': 'Overview'},
-      {'icon': 'assets/inbox.svg', 'label': 'Demo Bookings'},
-      {'icon': 'assets/subscription.svg', 'label': 'Tenant Management'},
-      {'icon': 'assets/subscription.svg', 'label': 'Subscriptions'},
-      {'icon': 'assets/setting.svg', 'label': 'Settings'},
-    ];
-
-    final businessOwnerItems = [
-      {'icon': 'assets/overview.svg', 'label': 'Overview'},
-      {'icon': 'assets/inbox.svg', 'label': 'Inbox'},
-      {'icon': 'assets/order.svg', 'label': 'Order Booking'},
-      {'icon': 'assets/aiagent.svg', 'label': 'AI Agent'},
-      {'icon': 'assets/pricing.svg', 'label': 'Pricing'},
-      {'icon': Icons.send, 'label': 'Campaigns'},
-      {'icon': 'assets/crm.svg', 'label': 'CRM & Leads'},
-      {'icon': 'assets/subscription.svg', 'label': 'Subscriptions'},
-      {'icon': 'assets/management.svg', 'label': 'Management'},
-      {'icon': 'assets/setting.svg', 'label': 'Settings'},
-    ];
-
-    final managerItems = [
-      {'icon': 'assets/overview.svg', 'label': 'Overview'},
-      {'icon': 'assets/inbox.svg', 'label': 'Inbox'},
-      {'icon': 'assets/order.svg', 'label': 'Order Booking'},
-      {'icon': 'assets/pricing.svg', 'label': 'Pricing'},
-      {'icon': 'assets/crm.svg', 'label': 'CRM & Leads'},
-    ];
-
     List<Map<String, dynamic>> items;
     if (widget.role == UserRole.systemOwner) {
-      items = systemOwnerItems;
+      items = _systemOwnerItems;
     } else if (widget.role == UserRole.manager) {
-      items = managerItems;
+      items = _managerItems;
     } else {
-      items = businessOwnerItems;
+      items = _businessOwnerItems;
     }
 
     return Container(
@@ -388,11 +430,7 @@ class _DashboardShellState extends State<DashboardShell> {
       offset: const Offset(0, 45),
       onSelected: (value) {
         if (value == 'logout') {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const LoginScreen()),
-          );
+          Navigator.pushReplacementNamed(context, Routes.login);
         } else if (value == 'profile') {
           _selectItem('Edit Profile');
         }

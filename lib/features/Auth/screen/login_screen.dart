@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:roberto/features/Auth/screen/forgot_screen.dart';
+import 'package:roberto/app/app_routes.dart';
 import 'package:roberto/common/dashboard_layout.dart';
 import 'package:roberto/common/user_role.dart';
 import '../../../app/app_color.dart';
@@ -109,10 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(height: 15),
             GestureDetector(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const ForgotScreen()),
-                );
+                Navigator.pushNamed(context, Routes.forgotPassword);
               },
               child: Align(
                 alignment: Alignment.centerRight,
@@ -159,14 +157,13 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     if (role != null) {
-      Navigator.pushReplacement(
+      Navigator.pushReplacementNamed(
         context,
-        MaterialPageRoute(
-          builder: (_) => DashboardShell(
-            role: role!,
-            assignedBranch: assignedBranch,
-          ),
-        ),
+        Routes.overview,
+        arguments: {
+          'role': role,
+          'assignedBranch': assignedBranch,
+        },
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

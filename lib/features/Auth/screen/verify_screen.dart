@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:roberto/app/app_routes.dart';
 import 'package:roberto/features/Auth/screen/reset_screen.dart';
 import '../../../app/app_color.dart';
 import '../../../common/custom_button.dart';
@@ -113,9 +114,6 @@ class _VerifyScreenState extends State<VerifyScreen> {
   }
 
   void _handleVerify() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => const ResetScreen()),
-    );
+    Navigator.pushNamed(context, Routes.resetPassword);
   }
 }

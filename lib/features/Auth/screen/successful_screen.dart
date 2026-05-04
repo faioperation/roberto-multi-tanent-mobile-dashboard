@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:roberto/features/Auth/screen/forgot_screen.dart';
+import 'package:roberto/app/app_routes.dart';
 import 'package:roberto/features/Auth/screen/login_screen.dart';
 import '../../../app/app_color.dart';
 import '../../../common/custom_button.dart';
@@ -61,10 +61,7 @@ class _SuccessfulScreenState extends State<SuccessfulScreen> {
             CustomButton(
               text: "Login",
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const LoginScreen()),
-                );
+                Navigator.pushReplacementNamed(context, Routes.login);
               },
             ),
 

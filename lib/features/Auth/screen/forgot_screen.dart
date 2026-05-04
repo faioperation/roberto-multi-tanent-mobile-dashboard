@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:roberto/app/app_routes.dart';
 import 'package:roberto/features/Auth/screen/verify_screen.dart';
 import '../../../app/app_color.dart';
 import '../../../common/custom_button.dart';
@@ -89,9 +90,6 @@ class _ForgotScreenState extends State<ForgotScreen> {
   }
 
   void _handleSend() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => const VerifyScreen()),
-    );
+    Navigator.pushNamed(context, Routes.verifyOtp);
   }
 }

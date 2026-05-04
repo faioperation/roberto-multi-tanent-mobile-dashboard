@@ -23,72 +23,74 @@ class _OverviewScreenState extends State<OverviewScreen> {
     bool isDesktop = MediaQuery.of(context).size.width > 900;
     final isSystemOwner = widget.role == UserRole.systemOwner;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          isSystemOwner ? "System Overview" : "Dashboard Overview",
-          style: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          isSystemOwner 
-            ? "Welcome, Administrator. Here is the platform's global status."
-            : "Welcome back! Here's what's happening in your business today.",
-          style: TextStyle(
-            fontSize: 16,
-            color: Theme.of(context).textTheme.bodyMedium?.color,
-          ),
-        ),
-        const SizedBox(height: 32),
-
-        // STAT CARDS
-        isDesktop 
-          ? Row(
-              children: _buildStatCards(context),
-            )
-          : Column(
-              children: _buildStatCards(context).map((card) => Padding(
-                padding: const EdgeInsets.only(bottom: 16),
-                child: card,
-              )).toList(),
+    return SelectionArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            isSystemOwner ? "System Overview" : "Dashboard Overview",
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
-            
-        const SizedBox(height: 32),
-
-        // ANALYTICS & REPORTS
-        RoleReports(role: widget.role),
-
-        const SizedBox(height: 32),
-
-        // RECENT ACTIVITY & QUICK STATS
-        isDesktop 
-          ? const Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: ActivityList(),
-                ),
-                SizedBox(width: 24),
-                Expanded(
-                  flex: 1,
-                  child: QuickStats(),
-                ),
-              ],
-            )
-          : Column(
-              children: [
-                const ActivityList(),
-                const SizedBox(height: 24),
-                const QuickStats(),
-              ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            isSystemOwner 
+              ? "Welcome, Administrator. Here is the platform's global status."
+              : "Welcome back! Here's what's happening in your business today.",
+            style: TextStyle(
+              fontSize: 16,
+              color: Theme.of(context).textTheme.bodyMedium?.color,
             ),
-      ],
+          ),
+          const SizedBox(height: 32),
+  
+          // STAT CARDS
+          isDesktop 
+            ? Row(
+                children: _buildStatCards(context),
+              )
+            : Column(
+                children: _buildStatCards(context).map((card) => Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: card,
+                )).toList(),
+              ),
+              
+          const SizedBox(height: 32),
+  
+          // ANALYTICS & REPORTS
+          RoleReports(role: widget.role),
+  
+          const SizedBox(height: 32),
+  
+          // RECENT ACTIVITY & QUICK STATS
+          isDesktop 
+            ? const Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: ActivityList(),
+                  ),
+                  SizedBox(width: 24),
+                  Expanded(
+                    flex: 1,
+                    child: QuickStats(),
+                  ),
+                ],
+              )
+            : Column(
+                children: [
+                  const ActivityList(),
+                  const SizedBox(height: 24),
+                  const QuickStats(),
+                ],
+              ),
+        ],
+      ),
     );
   }
 

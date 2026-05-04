@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:roberto/features/Auth/screen/forgot_screen.dart';
+import 'package:roberto/app/app_routes.dart';
 import 'package:roberto/features/Auth/screen/successful_screen.dart';
 import '../../../app/app_color.dart';
 import '../../../common/custom_button.dart';
@@ -112,9 +112,6 @@ class _ResetScreenState extends State<ResetScreen> {
   }
 
   void _handleReset() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => const SuccessfulScreen()),
-    );
+    Navigator.pushNamed(context, Routes.success);
   }
 }
